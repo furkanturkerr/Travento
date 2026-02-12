@@ -1,7 +1,27 @@
+using System.Reflection;
+using Microsoft.Extensions.Options;
+using Project3Travelin.Services.CategoryServices;
+using Project3Travelin.Services.CommantServices;
+using Project3Travelin.Services.TourServices;
+using Project3Travelin.Settings;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITourService, TourService>();
+
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+
+builder.Services.AddScoped<IDatabaseSettings>(sp =>
+{
+    return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+});
 
 var app = builder.Build();
 
