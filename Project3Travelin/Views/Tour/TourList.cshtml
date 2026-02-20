@@ -1,7 +1,9 @@
+@using Microsoft.AspNetCore.Mvc.RazorPages
 @model System.Collections.Generic.List<Project3Travelin.Dtos.TourDtos.ResultTourDto>
 
 @{
     Layout = null;
+    int currentPage = int.Parse(Context.Request.Query["page"].FirstOrDefault() ?? "1");
 }
 
 <!DOCTYPE html>
@@ -11,7 +13,7 @@
 <body>
     @await Component.InvokeAsync("_TourHeaderComponentPartial")
     
-    @await Component.InvokeAsync("_TourListComponentPartial")
+    @await Component.InvokeAsync("_TourListComponentPartial",new {page = currentPage})
     <section class="discount-action pt-0" style="background-image:url(images/section-bg1.png); background-position:center;">
         <div class="container">
             <div class="call-banner rounded pt-10 pb-14">
