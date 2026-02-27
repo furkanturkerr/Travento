@@ -36,7 +36,13 @@
                             <small>@item.DayNight</small>
                             <h3 class="mb-1"><a href="tour-single.html">@item.Title</a></h3>
                             <h6 class="theme mb-0"><i class="icon-location-pin"></i> @item.Country</h6>
-                            <p class="mt-4 mb-0">@item.Description <br><a href="#"><span class="theme"> Ücretsiz İptal</span></a></p>
+                            <p class="mt-4 mb-0">
+                                @(item.Description.Length > 120 
+                                    ? item.Description.Substring(0,120) + "..." 
+                                    : item.Description)
+                                <br>
+                                <a href="#"><span class="theme">Ücretsiz İptal</span></a>
+                            </p>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3">

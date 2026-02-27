@@ -9,4 +9,6 @@ public interface ITourService
     Task UpdateTourAsync(UpdateTourDto updateTourDto);
     Task DeleteTourAsync(string id);
     Task<GetTourByIdDto> GetTourByIdAsync(string id);
+    Task<List<ResultTourDto>> GetFilteredToursAsync(string city, decimal? minPrice, decimal? maxPrice);
+
 }

@@ -26,9 +26,21 @@ public class TourController : Controller
         return RedirectToAction("TourList");
     }
     
-    public async Task<IActionResult> TourList()
+    [HttpGet]
+    public async Task<IActionResult> TourList(string city, decimal? minPrice, decimal? maxPrice)
     {
-        var values = await _tourService.GetAllTourAsync();
+        // Direkt filtered'ı çağır, service zaten boşsa hepsini getirir
+        var values = await _tourService.GetFilteredToursAsync(city, minPrice, maxPrice);
+
+        // Dropdown için şehirleri çek (distinct)
+        var allTours = await _tourService.GetAllTourAsync();
+        var cities = allTours.Select(x => x.City).Distinct().OrderBy(x => x).ToList();
+
+        ViewBag.Cities = cities;
+        ViewBag.City = city;
+        ViewBag.MinPrice = minPrice;
+        ViewBag.MaxPrice = maxPrice;
+
         return View(values);
     }
 }

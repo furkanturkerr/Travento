@@ -8,13 +8,23 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.23" />
       <PackageReference Include="MongoDB.Bson" Version="3.6.0" />
       <PackageReference Include="MongoDB.Driver" Version="3.6.0" />
       <PackageReference Include="MongoDB.Driver.Core" Version="2.30.0" />
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Areas\Admin\Data\" />
+      <Folder Include="Areas\Admin\Models\" />
+      <Folder Include="Areas\Admin\Views\" />
       <Folder Include="Pages\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Areas\Admin\Views\Tour\CreateTour.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Tour\TourList.cshtml" />
+      <AdditionalFiles Include="Areas\Admin\Views\Tour\UpdateTour.cshtml" />
     </ItemGroup>
 
 </Project>

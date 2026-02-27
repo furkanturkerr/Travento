@@ -11,6 +11,7 @@ public class Tour
     public string Title { get; set; }
     public string Country { get; set; }
     public string City { get; set; }
+    public decimal Price { get; set; }
     public string Description { get; set; }
     public int Capacity { get; set; }
     public DateTime TourDate { get; set; }

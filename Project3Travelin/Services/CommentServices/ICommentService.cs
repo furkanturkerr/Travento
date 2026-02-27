@@ -9,4 +9,5 @@ public interface ICommentService
     Task CreateCommantAsync(CreateCommentDto createCommentDto);
     Task DeleteCommantAsync(string id);
     Task<GetCommentByIdDto> GetCommentByIdAsync(string id);
+    Task<List<ResultCommentListByTourIdDto>> GetCommentByTourIdAsync(string id);
 }

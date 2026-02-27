@@ -13,7 +13,7 @@ public class _TourListComponentPartial : ViewComponent
     }
     public async Task<IViewComponentResult> InvokeAsync(int page = 1)
     {
-        int pageSize = 3;
+        int pageSize = 8;
         var allValues = await _tourService.GetAllTourAsync();
 
         var totalCount = allValues.Count();

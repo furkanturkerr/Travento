@@ -1,9 +1,7 @@
-@using Microsoft.AspNetCore.Mvc.RazorPages
-@model System.Collections.Generic.List<Project3Travelin.Dtos.TourDtos.ResultTourDto>
+@model dynamic
 
 @{
-    Layout = null; // veya Layout = "_Layout"; kullanıyorsanız onu yazın
-    int currentPage = int.Parse(Context.Request.Query["page"].FirstOrDefault() ?? "1");
+    Layout = null;
 }
 
 <!DOCTYPE html>
@@ -16,19 +14,19 @@
 
     <title>Travelin - Travel Tour Booking HTML Templates</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="~/03_travelin_main_file/travelin/images/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
     <!-- Bootstrap core CSS -->
-    <link href="~/03_travelin_main_file/travelin/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <!--Custom CSS-->
-    <link href="~/03_travelin_main_file/travelin/css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
     <!--Plugin CSS-->
-    <link href="~/03_travelin_main_file/travelin/css/plugin.css" rel="stylesheet" type="text/css">
+    <link href="css/plugin.css" rel="stylesheet" type="text/css">
 
     <!--Font Awesome-->
     
-    <link rel="stylesheet" href="~/03_travelin_main_file/travelin/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="css/fontawesome.min.css" />
 
-    <link rel="stylesheet" href="~/03_travelin_main_file/travelin/fonts/line-icons.css" type="text/css">
+    <link rel="stylesheet" href="fonts/line-icons.css" type="text/css">
 </head>
 
     <!-- Preloader -->
@@ -116,14 +114,14 @@
 
                                 <li><a href="about.html">About Us</a></li>
 
-                                <li class="submenu dropdown">
+                                <li class="submenu dropdown active">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Destinations <i class="icon-arrow-down" aria-hidden="true"></i></a> 
                                     <ul class="dropdown-menu">
                                         <li><a href="destination-list.html">Destination List</a></li>
                                         <li><a href="destination-detail.html">Destination Detail</a></li>
                                     </ul> 
                                 </li>
-                                <li class="submenu dropdown active">
+                                <li class="submenu dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tours <i class="icon-arrow-down" aria-hidden="true"></i></a> 
                                     <ul class="dropdown-menu">
                                         <li class="submenu dropdown">
@@ -241,11 +239,11 @@
         <div class="breadcrumb-outer">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h1 class="mb-3">Tour List</h1>
+                    <h1 class="mb-3">Destination List</h1>
                     <nav aria-label="breadcrumb" class="d-block">
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Tour Lists Leftside</li>
+                            <li class="breadcrumb-item active" aria-current="page">Destination Lists</li>
                         </ul>
                     </nav>
                 </div>
@@ -256,128 +254,146 @@
     <!-- BreadCrumb Ends --> 
 
     <!-- top Destination starts -->
-    <section class="trending pt-6 pb-0 bg-lgrey">
+    <section class="trending pb-0 pt-6">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="list-results d-flex align-items-center justify-content-between">
-                        <div class="list-results-sort">
-                            <p class="m-0">Showing 1-5 of 80 results</p>
-                        </div>
-                        <div class="click-menu d-flex align-items-center justify-content-between">
-                            <div class="change-list f-active me-2"><a href="tour-list.html"><i class="fa fa-bars rounded"></i></a></div>
-                            <div class="change-grid me-2"><a href="tour-grid.html"><i class="fa fa-th rounded"></i></a></div>
-                            <div class="sortby d-flex align-items-center justify-content-between ml-2">
-                                <select class="niceSelect">
-                                    <option value="1" >Sort By</option>
-                                    <option value="2">Average rating</option>
-                                    <option value="3">Price: low to high</option>
-                                    <option value="4">Price: high to low</option>
-                                </select> 
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="destination-list">
-    @foreach (var tour in Model)
-    {
-        <div class="trend-full bg-white rounded box-shadow overflow-hidden p-4 mb-4">
-            <div class="row">
-                <div class="col-lg-4 col-md-3">
-                    <div class="trend-item2 rounded">
-                        <a href="/Tour/TourDetail/@tour.TourId" 
-                           style="background-image: url(@tour.ImageUrl);"></a>
-                        <div class="color-overlay"></div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6">
-                    <div class="trend-content position-relative text-md-start text-center">
-                        <small>@tour.DayNight</small>
-                        <h3 class="mb-1">
-                            <a href="/Tour/TourDetail/@tour.TourId">@tour.Title</a>
-                        </h3>
-                        <h6 class="theme mb-0">
-                            <i class="icon-location-pin"></i> @tour.City, @tour.Country
-                        </h6>
-                        <p class="mt-4 mb-0">
-                            Kapasite: @tour.Capacity kişi <br>
-                            <span class="theme">@tour.TourDate.ToString("dd MMM yyyy")</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="trend-content text-md-end text-center">
-                        <div class="trend-price my-2">
-                            <span class="mb-0">From</span>
-                            <h3 class="mb-0">$@tour.Price</h3>
-                            <small>Per Adult</small>
-                        </div>
-                        <a href="/Tour/TourDetail/@tour.TourId" class="nir-btn">View Detail</a>
-                    </div>
-                </div>
+            <div class="section-title mb-6 w-50 mx-auto text-center">
+                <h4 class="mb-1 theme1">Top Destinations</h4>
+                <h2 class="mb-1">Explore <span class="theme">Top Destinations</span></h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
             </div>
-        </div>
-    }
-
-    @if (!Model.Any())
-    {
-        <div class="text-center p-5">
-            <h4>Sonuç bulunamadı.</h4>
-            <a href="/Tour/TourList" class="nir-btn mt-3">Tüm Turları Göster</a>
-        </div>
-    }
-</div>
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination17.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Italy</a></h5>
+                                    <h3 class="mb-0 white">Caspian Valley</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">18 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-4 ps-lg-4">
-                    <div class="sidebar-sticky">
-                        <div class="list-sidebar">
-                            <div class="sidebar-item mb-4">
-    <h3>Filtrele</h3>
-    <form method="get" asp-controller="Tour" asp-action="TourList" id="filterForm">
-        
-        <!-- Hidden input - asıl değeri buraya yazacağız -->
-        <input type="hidden" name="city" id="hiddenCity" value="@ViewBag.City">
-        <input type="hidden" name="minPrice" id="hiddenMinPrice" value="@ViewBag.MinPrice">
-        <input type="hidden" name="maxPrice" id="hiddenMaxPrice" value="@ViewBag.MaxPrice">
-
-        <!-- ŞEHİR DROPDOWN - niceSelect etkisi önemli değil artık -->
-        <div class="mb-3">
-            <label class="mb-1"><strong>Şehir</strong></label>
-            <select id="cityDropdown" class="form-control">
-                <option value="">-- Tüm Şehirler --</option>
-                @foreach (var c in ViewBag.Cities as List<string> ?? new List<string>())
-                {
-                    if (ViewBag.City == c)
-                    {
-                        <option value="@c" selected>@c</option>
-                    }
-                    else
-                    {
-                        <option value="@c">@c</option>
-                    }
-                }
-            </select>
-        </div>
-
-        <!-- FİYAT -->
-        <div class="mb-3">
-            <label class="mb-1"><strong>Min Fiyat ($)</strong></label>
-            <input type="number" id="minPriceInput" class="form-control" 
-                   placeholder="0" value="@ViewBag.MinPrice">
-        </div>
-        <div class="mb-3">
-            <label class="mb-1"><strong>Max Fiyat ($)</strong></label>
-            <input type="number" id="maxPriceInput" class="form-control" 
-                   placeholder="9999" value="@ViewBag.MaxPrice">
-        </div>
-
-        <button type="button" onclick="submitFilter()" class="nir-btn w-100 mb-2">
-            Filtrele
-        </button>
-        <a href="/Tour/TourList" class="btn btn-outline-secondary w-100">Temizle</a>
-
-    </form>
-</div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination14.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Tokyo</a></h5>
+                                    <h3 class="mb-0 white">Japan</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">21 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination15.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Moscow</a></h5>
+                                    <h3 class="mb-0 white">Russia</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">15 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination5.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Bangkok</a></h5>
+                                    <h3 class="mb-0 white">Thailand</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">24 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination16.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Florida</a></h5>
+                                    <h3 class="mb-0 white">America</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">32 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination4.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Bali</a></h5>
+                                    <h3 class="mb-0 white">Indonesia</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">14 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination10.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Italy</a></h5>
+                                    <h3 class="mb-0 white">Caspian Valley</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">18 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination11.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100 z-index">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Tokyo</a></h5>
+                                    <h3 class="mb-0 white">Japan</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">21 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                    <div class="trend-item1">
+                        <div class="trend-image position-relative rounded">
+                            <img src="images/destination/destination7.jpg" alt="image">
+                            <div class="trend-content d-flex align-items-center justify-content-between position-absolute bottom-0 p-4 w-100">
+                                <div class="trend-content-title">
+                                    <h5 class="mb-0"><a href="destination-detail.html" class="theme1">Moscow</a></h5>
+                                    <h3 class="mb-0 white">Russia</h3>
+                                </div>
+                                <span class="white bg-theme p-1 px-2 rounded">15 Tours</span>
+                            </div>
+                            <div class="color-overlay"></div>
                         </div>
                     </div>
                 </div>
@@ -763,31 +779,13 @@
 
 
     <!-- *Scripts* -->
-    <script src="~/03_travelin_main_file/travelin/js/jquery-3.5.1.min.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/bootstrap.min.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/fontawesome.min.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/particles.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/particlerun.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/plugin.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/main.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/custom-swiper.js"></script>
-    <script src="~/03_travelin_main_file/travelin/js/custom-nav.js"></script>
-    
-    <script>
-function submitFilter() {
-    // Dropdown'dan seçilen değeri hidden input'a kopyala
-    document.getElementById('hiddenCity').value = 
-        document.getElementById('cityDropdown').value;
-    
-    document.getElementById('hiddenMinPrice').value = 
-        document.getElementById('minPriceInput').value;
-    
-    document.getElementById('hiddenMaxPrice').value = 
-        document.getElementById('maxPriceInput').value;
-    
-    // Formu submit et
-    document.getElementById('filterForm').submit();
-}
-</script>
-    </html>
-    
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/fontawesome.min.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/particlerun.js"></script>
+    <script src="js/plugin.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/custom-swiper.js"></script>
+    <script src="js/custom-nav.js"></script>
+</html>

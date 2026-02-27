@@ -15,7 +15,7 @@ public class CommentService : ICommentService
     {
         var client = new MongoClient(_databaseSettings.ConnectionString);
         var database = client.GetDatabase(_databaseSettings.DatabaseName);
-        var commantsCollection = database.GetCollection<Comment>(_databaseSettings.CommentCollectionName);
+        _commantsCollection = database.GetCollection<Comment>(_databaseSettings.CommentCollectionName);
         _mapper = mapper;
     }
 
@@ -46,5 +46,11 @@ public class CommentService : ICommentService
     {
         var vaalue = await _commantsCollection.Find(x => x.CommentId == id).FirstOrDefaultAsync();
         return _mapper.Map<GetCommentByIdDto>(vaalue);
+    }
+
+    public async Task<List<ResultCommentListByTourIdDto>> GetCommentByTourIdAsync(string id)
+    {
+        var value = await _commantsCollection.Find(x => x.TourId == id).ToListAsync();
+        return _mapper.Map<List<ResultCommentListByTourIdDto>>(value);
     }
 }

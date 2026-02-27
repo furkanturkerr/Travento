@@ -1,4 +1,5 @@
 using AutoMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Project3Travelin.Dtos.TourDtos;
 using Project3Travelin.Entities;
@@ -47,4 +48,35 @@ public class TourService : ITourService
         var value = await _tourCollection.Find(x => x.TourId == id).FirstOrDefaultAsync();
         return _mapper.Map<GetTourByIdDto>(value);
     }
+    
+    public async Task<List<ResultTourDto>> GetFilteredToursAsync(string city, decimal? minPrice, decimal? maxPrice)
+    {
+        var builder = Builders<Tour>.Filter;
+        // Filter builder oluştur - SQL'deki WHERE gibi düşün
+        var filter = builder.Empty;
+        // Boş filter = filtre yok = hepsini getir
+        // SQL: WHERE 1=1 (her zaman true)
+
+        if (!string.IsNullOrEmpty(city))
+        {
+            // Regex yerine direkt eşitlik kontrolü
+            filter = filter & builder.Eq(x => x.City, city);
+            // & = AND ile birleştir
+            // Eq = Equal (eşittir)
+            // SQL: WHERE City = 'Roma'
+        }
+
+        if (minPrice.HasValue)
+            filter = filter & builder.Gte(x => x.Price, minPrice.Value);
+
+        if (maxPrice.HasValue)
+            filter = filter & builder.Lte(x => x.Price, maxPrice.Value);
+        
+
+        var tours = await _tourCollection.Find(filter).ToListAsync();
+        // Oluşturulan filtreyi MongoDB'ye gönder
+        // SQL: SELECT * FROM Tours WHERE City='Roma' AND Price>=100 AND Price<=500
+        return _mapper.Map<List<ResultTourDto>>(tours);
+    }
+    
 }

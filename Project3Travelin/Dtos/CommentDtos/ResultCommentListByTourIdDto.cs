@@ -1,6 +1,6 @@
 namespace Project3Travelin.Dtos.CommantDtos;
 
-public class CreateCommentDto
+public class ResultCommentListByTourIdDto
 {
     public string CommentId { get; set; }
     public string Headline { get; set; }
