@@ -63,7 +63,7 @@
                                             <h3 class="mb-0">₺@tour.Price</h3>
                                             <small>Başlayan Fiyatlarla</small>
                                         </div>
-                                        <a href="/Tour/TourDetail/@tour.TourId" class="nir-btn">Tur Detayları</a>
+                                        <a asp-controller="Tour" asp-action="TourDetail" asp-route-tourId="@tour.TourId" class="nir-btn">Detay</a>
                                     </div>
                                 </div>
                             </div>

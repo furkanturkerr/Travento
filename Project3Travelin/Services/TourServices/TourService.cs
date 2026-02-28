@@ -46,6 +46,10 @@ public class TourService : ITourService
     public async Task<GetTourByIdDto> GetTourByIdAsync(string id)
     {
         var value = await _tourCollection.Find(x => x.TourId == id).FirstOrDefaultAsync();
+    
+        if (value == null)
+            return null;
+    
         return _mapper.Map<GetTourByIdDto>(value);
     }
     

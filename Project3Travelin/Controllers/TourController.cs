@@ -1,29 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Project3Travelin.Dtos.TourDtos;
 using Project3Travelin.Services.TourServices;
+using Project3Travelin.Services.TourTineraryService;
 
 namespace Project3Travelin.Controllers;
 
 public class TourController : Controller
 {
     private readonly ITourService _tourService;
+    private readonly ITineraryService _itineraryService;
 
-    public TourController(ITourService tourService)
+    public TourController(ITourService tourService, ITineraryService itineraryService)
     {
         _tourService = tourService;
-    }
-
-    // GET
-    public IActionResult CreateTour()
-    {
-        return View();
-    }
-    
-    [HttpPost]
-    public async Task<IActionResult> CreateTour(CreateTourDto createTourDto)
-    {
-        await _tourService.CreateTourAsync(createTourDto);
-        return RedirectToAction("TourList");
+        _itineraryService = itineraryService;
     }
     
     [HttpGet]
@@ -55,5 +45,13 @@ public class TourController : Controller
         ViewBag.TotalCount = totalCount;
 
         return View(pagedValues);
+    }
+
+    public async Task<IActionResult> TourDetail(string tourId)
+    {
+        var value = await _tourService.GetTourByIdAsync(tourId);
+        var itinerary = await _itineraryService.GetTineraryByTourIdAsync(tourId);
+        ViewBag.Itinerary = itinerary;
+        return View(value);
     }
 }

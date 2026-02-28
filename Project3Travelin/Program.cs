@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Project3Travelin.Services.CategoryServices;
 using Project3Travelin.Services.CommantServices;
 using Project3Travelin.Services.TourServices;
+using Project3Travelin.Services.TourTineraryService;
 using Project3Travelin.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ITourService, TourService>();
+builder.Services.AddScoped<ITineraryService, TineraryService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

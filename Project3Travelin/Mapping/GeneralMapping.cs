@@ -2,6 +2,7 @@ using AutoMapper;
 using Project3Travelin.Dtos.CategoryDtos;
 using Project3Travelin.Dtos.CommantDtos;
 using Project3Travelin.Dtos.TourDtos;
+using Project3Travelin.Dtos.TourTineraryDtos;
 using Project3Travelin.Entities;
 
 namespace Project3Travelin.Mapping;
@@ -25,5 +26,11 @@ public class GeneralMapping : Profile
         CreateMap<Comment, CreateCommentDto>().ReverseMap();
         CreateMap<Comment, UpdateCommentDto>().ReverseMap();
         CreateMap<Comment, ResultCommentListByTourIdDto>().ReverseMap();
+        
+        CreateMap<TourItinerary, ResultTineraryListByTourIdDto>().ReverseMap();
+        CreateMap<TourItinerary, ResultTineraryDto>().ReverseMap();
+        CreateMap<TourItinerary, GetTineraryByIdDto>().ReverseMap();
+        CreateMap<TourItinerary, CreateTineraryDto>().ReverseMap();
+        CreateMap<TourItinerary, UpdateTineraryDto>().ReverseMap();
     }
 }
