@@ -1,6 +1,3 @@
-<div id="preloader">
-    <div id="status"></div>
-</div>
 <header class="main_header_area">
     <div class="header-content py-1 bg-theme">
         <div class="container d-flex align-items-center justify-content-between">
@@ -21,55 +18,29 @@
             </div>
         </div>
     </div>
-    <!-- Navigation Bar -->
     <div class="header_menu" id="header_menu">
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-flex d-flex align-items-center justify-content-between w-100 pb-3 pt-3">
-                    <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
                         <a class="navbar-brand" href="index.html">
-                            <img src="images/logo.png" alt="image">
+                            <img src="/03_travelin_main_file/travelin/images/logo.png" class="w-75" alt="image"/>
                         </a>
                     </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="navbar-collapse1 d-flex align-items-center" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav" id="responsive-menu">
 
-                            <li><a asp-controller="Home" asp-action="Anasayfa">Ana Sayfa</a></li>
-                            <li><a href="about.html">Hakkımızda</a></li>
-                            <li><a href="about.html">Gezi Noktaları</a></li>
-                            <li><a href="about.html">Tur Listesi</a></li>
-                            <li><a href="about.html">İletişim</a></li>
+                            <li><a asp-controller="Home" asp-action="Anasayfa">Anasayfa</a></li>
+                            <li><a asp-controller="About" asp-action="Hakkımızda">Hakkımızda</a></li>
+                            <li><a asp-controller="About" asp-action="Hakkımızda">Ülkeler</a></li>
+                            <li><a asp-controller="Tour" asp-action="TourList">Tur Listesi</a></li>
+                            <li><a asp-controller="About" asp-action="Hakkımızda">İletişim</a></li>
                         </ul>
-                    </div><!-- /.navbar-collapse -->
-                    <div class="register-login d-flex align-items-center">
-                        <a href="booking.html" class="nir-btn white">Rezervasyon Yap</a>
+                        <a href="#" class="nir-btn px-3 py-1 ms-3">Rezervasyon Yap</a>
                     </div>
-
                     <div id="slicknav-mobile"></div>
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
         </nav>
     </div>
-    <!-- Navigation Bar Ends -->
 </header>
-
-
-<section class="breadcrumb-main pb-20 pt-14" style="background-image: url(/03_travelin_main_file/travelin/images/bg/bg1.jpg);">
-    <div class="section-shape section-shape1 top-inherit bottom-0" style="background-image: url(/03_travelin_main_file/travelin/images/shape8.png);"></div>
-    <div class="breadcrumb-outer">
-        <div class="container">
-            <div class="breadcrumb-content text-center">
-                <h1 class="mb-3">Tur Listesi</h1>
-                <nav aria-label="breadcrumb" class="d-block">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Anasayfa</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Güncel Turlarımız</li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    </div>
-    <div class="dot-overlay"></div>
-</section>

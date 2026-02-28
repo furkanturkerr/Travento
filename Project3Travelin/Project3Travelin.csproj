@@ -27,4 +27,9 @@
       <AdditionalFiles Include="Areas\Admin\Views\Tour\UpdateTour.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Shared\Components\_TourHeaderComponentPartial\Default.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\_TourScriptComponentPartial\Default.cshtml" />
+    </ItemGroup>
+
 </Project>

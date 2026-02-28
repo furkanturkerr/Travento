@@ -1,0 +1,26 @@
+<script src="~/03_travelin_main_file/travelin/js/jquery-3.5.1.min.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/bootstrap.min.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/fontawesome.min.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/particles.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/particlerun.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/plugin.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/main.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/custom-swiper.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/custom-nav.js"></script>
+    
+<script>
+function submitFilter() {
+    // Dropdown'dan seçilen değeri hidden input'a kopyala
+    document.getElementById('hiddenCity').value = 
+        document.getElementById('cityDropdown').value;
+    
+    document.getElementById('hiddenMinPrice').value = 
+        document.getElementById('minPriceInput').value;
+    
+    document.getElementById('hiddenMaxPrice').value = 
+        document.getElementById('maxPriceInput').value;
+    
+    // Formu submit et
+    document.getElementById('filterForm').submit();
+}
+</script>

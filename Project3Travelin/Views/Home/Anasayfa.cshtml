@@ -34,43 +34,7 @@
     <!-- Preloader Ends -->
 
     <!-- header starts -->
-    <header class="main_header_area">
-      <!-- Navigation Bar -->
-      <div class="header_menu" id="header_menu">
-        <nav class="navbar navbar-default">
-          <div class="container">
-            <div class="navbar-flex d-flex align-items-center justify-content-between w-100 pb-3 pt-3">
-              <!-- Brand and toggle get grouped for better mobile display -->
-              <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
-                  <img src="/03_travelin_main_file/travelin/images/logo.png" class="w-75" alt="image" />
-                </a>
-              </div>
-              <!-- Collect the nav links, forms, and other content for toggling -->
-              <div class="navbar-collapse1 d-flex align-items-center" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav" id="responsive-menu">
-                  
-                  <li><a asp-controller="Home" asp-action="Anasayfa">Anasayfa</a></li>
-                  <li><a asp-controller="About" asp-action="Hakkımızda">Hakkımızda</a></li>
-                  <li><a asp-controller="About" asp-action="Hakkımızda">Ülkeler</a></li>
-                  <li><a asp-controller="Tour" asp-action="TourList">Tur Listesi</a></li>
-                  <li><a asp-controller="About" asp-action="Hakkımızda">İletişim</a></li>
-                  <li class="search-main">
-                    <a href="#search1" class="mt_search"><i class="fa fa-search"></i></a>
-                  </li>
-                </ul>
-                <a href="#" class="nir-btn px-3 py-1 ms-3">Discover Now</a>
-              </div>
-              <!-- /.navbar-collapse -->
-
-              <div id="slicknav-mobile"></div>
-            </div>
-          </div>
-          <!-- /.container-fluid -->
-        </nav>
-      </div>
-      <!-- Navigation Bar Ends -->
-    </header>
+    @await Component.InvokeAsync("_DefaultHeaderComponentPartial")
     <!-- header ends -->
 
     <!-- banner starts -->
