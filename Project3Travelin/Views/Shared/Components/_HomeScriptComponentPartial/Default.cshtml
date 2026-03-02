@@ -1,0 +1,59 @@
+    <div id="back-to-top">
+      <a href="#"></a>
+    </div>
+    
+    <div id="search1">
+      <button type="button" class="close">×</button>
+      <form>
+        <input type="search" value="" placeholder="type keyword(s) here" />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+    </div>
+    
+    <script src="~/03_travelin_main_file/travelin/js/jquery-3.5.1.min.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/bootstrap.min.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/fontawesome.min.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/particles.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/particlerun.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/plugin.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/main.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/custom-swiper2.js"></script>
+    <script src="~/03_travelin_main_file/travelin/js/custom-nav.js"></script>
+    <script>
+      // Check if a start date already exists in localStorage
+      let startDate = localStorage.getItem("startDate");
+
+      if (!startDate) {
+        // If not, set today's date as the start date
+        const now = new Date();
+        localStorage.setItem("startDate", now.toISOString());
+        startDate = now.toISOString();
+      }
+
+      // Calculate 7 days after the start date
+      const countDownDate = new Date(startDate);
+      countDownDate.setDate(countDownDate.getDate() + 120);
+
+      const countdownFunction = setInterval(function () {
+        const now = new Date().getTime();
+        const distance = countDownDate.getTime() - now;
+
+        // Time calculations
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Output the result
+        document.getElementById("days").innerText = days;
+        document.getElementById("hours").innerText = hours;
+        document.getElementById("minutes").innerText = minutes;
+        document.getElementById("seconds").innerText = seconds;
+
+        // If countdown expired
+        if (distance < 0) {
+          clearInterval(countdownFunction);
+          document.querySelector(".timer").innerHTML = "EXPIRED";
+        }
+      }, 1000);
+    </script>

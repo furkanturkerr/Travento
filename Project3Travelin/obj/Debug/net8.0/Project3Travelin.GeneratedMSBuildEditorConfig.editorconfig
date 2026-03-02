@@ -76,6 +76,46 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0RlZmF1bHRIZWFkZXJDb21wb25lbnRQYXJ0aWFsL0RlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeAboutComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVBYm91dENvbXBvbmVudFBhcnRpYWwvRGVmYXVsdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeBannerComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVCYW5uZXJDb21wb25lbnRQYXJ0aWFsL0RlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeFaqComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVGYXFDb21wb25lbnRQYXJ0aWFsL0RlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeFooterComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVGb290ZXJDb21wb25lbnRQYXJ0aWFsL0RlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeHeadComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVIZWFkQ29tcG9uZW50UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeNewTourComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVOZXdUb3VyQ29tcG9uZW50UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomePoulerTourComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVQb3VsZXJUb3VyQ29tcG9uZW50UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeScriptComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVTY3JpcHRDb21wb25lbnRQYXJ0aWFsL0RlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeSliderComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVTbGlkZXJDb21wb25lbnRQYXJ0aWFsL0RlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_HomeWhyChooseComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0hvbWVXaHlDaG9vc2VDb21wb25lbnRQYXJ0aWFsL0RlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_TourBreadcrumbComponentPartial/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX1RvdXJCcmVhZGNydW1iQ29tcG9uZW50UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
