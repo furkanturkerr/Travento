@@ -1,0 +1,306 @@
+@model dynamic
+
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<nav class="page-breadcrumb d-flex align-items-center justify-content-between">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Slider</li>
+        </ol>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="plus"></i> Add Slider</button>
+      </nav>
+
+      <div class="search-box p-4 bg-white rounded mb-3 box-shadow">
+        <form class="forms-sample">
+          <div class="row align-items-center">
+            <div class="col-lg-3">
+              <h5>Slider Lists</h5>
+            </div>
+            <div class="col-lg-6 col-md-4">
+              <input type="text" placeholder="Search by slider title" class="form-control">
+            </div>
+            <div class="col-lg-3 col-md-4">
+              <select class="form-select form-select-lg">
+                <option selected>Category</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="dataTableExample" class="table">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Start date</th>
+                    <th>Image</th>
+                    <th>Title</th>
+                    <th>Subtitle</th>
+                    <th class="text-center">Published</th>
+                    <th class="text-center">Action</th>
+                  </tr>2022
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>travel</td>
+                    <td>2022/04/25</td>
+                    <td class="w-25">
+                      <img src="../images/trending/trending2.jpg" alt="image">
+                    </td>
+                    <td>Make Your Trip Fun & Noted</td>
+                    <td>Road To Travel</td>
+                    <td class="text-center">
+                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
+                    </td>
+                    <td class="text-center">
+                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
+                        <li class="me-2">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
+                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-body">
+
+                                  <div class="sliderimages mb-3">
+                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
+                                  </div>
+                                  <h5 class="mb-1">Slider Sub Title</h5>
+                                  <h2 class="mb-1">Slider Title</h2>
+                                  <p class="mb-0">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
+                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
+                      </ul>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>travel</td>
+                    <td>2022/04/25</td>
+                    <td class="w-25">
+                      <img src="../images/trending/trending2.jpg" alt="image">
+                    </td>
+                    <td>Make Your Trip Fun & Noted</td>
+                    <td>Road To Travel</td>
+                    <td class="text-center">
+                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
+                    </td>
+                    <td class="text-center">
+                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
+                        <li class="me-2">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
+                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-body">
+
+                                  <div class="sliderimages mb-3">
+                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
+                                  </div>
+                                  <h5 class="mb-1">Slider Sub Title</h5>
+                                  <h2 class="mb-1">Slider Title</h2>
+                                  <p class="mb-0">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
+                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
+                      </ul>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>travel</td>
+                    <td>2022/04/25</td>
+                    <td class="w-25">
+                      <img src="../images/trending/trending2.jpg" alt="image">
+                    </td>
+                    <td>Make Your Trip Fun & Noted</td>
+                    <td>Road To Travel</td>
+                    <td class="text-center">
+                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
+                    </td>
+                    <td class="text-center">
+                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
+                        <li class="me-2">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
+                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-body">
+
+                                  <div class="sliderimages mb-3">
+                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
+                                  </div>
+                                  <h5 class="mb-1">Slider Sub Title</h5>
+                                  <h2 class="mb-1">Slider Title</h2>
+                                  <p class="mb-0">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
+                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
+                      </ul>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>travel</td>
+                    <td>2022/04/25</td>
+                    <td class="w-25">
+                      <img src="../images/trending/trending2.jpg" alt="image">
+                    </td>
+                    <td>Make Your Trip Fun & Noted</td>
+                    <td>Road To Travel</td>
+                    <td class="text-center">
+                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
+                    </td>
+                    <td class="text-center">
+                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
+                        <li class="me-2">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
+                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-body">
+
+                                  <div class="sliderimages mb-3">
+                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
+                                  </div>
+                                  <h5 class="mb-1">Slider Sub Title</h5>
+                                  <h2 class="mb-1">Slider Title</h2>
+                                  <p class="mb-0">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
+                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
+                      </ul>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>travel</td>
+                    <td>2022/04/25</td>
+                    <td class="w-25">
+                      <img src="../images/trending/trending2.jpg" alt="image">
+                    </td>
+                    <td>Make Your Trip Fun & Noted</td>
+                    <td>Road To Travel</td>
+                    <td class="text-center">
+                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
+                    </td>
+                    <td class="text-center">
+                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
+                        <li class="me-2">
+                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
+                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-body">
+
+                                  <div class="sliderimages mb-3">
+                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
+                                  </div>
+                                  <h5 class="mb-1">Slider Sub Title</h5>
+                                  <h2 class="mb-1">Slider Title</h2>
+                                  <p class="mb-0">
+                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
+                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
+                      </ul>
+                    </td>
+                  </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="dataTables_paginate">
+          <ul class="pagination">
+            <li class="paginate_button page-item">
+              <a href="#" class="page-link">Previous</a>
+            </li>
+            <li class="paginate_button page-item active"><a href="#" class="page-link">1</a></li>
+            <li class="paginate_button page-item"><a href="#" class="page-link">2</a></li>
+            <li class="paginate_button page-item"><a href="#" class="page-link">3</a></li>
+            <li class="paginate_button page-item"><a href="#" class="page-link">Next</a></li>
+          </ul>
+        </div>
+      </div>
+
+<div class="modal fade" id="addslider" tabindex="-1" aria-labelledby="addslider" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="exampleModalLabel">Add Slider</h5>
+            </div>
+            <div class="modal-body">
+                <form class="forms-sample">
+                    <div class="mb-3">
+                        <label for="subtitle" class="form-label"> Slider Sub Title</label>
+                        <input type="text" class="form-control" id="subtitle" autocomplete="off" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Slider Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Slider Description</label>
+                        <input type="number" class="form-control" id="password" autocomplete="off" placeholder="">
+                    </div>
+                    <div class="mb-3">
+                        <label for="upload" class="form-label">Upload Images</label>
+                        <input class="form-control" type="file" id="upload">
+                    </div>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Slider Button</label>
+                        <input type="text" class="form-control" id="title" placeholder="">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary"><i class="link-icon" data-feather="plus"></i> Create Slider</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

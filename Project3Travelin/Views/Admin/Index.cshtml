@@ -1,0 +1,29 @@
+@model dynamic
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+@await Component.InvokeAsync("_AdminHeadComponetPartial")
+<body>
+<div class="main-wrapper">
+  @await Component.InvokeAsync("_AdminSidebarComponentPartial")
+
+  <div class="page-wrapper">
+    @await Component.InvokeAsync("_AdminNavbarComponentPartial")
+    
+    <div class="page-content">
+      @RenderBody()
+    </div>
+    
+    @await Component.InvokeAsync("_AdminFooterComponentPartial")
+  </div>
+</div>
+
+@await Component.InvokeAsync("_AdminScriptComponentPartial")
+
+</body>
+</html>    

@@ -44,8 +44,16 @@ build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvVG91ci9VcGRh
 build_metadata.AdditionalFiles.CssScope = 
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Areas/Admin/Views/Slider/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vVmlld3MvU2xpZGVyL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/About/Hakkımızda.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWJvdXQvSGFra8SxbcSxemRhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Category/CreateCategory.cshtml]
@@ -66,6 +74,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Home/Anasayfa.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BbmFzYXlmYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_AdminFooterComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0FkbWluRm9vdGVyQ29tcG9uZW50UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_AdminHeadComponetPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0FkbWluSGVhZENvbXBvbmV0UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_AdminNavbarComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0FkbWluTmF2YmFyQ29tcG9uZW50UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_AdminScriptComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0FkbWluU2NyaXB0Q29tcG9uZW50UGFydGlhbC9EZWZhdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_AdminSidebarComponentPartial/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvX0FkbWluU2lkZWJhckNvbXBvbmVudFBhcnRpYWwvRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Views/Shared/Components/_DefaultFooterComponentPartial/Default.cshtml]
