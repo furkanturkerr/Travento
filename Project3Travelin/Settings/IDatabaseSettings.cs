@@ -8,4 +8,7 @@ public interface IDatabaseSettings
     public string CommentCollectionName { get; set; }
     public string CategoryCollectionName { get; set; }
     public string TourItineraryCollectionName { get; set; }
+    public string SliderCollectionName { get; set; }
+    public string PopulerCollectionName { get; set; }
+    public string AboutCollectionName { get; set; }
 }

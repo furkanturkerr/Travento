@@ -1,12 +1,7 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+namespace Project3Travelin.Dtos.AboutDtos;
 
-namespace Project3Travelin.Entities;
-
-public class About
+public class ResultAboutDto
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)] 
     public string AboutId { get; set; }
     public string Title { get; set; }
     public string AboutDetail { get; set; }

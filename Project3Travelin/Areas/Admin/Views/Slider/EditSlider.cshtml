@@ -1,0 +1,341 @@
+@model Project3Travelin.Dtos.SliderDtos.UpdateSliderDto
+
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "Slider Güncelle";
+}
+
+<style>
+  :root {
+    --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+    --danger: #e74c3c; --text: #1a2e35; --muted: #6b7f86;
+    --border: #dde8ea; --white: #fff;
+    --shadow: 0 2px 16px rgba(13,158,143,.10); --radius: 14px;
+  }
+
+  .page-breadcrumb { margin-bottom: 28px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .breadcrumb-item.active { color: var(--muted); }
+
+  .edit-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+    align-items: start;
+  }
+  @@media (max-width: 900px) { .edit-grid { grid-template-columns: 1fr; } }
+
+  .form-card {
+    background: var(--white); border-radius: var(--radius);
+    box-shadow: var(--shadow); border: 1px solid var(--border);
+    overflow: hidden; margin-bottom: 20px;
+  }
+  .card-head {
+    padding: 16px 22px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-head-icon {
+    width: 34px; height: 34px; background: var(--teal-light);
+    border-radius: 9px; display: flex; align-items: center;
+    justify-content: center; color: var(--teal); flex-shrink: 0;
+  }
+  .card-head h5 { margin: 0; font-size: 14px; font-weight: 700; color: var(--text); }
+  .card-head p  { margin: 0; font-size: 12px; color: var(--muted); }
+  .card-body { padding: 22px; }
+
+  .field-group { margin-bottom: 18px; }
+  .field-group:last-child { margin-bottom: 0; }
+  .field-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .form-control-custom {
+    width: 100%; padding: 10px 14px;
+    border: 1.5px solid var(--border); border-radius: 9px;
+    font-size: 14px; color: var(--text); background: #fafdfd;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none; box-sizing: border-box;
+  }
+  .form-control-custom:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(13,158,143,.12);
+    background: #fff;
+  }
+  .text-danger { font-size: 12px; }
+
+  /* ── Preview (sağ kolon) ── */
+  .preview-hero {
+    position: relative; border-radius: 12px; overflow: hidden;
+    height: 220px; background: #111; margin-bottom: 12px;
+  }
+  .preview-hero img {
+    width: 100%; height: 100%; object-fit: cover; opacity: .82;
+    transition: opacity .3s;
+  }
+  .preview-hero .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.65), transparent 55%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 18px 20px;
+  }
+  .preview-hero .overlay h3 {
+    margin: 0; color: #fff; font-size: 20px; font-weight: 900;
+    text-shadow: 0 2px 8px rgba(0,0,0,.5);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .preview-hero .empty-state {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; color: rgba(255,255,255,.25);
+  }
+  .preview-hero .active-badge {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--teal); color: #fff;
+    font-size: 10px; font-weight: 800; letter-spacing: .05em;
+    padding: 3px 10px; border-radius: 20px;
+  }
+
+  /* thumbnail strip */
+  .thumb-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .thumb-item {
+    border-radius: 8px; overflow: hidden; cursor: pointer;
+    border: 2.5px solid transparent; transition: border-color .2s, transform .15s;
+    aspect-ratio: 16/9; background: #e8f0f1;
+    position: relative;
+  }
+  .thumb-item:hover { transform: scale(1.04); }
+  .thumb-item.active { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,158,143,.18); }
+  .thumb-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb-item .thumb-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.55), transparent);
+    color: #fff; font-size: 9px; font-weight: 800; letter-spacing: .05em;
+    padding: 8px 5px 4px; text-align: center;
+  }
+  .thumb-item .no-img {
+    width: 100%; height: 100%; display: flex; align-items: center;
+    justify-content: center; flex-direction: column; gap: 4px;
+    color: var(--muted); font-size: 10px; font-weight: 600;
+  }
+  .thumb-item .no-img svg { opacity: .35; }
+
+  /* ── Buttons ── */
+  .btn-submit {
+    width: 100%; padding: 13px; background: var(--teal); color: #fff;
+    border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background .2s, transform .15s;
+    box-shadow: 0 4px 14px rgba(13,158,143,.3);
+  }
+  .btn-submit:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-cancel {
+    width: 100%; padding: 11px; background: transparent; color: var(--muted);
+    border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-weight: 600;
+    text-align: center; text-decoration: none; display: block; margin-top: 10px;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-cancel:hover { border-color: var(--danger); color: var(--danger); }
+</style>
+
+<nav class="page-breadcrumb d-flex align-items-center justify-content-between">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Ansayfa</a></li>
+    <li class="breadcrumb-item"><a href="/Admin/Slider">Slider</a></li>
+    <li class="breadcrumb-item active">Slider Güncelle</li>
+  </ol>
+  <a href="/Admin/Slider" class="btn-cancel"
+     style="width:auto;display:inline-block;padding:9px 18px;margin:0;">← Geri Dön</a>
+</nav>
+
+<form method="post">
+  @Html.AntiForgeryToken()
+  <input type="hidden" asp-for="SliderId" />
+
+  <div class="edit-grid">
+
+    <!-- ══ SOL: FORM ══ -->
+    <div>
+
+      <!-- Başlık -->
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+          </div>
+          <div><h5>Başlık</h5><p>Slider üzerinde görünecek metin</p></div>
+        </div>
+        <div class="card-body">
+          <div class="field-group">
+            <label asp-for="Title">Başlık</label>
+            <input asp-for="Title" class="form-control-custom"
+                   placeholder="Örn: Hayalindeki Tatili Planla"
+                   oninput="updateTitle(this.value)" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Görseller -->
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <div><h5>Görseller</h5><p>Her alan için görsel URL girin</p></div>
+        </div>
+        <div class="card-body">
+          <div class="field-group">
+            <label asp-for="Image1">Görsel 1</label>
+            <input asp-for="Image1" class="form-control-custom" placeholder="https://..."
+                   oninput="updateThumb(1, this.value)" />
+            <span asp-validation-for="Image1" class="text-danger"></span>
+          </div>
+          <div class="field-group">
+            <label asp-for="Image2">Görsel 2</label>
+            <input asp-for="Image2" class="form-control-custom" placeholder="https://..."
+                   oninput="updateThumb(2, this.value)" />
+            <span asp-validation-for="Image2" class="text-danger"></span>
+          </div>
+          <div class="field-group">
+            <label asp-for="Image3">Görsel 3</label>
+            <input asp-for="Image3" class="form-control-custom" placeholder="https://..."
+                   oninput="updateThumb(3, this.value)" />
+            <span asp-validation-for="Image3" class="text-danger"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══ SAĞ: ÖNİZLEME ══ -->
+    <div>
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div><h5>Canlı Önizleme</h5><p>Görsele tıklayarak ana ekranı değiştir</p></div>
+        </div>
+        <div class="card-body">
+
+          <!-- Hero -->
+          <div class="preview-hero">
+            @if (!string.IsNullOrEmpty(Model.Image1))
+            {
+              <img id="heroImg" src="@Model.Image1" alt="" />
+              <div class="overlay">
+                <h3 id="heroTitle">@Model.Title</h3>
+              </div>
+              <span class="active-badge">AKTİF</span>
+            }
+            else
+            {
+              <img id="heroImg" src="" alt="" style="display:none;" />
+              <div class="overlay" style="display:none;">
+                <h3 id="heroTitle">@Model.Title</h3>
+              </div>
+              <div class="empty-state" id="heroEmpty">
+                <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <span style="font-size:12px;">Görsel bekleniyor</span>
+              </div>
+            }
+          </div>
+
+          <!-- Thumbnail strip -->
+          <div class="thumb-strip">
+            @for (int i = 1; i <= 3; i++)
+            {
+              var src = i == 1 ? Model.Image1 : (i == 2 ? Model.Image2 : Model.Image3);
+              <div class="thumb-item @(i == 1 ? "active" : "")" id="thumb@(i)"
+                   onclick="selectThumb(@i)">
+                @if (!string.IsNullOrEmpty(src))
+                {
+                  <img id="thumbImg@(i)" src="@src" alt="Görsel @i" />
+                }
+                else
+                {
+                  <div class="no-img" id="thumbEmpty@(i)">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    Görsel @i
+                  </div>
+                  <img id="thumbImg@(i)" src="" alt="" style="display:none;" />
+                }
+                <div class="thumb-label">GÖRSEL @i</div>
+              </div>
+            }
+          </div>
+
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Değişiklikleri Kaydet
+      </button>
+      <a href="/Admin/Slider" class="btn-cancel">İptal Et</a>
+
+    </div>
+  </div>
+</form>
+
+<script>
+  let activeThumb = 1;
+
+  function selectThumb(n) {
+    document.getElementById('thumb' + activeThumb).classList.remove('active');
+    activeThumb = n;
+    document.getElementById('thumb' + n).classList.add('active');
+    const src = document.getElementById('thumbImg' + n).src;
+    const heroImg = document.getElementById('heroImg');
+    if (src && !src.endsWith('/')) {
+      heroImg.src = src;
+      heroImg.style.display = 'block';
+      const overlay = heroImg.nextElementSibling;
+      if (overlay) overlay.style.display = 'flex';
+      const empty = document.getElementById('heroEmpty');
+      if (empty) empty.style.display = 'none';
+    }
+  }
+
+  function updateThumb(n, url) {
+    const img   = document.getElementById('thumbImg' + n);
+    const empty = document.getElementById('thumbEmpty' + n);
+    if (url && url.startsWith('http')) {
+      img.src = url;
+      img.style.display = 'block';
+      if (empty) empty.style.display = 'none';
+      if (n === activeThumb) {
+        document.getElementById('heroImg').src = url;
+        document.getElementById('heroImg').style.display = 'block';
+      }
+    } else {
+      img.src = '';
+      img.style.display = 'none';
+      if (empty) empty.style.display = 'flex';
+    }
+  }
+
+  function updateTitle(val) {
+    const el = document.getElementById('heroTitle');
+    if (el) el.textContent = val || '';
+  }
+</script>

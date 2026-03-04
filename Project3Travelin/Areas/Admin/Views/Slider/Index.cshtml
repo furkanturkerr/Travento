@@ -1,306 +1,347 @@
-@model dynamic
+@model List<Project3Travelin.Dtos.SliderDtos.ResultSliderDto>
 
 @{
     Layout = "~/Views/Admin/Index.cshtml";
+    var slider = Model?.FirstOrDefault();
+    var sid = slider?.SliderId;
 }
 
+<style>
+  :root {
+    --teal: #0d9e8f;
+    --teal-light: #e6f7f5;
+    --teal-dark: #0a7d71;
+    --danger: #e74c3c;
+    --warning: #f39c12;
+    --text: #1a2e35;
+    --muted: #6b7f86;
+    --border: #dde8ea;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(13,158,143,0.10);
+    --radius: 16px;
+  }
+
+  .page-breadcrumb { margin-bottom: 28px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; }
+  .breadcrumb-item.active { color: var(--muted); }
+
+  /* ── Add button ── */
+  .btn-add {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--teal); color: #fff; border: none;
+    padding: 11px 22px; border-radius: 10px;
+    font-weight: 700; font-size: 14px; cursor: pointer;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(13,158,143,.28);
+  }
+  .btn-add:hover { background: var(--teal-dark); transform: translateY(-1px); color: #fff; box-shadow: 0 6px 18px rgba(13,158,143,.38); }
+  .btn-add.disabled { background: #b2d8d4; box-shadow: none; cursor: not-allowed; pointer-events: none; opacity: .7; }
+
+  /* ── Empty state ── */
+  .empty-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 2px dashed var(--border);
+    padding: 72px 32px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .empty-card svg { opacity: .2; margin-bottom: 18px; }
+  .empty-card h5 { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+  .empty-card p  { font-size: 14px; margin-bottom: 24px; }
+
+  /* ── Main slider card ── */
+  .slider-main-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  /* Hero image area */
+  .hero-area {
+    position: relative;
+    height: 260px;
+    background: #111;
+    overflow: hidden;
+  }
+  .hero-area img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: .8;
+    transition: opacity .3s;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 55%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 24px 28px;
+  }
+  .hero-title {
+    color: #fff; font-size: 26px; font-weight: 900;
+    text-shadow: 0 2px 10px rgba(0,0,0,.5); margin: 0;
+    letter-spacing: -.3px;
+  }
+  .hero-id {
+    color: rgba(255,255,255,.55); font-size: 11px;
+    margin-top: 4px; font-family: monospace; letter-spacing: .04em;
+  }
+
+  /* Status pill on hero */
+  .hero-status {
+    position: absolute; top: 16px; right: 16px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; letter-spacing: .04em;
+    backdrop-filter: blur(6px);
+  }
+  .hero-status.active  { background: rgba(39,174,96,.85); color: #fff; }
+  .hero-status.passive { background: rgba(0,0,0,.45); color: rgba(255,255,255,.7); }
+  .hero-status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  /* ── Card body ── */
+  .card-body-inner { padding: 24px 28px; }
+
+  /* Image selector row */
+  .img-selector-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .img-slot {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: border-color .2s, transform .15s;
+    aspect-ratio: 16/9;
+    background: #f0f4f5;
+  }
+  .img-slot:hover { transform: scale(1.02); }
+  .img-slot.active { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,158,143,.2); }
+  .img-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-slot .slot-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.6), transparent);
+    color: #fff; font-size: 10px; font-weight: 700;
+    padding: 10px 8px 6px; text-align: center; letter-spacing: .06em;
+  }
+  .img-slot .active-badge {
+    position: absolute; top: 6px; left: 6px;
+    background: var(--teal); color: #fff;
+    font-size: 9px; font-weight: 800; letter-spacing: .06em;
+    padding: 2px 7px; border-radius: 4px;
+    display: none;
+  }
+  .img-slot.active .active-badge { display: block; }
+  .img-hint { font-size: 11.5px; color: var(--muted); margin-bottom: 20px; }
+
+  /* ── Divider ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* ── Info + actions row ── */
+  .bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* Publish toggle */
+  .publish-group { display: flex; align-items: center; gap: 10px; }
+  .publish-group span { font-size: 13px; font-weight: 600; color: var(--text); }
+  .toggle { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0; background: #cdd8da;
+    border-radius: 26px; cursor: pointer; transition: background .25s;
+  }
+  .toggle-slider::before {
+    content: ''; position: absolute; width: 20px; height: 20px;
+    background: #fff; border-radius: 50%; left: 3px; top: 3px;
+    transition: transform .25s; box-shadow: 0 1px 4px rgba(0,0,0,.2);
+  }
+  .toggle input:checked + .toggle-slider { background: var(--teal); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+  /* Action buttons */
+  .action-group { display: flex; gap: 10px; }
+  .action-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 18px; border-radius: 9px; border: none;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: background .15s, transform .15s;
+    text-decoration: none;
+  }
+  .action-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+  .btn-edit { background: #fff8e6; color: var(--warning); }
+  .btn-edit:hover { background: var(--warning); color: #fff; transform: translateY(-1px); }
+  .btn-del  { background: #fdecea; color: var(--danger); }
+  .btn-del:hover  { background: var(--danger);  color: #fff; transform: translateY(-1px); }
+
+  /* ── Modal ── */
+  .modal-header { border-bottom: 1px solid var(--border); }
+  .modal-title  { font-weight: 700; color: var(--text); }
+  .modal-footer { border-top: 1px solid var(--border); }
+  .btn-teal { background: var(--teal); color: #fff; border: none; border-radius: 8px; padding: 9px 20px; font-weight: 600; }
+  .btn-teal:hover { background: var(--teal-dark); color: #fff; }
+</style>
+
+<!-- Breadcrumb -->
 <nav class="page-breadcrumb d-flex align-items-center justify-content-between">
-        <ol class="breadcrumb mb-0">
-          <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Slider</li>
-        </ol>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="plus"></i> Add Slider</button>
-      </nav>
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Ansayfa</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Slider</li>
+  </ol>
 
-      <div class="search-box p-4 bg-white rounded mb-3 box-shadow">
-        <form class="forms-sample">
-          <div class="row align-items-center">
-            <div class="col-lg-3">
-              <h5>Slider Lists</h5>
-            </div>
-            <div class="col-lg-6 col-md-4">
-              <input type="text" placeholder="Search by slider title" class="form-control">
-            </div>
-            <div class="col-lg-3 col-md-4">
-              <select class="form-select form-select-lg">
-                <option selected>Category</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-          </div>
-        </form>
+  @if (slider == null)
+  {
+    <a href="/Admin/Slider/Create" class="btn-add">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Slider Ekle
+    </a>
+  }
+  else
+  {
+    <span class="btn-add disabled" title="Yalnızca 1 slider eklenebilir">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Slider Ekle
+    </span>
+  }
+</nav>
+
+<!-- EMPTY STATE -->
+@if (slider == null)
+{
+  <div class="empty-card">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <circle cx="8.5" cy="8.5" r="1.5"/>
+      <polyline points="21 15 16 10 5 21"/>
+    </svg>
+    <h5>Henüz slider eklenmedi</h5>
+    <p>Ana sayfada gösterilecek slider görselini ve başlığını buradan yönetebilirsiniz.</p>
+    <a href="/Admin/Slider/Create" class="btn-add" style="display:inline-flex;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Slider Ekle
+    </a>
+  </div>
+}
+else
+{
+  <!-- SLIDER CARD -->
+  <div class="slider-main-card">
+
+    <!-- Hero -->
+    <div class="hero-area">
+      <img id="heroImg" src="@slider.Image1" alt="@slider.Title" />
+      <div class="hero-overlay">
+        <h2 class="hero-title">@slider.Title</h2>
+        <div class="hero-id">ID: @sid</div>
       </div>
-
-      <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <div class="table-responsive">
-                <table id="dataTableExample" class="table">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Start date</th>
-                    <th>Image</th>
-                    <th>Title</th>
-                    <th>Subtitle</th>
-                    <th class="text-center">Published</th>
-                    <th class="text-center">Action</th>
-                  </tr>2022
-                  </thead>
-                  <tbody>
-                  <tr>
-                    <td>travel</td>
-                    <td>2022/04/25</td>
-                    <td class="w-25">
-                      <img src="../images/trending/trending2.jpg" alt="image">
-                    </td>
-                    <td>Make Your Trip Fun & Noted</td>
-                    <td>Road To Travel</td>
-                    <td class="text-center">
-                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
-                    </td>
-                    <td class="text-center">
-                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
-                        <li class="me-2">
-                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
-                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-body">
-
-                                  <div class="sliderimages mb-3">
-                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
-                                  </div>
-                                  <h5 class="mb-1">Slider Sub Title</h5>
-                                  <h2 class="mb-1">Slider Title</h2>
-                                  <p class="mb-0">
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
-                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
-                      </ul>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>travel</td>
-                    <td>2022/04/25</td>
-                    <td class="w-25">
-                      <img src="../images/trending/trending2.jpg" alt="image">
-                    </td>
-                    <td>Make Your Trip Fun & Noted</td>
-                    <td>Road To Travel</td>
-                    <td class="text-center">
-                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
-                    </td>
-                    <td class="text-center">
-                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
-                        <li class="me-2">
-                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
-                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-body">
-
-                                  <div class="sliderimages mb-3">
-                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
-                                  </div>
-                                  <h5 class="mb-1">Slider Sub Title</h5>
-                                  <h2 class="mb-1">Slider Title</h2>
-                                  <p class="mb-0">
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
-                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
-                      </ul>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>travel</td>
-                    <td>2022/04/25</td>
-                    <td class="w-25">
-                      <img src="../images/trending/trending2.jpg" alt="image">
-                    </td>
-                    <td>Make Your Trip Fun & Noted</td>
-                    <td>Road To Travel</td>
-                    <td class="text-center">
-                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
-                    </td>
-                    <td class="text-center">
-                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
-                        <li class="me-2">
-                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
-                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-body">
-
-                                  <div class="sliderimages mb-3">
-                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
-                                  </div>
-                                  <h5 class="mb-1">Slider Sub Title</h5>
-                                  <h2 class="mb-1">Slider Title</h2>
-                                  <p class="mb-0">
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
-                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
-                      </ul>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>travel</td>
-                    <td>2022/04/25</td>
-                    <td class="w-25">
-                      <img src="../images/trending/trending2.jpg" alt="image">
-                    </td>
-                    <td>Make Your Trip Fun & Noted</td>
-                    <td>Road To Travel</td>
-                    <td class="text-center">
-                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
-                    </td>
-                    <td class="text-center">
-                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
-                        <li class="me-2">
-                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
-                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-body">
-
-                                  <div class="sliderimages mb-3">
-                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
-                                  </div>
-                                  <h5 class="mb-1">Slider Sub Title</h5>
-                                  <h2 class="mb-1">Slider Title</h2>
-                                  <p class="mb-0">
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
-                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
-                      </ul>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>travel</td>
-                    <td>2022/04/25</td>
-                    <td class="w-25">
-                      <img src="../images/trending/trending2.jpg" alt="image">
-                    </td>
-                    <td>Make Your Trip Fun & Noted</td>
-                    <td>Road To Travel</td>
-                    <td class="text-center">
-                      <span class="form-check form-switch"><input type="checkbox" class="form-check-input" id="formSwitch1"></span>
-                    </td>
-                    <td class="text-center">
-                      <ul class="d-flex list-unstyled mb-0 justify-content-center">
-                        <li class="me-2">
-                          <a href="#" data-bs-toggle="modal" data-bs-target="#viewslider"><i class="link-icon" data-feather="eye"></i></a>
-                          <div class="modal fade" id="viewslider" tabindex="-1" aria-labelledby="viewslider" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-body">
-
-                                  <div class="sliderimages mb-3">
-                                    <img src="../images/trending/trending2.jpg" alt="sliderimages">
-                                  </div>
-                                  <h5 class="mb-1">Slider Sub Title</h5>
-                                  <h2 class="mb-1">Slider Title</h2>
-                                  <p class="mb-0">
-                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                        <li class="me-2"><a href="#" data-bs-toggle="modal" data-bs-target="#addslider"><i class="link-icon" data-feather="edit"></i></a></li>
-                        <li><a href="#"><i class="link-icon" data-feather="delete"></i></a></li>
-                      </ul>
-                    </td>
-                  </tr>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="dataTables_paginate">
-          <ul class="pagination">
-            <li class="paginate_button page-item">
-              <a href="#" class="page-link">Previous</a>
-            </li>
-            <li class="paginate_button page-item active"><a href="#" class="page-link">1</a></li>
-            <li class="paginate_button page-item"><a href="#" class="page-link">2</a></li>
-            <li class="paginate_button page-item"><a href="#" class="page-link">3</a></li>
-            <li class="paginate_button page-item"><a href="#" class="page-link">Next</a></li>
-          </ul>
-        </div>
-      </div>
-
-<div class="modal fade" id="addslider" tabindex="-1" aria-labelledby="addslider" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h5 class="modal-title" id="exampleModalLabel">Add Slider</h5>
-            </div>
-            <div class="modal-body">
-                <form class="forms-sample">
-                    <div class="mb-3">
-                        <label for="subtitle" class="form-label"> Slider Sub Title</label>
-                        <input type="text" class="form-control" id="subtitle" autocomplete="off" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Slider Title</label>
-                        <input type="text" class="form-control" id="title" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Slider Description</label>
-                        <input type="number" class="form-control" id="password" autocomplete="off" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                        <label for="upload" class="form-label">Upload Images</label>
-                        <input class="form-control" type="file" id="upload">
-                    </div>
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Slider Button</label>
-                        <input type="text" class="form-control" id="title" placeholder="">
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary"><i class="link-icon" data-feather="plus"></i> Create Slider</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+      <span class="hero-status active" id="heroStatus">● Yayında</span>
     </div>
-</div>
+
+    <!-- Body -->
+    <div class="card-body-inner">
+
+      <!-- Image selector -->
+      <p class="img-hint">Aktif görseli seçin — tıkladığınız görsel slider'da önce gösterilir</p>
+      <div class="img-selector-row">
+        @for (int i = 1; i <= 3; i++)
+        {
+          var src = i == 1 ? slider.Image1 : (i == 2 ? slider.Image2 : slider.Image3);
+          <div class="img-slot @(i == 1 ? "active" : "")"
+               id="slot-@i"
+               onclick="selectImage(@i, '@src')"
+               data-src="@src">
+            <img src="@src" alt="Görsel @i" />
+            <div class="slot-label">GÖRSEL @i</div>
+            <span class="active-badge">AKTİF</span>
+          </div>
+        }
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Bottom row -->
+      <div class="bottom-row">
+        <div class="publish-group">
+          <label class="toggle" title="Yayınla / Gizle">
+            <input type="checkbox" id="publishToggle" checked
+                   onchange="togglePublish('@sid', this)" />
+            <span class="toggle-slider"></span>
+          </label>
+          <span id="publishLabel">Yayında</span>
+        </div>
+
+        <div class="action-group">
+          <a href="/Admin/Slider/EditSlider/@sid" class="action-btn btn-edit">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Düzenle
+          </a>
+          <button class="action-btn btn-del" onclick="confirmDelete('@sid')">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14H6L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+              <path d="M9 6V4h6v2"/>
+            </svg>
+            Sil
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+}
+
+<script>
+  let activeSlot = 1;
+
+  function selectImage(n, src) {
+    // deactivate old
+    document.getElementById(`slot-${activeSlot}`)?.classList.remove('active');
+    // activate new
+    activeSlot = n;
+    document.getElementById(`slot-${n}`).classList.add('active');
+    // update hero
+    document.getElementById('heroImg').src = src;
+    // TODO: POST /api/slider/@sid/setActiveImage/n
+  }
+
+  function togglePublish(sliderId, checkbox) {
+    const status = document.getElementById('heroStatus');
+    const label  = document.getElementById('publishLabel');
+    if (checkbox.checked) {
+      status.textContent = '● Yayında';
+      status.className   = 'hero-status active';
+      label.textContent  = 'Yayında';
+    } else {
+      status.textContent = '● Gizli';
+      status.className   = 'hero-status passive';
+      label.textContent  = 'Gizli';
+    }
+    // TODO: POST /api/slider/{sliderId}/publish { published: checkbox.checked }
+  }
+
+  function confirmDelete(sliderId) {
+    if (confirm('Slider silinecek. Emin misiniz?')) {
+      window.location.href = `/Admin/Slider/Delete/${sliderId}`;
+    }
+  }
+</script>

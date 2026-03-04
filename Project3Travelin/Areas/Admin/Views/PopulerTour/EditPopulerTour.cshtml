@@ -1,0 +1,166 @@
+@model Project3Travelin.Dtos.PopulerDtos.UpdatePopulerDto
+
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "Yer Düzenle";
+}
+
+<style>
+  :root {
+    --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+    --danger: #e74c3c; --text: #1a2e35; --muted: #6b7f86;
+    --border: #dde8ea; --white: #fff;
+    --shadow: 0 2px 16px rgba(13,158,143,.10); --radius: 14px;
+  }
+
+  .page-breadcrumb { margin-bottom: 28px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .breadcrumb-item.active { color: var(--muted); }
+
+  .edit-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+  @@media (max-width: 900px) { .edit-grid { grid-template-columns: 1fr; } }
+
+  .form-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+  .card-head { padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .card-head-icon { width: 34px; height: 34px; background: var(--teal-light); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; }
+  .card-head h5 { margin: 0; font-size: 14px; font-weight: 700; color: var(--text); }
+  .card-head p  { margin: 0; font-size: 12px; color: var(--muted); }
+  .card-body { padding: 22px; }
+
+  .field-group { margin-bottom: 18px; }
+  .field-group:last-child { margin-bottom: 0; }
+  .field-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .form-control-custom { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 9px; font-size: 14px; color: var(--text); background: #fafdfd; transition: border-color .2s, box-shadow .2s; outline: none; box-sizing: border-box; }
+  .form-control-custom:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,158,143,.12); background: #fff; }
+  .text-danger { font-size: 12px; }
+
+  .preview-place-card {
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,.18);
+    position: relative; height: 260px; background: #111;
+    margin-bottom: 14px;
+  }
+  .preview-place-card img { width: 100%; height: 100%; object-fit: cover; opacity: .85; transition: opacity .3s; }
+  .preview-place-card .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.72) 0%, transparent 55%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 20px 18px 16px;
+  }
+  .p-country { color: #f0c93a; font-size: 12px; font-weight: 800; letter-spacing: .06em; margin-bottom: 2px; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
+  .p-city { color: #fff; font-size: 22px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,.5); margin: 0; line-height: 1.1; }
+
+  .btn-submit { width: 100%; padding: 13px; background: var(--teal); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .2s, transform .15s; box-shadow: 0 4px 14px rgba(13,158,143,.3); }
+  .btn-submit:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-cancel { width: 100%; padding: 11px; background: transparent; color: var(--muted); border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-weight: 600; text-align: center; text-decoration: none; display: block; margin-top: 10px; transition: border-color .2s, color .2s; }
+  .btn-cancel:hover { border-color: var(--danger); color: var(--danger); }
+</style>
+
+<nav class="page-breadcrumb d-flex align-items-center justify-content-between">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Ansayfa</a></li>
+    <li class="breadcrumb-item"><a href="/Admin/Populer">Popüler Yerler</a></li>
+    <li class="breadcrumb-item active">Yer Düzenle</li>
+  </ol>
+  <a href="/Admin/Populer" class="btn-cancel" style="width:auto;display:inline-block;padding:9px 18px;margin:0;">← Geri Dön</a>
+</nav>
+
+<form asp-area="Admin" method="post">
+  <input type="hidden" asp-for="PopulerId" />
+
+  <div class="edit-grid">
+
+    <!-- SOL -->
+    <div>
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
+          <div><h5>Yer Bilgileri</h5><p>Destinasyon bilgilerini güncelleyin</p></div>
+        </div>
+        <div class="card-body">
+          <div class="field-group">
+            <label asp-for="Country">Ülke</label>
+            <input asp-for="Country" class="form-control-custom"
+                   placeholder="Örn: Fransa"
+                   oninput="updateCountry(this.value)" />
+            <span asp-validation-for="Country" class="text-danger"></span>
+          </div>
+          <div class="field-group">
+            <label asp-for="City">Şehir</label>
+            <input asp-for="City" class="form-control-custom"
+                   placeholder="Örn: Paris"
+                   oninput="updateCity(this.value)" />
+            <span asp-validation-for="City" class="text-danger"></span>
+          </div>
+          <div class="field-group">
+            <label asp-for="ImageUrl">Görsel URL</label>
+            <input asp-for="ImageUrl" class="form-control-custom"
+                   placeholder="https://..."
+                   oninput="updateImage(this.value)" />
+            <span asp-validation-for="ImageUrl" class="text-danger"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAĞ: ÖNİZLEME -->
+    <div>
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div><h5>Canlı Önizleme</h5><p>Sitedeki kart görünümü</p></div>
+        </div>
+        <div class="card-body">
+          <div class="preview-place-card">
+            <img id="prevImg" src="@Model.ImageUrl" alt=""
+                 style="@(string.IsNullOrEmpty(Model.ImageUrl) ? "display:none;" : "")" />
+            <div class="overlay">
+              <div class="p-country" id="prevCountry">@Model.Country</div>
+              <h3 class="p-city" id="prevCity">@Model.City</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Değişiklikleri Kaydet
+      </button>
+      <a href="/Admin/Populer" class="btn-cancel">İptal Et</a>
+    </div>
+
+  </div>
+</form>
+
+<script>
+  function updateImage(url) {
+    const img = document.getElementById('prevImg');
+    if (url && url.startsWith('http')) {
+      img.src = url; img.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+    }
+  }
+
+  function updateCountry(val) {
+    document.getElementById('prevCountry').textContent = val || 'Ülke';
+  }
+
+  function updateCity(val) {
+    document.getElementById('prevCity').textContent = val || 'Şehir';
+  }
+</script>
