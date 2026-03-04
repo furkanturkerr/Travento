@@ -1,8 +1,10 @@
 using System.Reflection;
 using Microsoft.Extensions.Options;
 using Project3Travelin.Services.AboutService;
+using Project3Travelin.Services.BannerService;
 using Project3Travelin.Services.CategoryServices;
 using Project3Travelin.Services.CommantServices;
+using Project3Travelin.Services.FaqServices;
 using Project3Travelin.Services.PopulerService;
 using Project3Travelin.Services.SliderServices;
 using Project3Travelin.Services.TourServices;
@@ -21,6 +23,8 @@ builder.Services.AddScoped<ITineraryService, TineraryService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<IPopulerService, PopulerService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
+builder.Services.AddScoped<IBannerService, BannerService>();
+builder.Services.AddScoped<IFaqService, FaqService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

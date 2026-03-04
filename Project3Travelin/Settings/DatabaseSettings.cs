@@ -11,4 +11,6 @@ public class DatabaseSettings : IDatabaseSettings
     public string SliderCollectionName { get; set; }
     public string PopulerCollectionName { get; set; }
     public string AboutCollectionName { get; set; }
+    public string BannerCollectionName { get; set; }
+    public string FaqCollectionName { get; set; }
 }

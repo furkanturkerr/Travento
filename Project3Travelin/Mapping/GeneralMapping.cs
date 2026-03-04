@@ -1,7 +1,9 @@
 using AutoMapper;
 using Project3Travelin.Dtos.AboutDtos;
+using Project3Travelin.Dtos.BannerDtos;
 using Project3Travelin.Dtos.CategoryDtos;
 using Project3Travelin.Dtos.CommantDtos;
+using Project3Travelin.Dtos.FaqDtos;
 using Project3Travelin.Dtos.PopulerDtos;
 using Project3Travelin.Dtos.SliderDtos;
 using Project3Travelin.Dtos.TourDtos;
@@ -53,5 +55,17 @@ public class GeneralMapping : Profile
         CreateMap<About, CreateAboutDto>().ReverseMap();
         CreateMap<About, UpdateAboutDto>().ReverseMap();
         CreateMap<UpdateAboutDto, GetAboutByIdDto>().ReverseMap();
+        
+        CreateMap<Banner, GetBannerByIdDto>().ReverseMap();
+        CreateMap<Banner, ResultBannerDto>().ReverseMap();
+        CreateMap<Banner, CreateBannerDto>().ReverseMap();
+        CreateMap<Banner, UpdateBannerDto>().ReverseMap();
+        CreateMap<UpdateBannerDto, GetBannerByIdDto>().ReverseMap();
+        
+        CreateMap<Faq, GetFaqByIdDto>().ReverseMap();
+        CreateMap<Faq, ResultFaqDto>().ReverseMap();
+        CreateMap<Faq, CreateFaqDto>().ReverseMap();
+        CreateMap<Faq, UpdateFaqDto>().ReverseMap();
+        CreateMap<UpdateFaqDto, GetFaqByIdDto>().ReverseMap();
     }
 }
