@@ -1,407 +1,544 @@
 @model Project3Travelin.Dtos.TourDtos.GetTourByIdDto
 
 @{
-    Layout = null;
+Layout = null;
+}
+
+@using Project3Travelin.Dtos.TourTineraryDtos
+@using Project3Travelin.Dtos.CommantDtos
+
+@{
+var itinerary = ViewBag.Itinerary as List<ResultTineraryListByTourIdDto>;
+var avg = ViewBag.ReviewAverage as ReviewAverageDto;
+
+double cleanPct    = avg != null ? Math.Round(avg.Cleanliness   / 5.0 * 100) : 0;
+double facilPct    = avg != null ? Math.Round(avg.Facilities    / 5.0 * 100) : 0;
+double valuePct    = avg != null ? Math.Round(avg.ValueForMoney / 5.0 * 100) : 0;
+double servicePct  = avg != null ? Math.Round(avg.Service       / 5.0 * 100) : 0;
+double locationPct = avg != null ? Math.Round(avg.Location      / 5.0 * 100) : 0;
 }
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zxx">
 
+<style>
+    .star-rating {
+        display: flex;
+        gap: 4px;
+        cursor: pointer;
+    }
+    .star-rating .star {
+        font-size: 32px;
+        color: #ccc;
+        transition: color 0.2s;
+        user-select: none;
+    }
+    .star-rating .star.active,
+    .star-rating .star.hover {
+        color: #f5a623;
+    }
+</style>
+
 @await Component.InvokeAsync("_TourHeadComponentPartial")
 
-    <div id="preloader">
-        <div id="status"></div>
-    </div>
-    
-    @await Component.InvokeAsync("_DefaultHeaderComponentPartial")
-    
-    <section class="breadcrumb-main pb-20 pt-14" style="background-image: url(@Model.ImageUrl);">
-        <div class="section-shape section-shape1 top-inherit bottom-0" style="background-image: url(~/03_travelin_main_file/travelin/images/shape8.png);"></div>
-        <div class="breadcrumb-outer">
-            <div class="container">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="mb-3">@Model.Title</h1>
-                    <nav aria-label="breadcrumb" class="d-block">
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Anasayfa</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Tur Listesi</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <div class="dot-overlay"></div>
-    </section>
-    
-    <section class="trending pt-6 pb-0 bg-lgrey">
+<div id="preloader">
+    <div id="status"></div>
+</div>
+
+@await Component.InvokeAsync("_DefaultHeaderComponentPartial")
+
+<section class="breadcrumb-main pb-20 pt-14" style="background-image: url(@Model.ImageUrl);">
+    <div class="section-shape section-shape1 top-inherit bottom-0" style="background-image: url(~/03_travelin_main_file/travelin/images/shape8.png);"></div>
+    <div class="breadcrumb-outer">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="single-content">
-                        <div id="highlight">
-                            <div class="single-full-title border-b mb-2 pb-2">
-                                <div class="single-title">
-                                    <h2 class="mb-1">@Model.Title</h2>
-                                    <div class="rating-main d-md-flex align-items-center">
-                                        <p class="mb-0 me-2"><i class="icon-location-pin"></i>@Model.Country, @Model.City</p>
-                                        <div class="rating me-2">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                        </div>
-                                        <span>(1,186 Yorum)</span>
+            <div class="breadcrumb-content text-center">
+                <h1 class="mb-3">@Model.Title</h1>
+                <nav aria-label="breadcrumb" class="d-block">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Anasayfa</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tur Listesi</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="dot-overlay"></div>
+</section>
+
+<section class="trending pt-6 pb-0 bg-lgrey">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="single-content">
+
+                    <!-- HIGHLIGHT -->
+                    <div id="highlight">
+                        <div class="single-full-title border-b mb-2 pb-2">
+                            <div class="single-title">
+                                <h2 class="mb-1">@Model.Title</h2>
+                                <div class="rating-main d-md-flex align-items-center">
+                                    <p class="mb-0 me-2"><i class="icon-location-pin"></i>@Model.Country, @Model.City</p>
+                                    <div class="rating me-2">
+                                        @{
+                                        int starCount = avg != null ? (int)Math.Round(avg.Overall) : 0;
+                                        for (int i = 1; i <= 5; i++)
+                                        {
+                                        <span class="fa fa-star @(i <= starCount ? "checked" : "")"></span>
+                                        }
+                                        }
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="description-images mb-4">
-                                <img src="@Model.ImageUrl" alt="" class="w-100 rounded">
-                            </div>
-
-                            <div class="description mb-2">
-                                <h4>Açıklama</h4>
-                                <p>@Model.Description</p>
-                            </div>
-
-                            <div class="tour-includes mb-4">
-                                <table>
-                                    <tbody>
-                                    <tr>
-                                        <td><i class="fa fa-clock-o pink mr-1" aria-hidden="true"></i> @Model.DayNight</td>
-                                        <td><i class="fa fa-group pink mr-1" aria-hidden="true"></i> Max People : @Model.Capacity</td>
-                                        <td><i class="fa fa-calendar pink mr-1" aria-hidden="true"></i> @Model.TourDate</td>
-                                    </tr>
-                                    <tr>
-                                        <td><i class="fa fa-user pink mr-1" aria-hidden="true"></i> Min Yaş : 10+</td>
-                                        <td><i class="fa fa-map-signs pink mr-1" aria-hidden="true"></i> Havalimanı Transferi</td>
-                                        <td><i class="fa fa-file-alt pink mr-1" aria-hidden="true"></i> Dil - İngilizce</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="description mb-2">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 mb-2">
-                                        <div class="desc-box bg-grey p-4 rounded">
-                                            <h5 class="mb-2">Gidiş & Dönüş Lokasyonu</h5>
-                                            <p class="mb-0">John F.K. Uluslararası Havalimanı (Google Haritalar)</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 mb-2">
-                                        <div class="desc-box bg-grey p-4 rounded">
-                                            <h5 class="mb-2">Oda Bilgisi</h5>
-                                            <p class="mb-0">4 Yatak Odası</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 mb-2">
-                                        <div class="desc-box bg-grey p-4 rounded">
-                                            <h5 class="mb-2">Hareket Saati</h5>
-                                            <p class="mb-0">Uçuş Saatinden 3 Saat Önce</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 mb-2">
-                                        <div class="desc-box bg-grey p-4 rounded">
-                                            <h5 class="mb-2">Tur Süresi</h5>
-                                            <p class="mb-0">@Model.DayNight</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 mb-2">
-                                        <div class="desc-box bg-grey p-4 rounded">
-                                            <h5 class="mb-2">Fiyata Dahil Olan Hizmetler</h5>
-                                            <ul>
-                                                <li class="d-block pb-1"><i class="fa fa-check pink mr-1"></i> Uçak Biletleri</li>
-                                                <li class="d-block pb-1"><i class="fa fa-check pink mr-1"></i> 3 Gece Otel Konaklaması</li>
-                                                <li class="d-block pb-1"><i class="fa fa-check pink mr-1"></i> Profesyonel Rehberlik Hizmeti</li>
-                                                <li class="d-block"><i class="fa fa-check pink mr-1"></i> Müze ve Ören Yeri Giriş Ücretleri</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 mb-2">
-                                        <div class="desc-box bg-grey p-4 rounded">
-                                            <h5 class="mb-2">Fiyata Dahil Olmayan Hizmetler</h5>
-                                            <ul>
-                                                <li class="d-block pb-1"><i class="fa fa-close pink mr-1"></i> Rehber Bahşişleri</li>
-                                                <li class="d-block pb-1"><i class="fa fa-close pink mr-1"></i> Şoför Bahşişleri</li>
-                                                <li class="d-block pb-1"><i class="fa fa-close pink mr-1"></i> Kişisel Harcamalar</li>
-                                                <li class="d-block"><i class="fa fa-close pink mr-1"></i> Oda Servisi Ücretleri</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="description mb-4">
-                                <h4>Sizi Neler Bekliyor?</h4>
-                                <p>
-                                    Bu turda unutulmaz anılar biriktireceğiniz, konforlu ve güvenli bir seyahat deneyimi sizi bekliyor. 
-                                    Profesyonel rehberler eşliğinde bölgenin en özel noktalarını keşfedecek, kültürel ve doğal güzellikleri 
-                                    yakından tanıma fırsatı bulacaksınız. Her detay, konforunuz ve memnuniyetiniz için özenle planlanmıştır.
-                                </p>
-                                <p class="mb-0">
-                                    Program boyunca seçkin konaklama, planlı ulaşım ve rehberlik hizmetleriyle rahat bir yolculuk yaşayacak, 
-                                    hem keşfedecek hem de dinlenme fırsatı bulacaksınız. Travento ile seyahat etmek, sadece bir tur değil, 
-                                    ayrıcalıklı bir deneyimdir.
-                                </p>               
-                            </div>
-                        </div>
-
-                        @using Project3Travelin.Dtos.TourTineraryDtos
-                        @{
-                            var itinerary = ViewBag.Itinerary as List<ResultTineraryListByTourIdDto>;
-                        }
-
-                        <div id="iternary" class="accrodion-grp faq-accrodion mb-4" data-grp-name="faq-accrodion">
-                            @if (itinerary != null && itinerary.Any())
-                            {
-                                @foreach (var item in itinerary)
-                                {
-                                    @foreach (var day in item.Days)
-                                    {
-                                        <div class="accrodion @(day.DayNumber == 1 ? "active" : "")">
-                                            <div class="accrodion-title rounded">
-                                                <h5 class="mb-0"><span>Gün @day.DayNumber</span> - @day.Title</h5>
-                                            </div>
-                                            <div class="accrodion-content" style="display: @(day.DayNumber == 1 ? "block" : "none");">
-                                                <div class="inner">
-                                                    <p>@day.Description</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                <div class="accrodion active">
-                                    <div class="accrodion-title rounded">
-                                        <h5 class="mb-0">Program bilgisi henüz eklenmemiş.</h5>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-
-                        <div id="single-map" class="single-map mb-4">
-                            <h4>Harita</h4>
-                            <div class="map rounded overflow-hidden">
-                                <div style="width: 100%">
-                                    <iframe class=" rounded overflow-hidden" height="400" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=+(mangal%20bazar)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                                    <span>(@(avg?.TotalReviews ?? 0) Yorum)</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="single-review" class="single-review mb-4">
-                            <h4>Average Reviews</h4>
-                            <div class="row d-flex align-items-center">
-                                <div class="col-lg-4 col-md-4">
-                                    <div class="review-box bg-title text-center py-4 p-2 rounded">
-                                        <h2 class="mb-1 white"><span>2.2</span>/5</h2>
-                                        <h4 class="white mb-1">"Feel so much worst than thinking"</h4>
-                                        <p class="mb-0 white font-italic">From 40 Reviews</p>
+                        <div class="description-images mb-4">
+                            <img src="@Model.ImageUrl" alt="" class="w-100 rounded">
+                        </div>
+
+                        <div class="description mb-2">
+                            <h4>Açıklama</h4>
+                            <p>@Model.Description</p>
+                        </div>
+
+                        <div class="tour-includes mb-4">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td><i class="fa fa-clock-o pink mr-1" aria-hidden="true"></i> @Model.DayNight</td>
+                                    <td><i class="fa fa-group pink mr-1" aria-hidden="true"></i> Max People : @Model.Capacity</td>
+                                    <td><i class="fa fa-calendar pink mr-1" aria-hidden="true"></i> @Model.TourDate</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fa fa-user pink mr-1" aria-hidden="true"></i> Min Yaş : 10+</td>
+                                    <td><i class="fa fa-map-signs pink mr-1" aria-hidden="true"></i> Havalimanı Transferi</td>
+                                    <td><i class="fa fa-file-alt pink mr-1" aria-hidden="true"></i> Dil - İngilizce</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="description mb-2">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                    <div class="desc-box bg-grey p-4 rounded">
+                                        <h5 class="mb-2">Gidiş & Dönüş Lokasyonu</h5>
+                                        <p class="mb-0">John F.K. Uluslararası Havalimanı (Google Haritalar)</p>
                                     </div>
                                 </div>
-                                <div class="col-lg-8 col-md-8">
-                                    <div class="review-progress">
-                                        <div class="progress-item mb-1">
-                                            <p class="mb-0">Cleanliness</p>
-                                            <div class="progress rounded">
-                                                <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                                                    <span class="sr-only">40% Complete</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-item mb-1">
-                                            <p class="mb-0">Facilities</p>
-                                            <div class="progress rounded">
-                                                <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">
-                                                    <span class="sr-only">30% Complete</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-item mb-1">
-                                            <p class="mb-0">Value for money</p>
-                                            <div class="progress rounded">
-                                                <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
-                                                    <span class="sr-only">60% Complete</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-item mb-1">
-                                            <p class="mb-0">Service</p>
-                                            <div class="progress rounded">
-                                                <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
-                                                    <span class="sr-only">20% Complete</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-item">
-                                            <p class="mb-0">Location</p>
-                                            <div class="progress rounded">
-                                                <div class="progress-bar bg-theme" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:45%">
-                                                    <span class="sr-only">45% Complete</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                    <div class="desc-box bg-grey p-4 rounded">
+                                        <h5 class="mb-2">Oda Bilgisi</h5>
+                                        <p class="mb-0">4 Yatak Odası</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                    <div class="desc-box bg-grey p-4 rounded">
+                                        <h5 class="mb-2">Hareket Saati</h5>
+                                        <p class="mb-0">Uçuş Saatinden 3 Saat Önce</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                    <div class="desc-box bg-grey p-4 rounded">
+                                        <h5 class="mb-2">Tur Süresi</h5>
+                                        <p class="mb-0">@Model.DayNight</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                    <div class="desc-box bg-grey p-4 rounded">
+                                        <h5 class="mb-2">Fiyata Dahil Olan Hizmetler</h5>
+                                        <ul>
+                                            <li class="d-block pb-1"><i class="fa fa-check pink mr-1"></i> Uçak Biletleri</li>
+                                            <li class="d-block pb-1"><i class="fa fa-check pink mr-1"></i> 3 Gece Otel Konaklaması</li>
+                                            <li class="d-block pb-1"><i class="fa fa-check pink mr-1"></i> Profesyonel Rehberlik Hizmeti</li>
+                                            <li class="d-block"><i class="fa fa-check pink mr-1"></i> Müze ve Ören Yeri Giriş Ücretleri</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 mb-2">
+                                    <div class="desc-box bg-grey p-4 rounded">
+                                        <h5 class="mb-2">Fiyata Dahil Olmayan Hizmetler</h5>
+                                        <ul>
+                                            <li class="d-block pb-1"><i class="fa fa-close pink mr-1"></i> Rehber Bahşişleri</li>
+                                            <li class="d-block pb-1"><i class="fa fa-close pink mr-1"></i> Şoför Bahşişleri</li>
+                                            <li class="d-block pb-1"><i class="fa fa-close pink mr-1"></i> Kişisel Harcamalar</li>
+                                            <li class="d-block"><i class="fa fa-close pink mr-1"></i> Oda Servisi Ücretleri</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- blog comment list -->
-                        <div id="single-comments" class="single-comments single-box mb-4">
-                            <h5 class="border-b pb-2 mb-2">Showing 16 verified guest comments</h5>
-                            <div class="comment-box">
-                                <div class="comment-image">
-                                    <img src="images/reviewer/1.jpg" alt="image">
-                                </div>
-                                <div class="comment-content rounded">
-                                    <h5 class="mb-1">Helena</h5>
-                                    <p class="comment-date">April 25, 2022 at 10:46 am</p>
-                                    <div class="comment-rate">
-                                        <div class="rating mar-right-15">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                        </div>
-                                        <span class="comment-title">The worst hotel ever"</span>
-                                    </div>
-
-                                    <p class="comment">Take in the iconic skyline and visit the neighbourhood hangouts that you've only ever seen on TV. Take in the iconic skyline and visit the neighbourhood.</p>
-                                    <div class="comment-like">
-                                        <div class="like-title">
-                                            <a href="#" class="nir-btn">Reply</a>
-                                        </div>
-                                        <div class="like-btn pull-right">
-                                            <a href="#" class="like"><i class="fa fa-thumbs-up"></i></a>
-                                            <a href="#" class="disike"><i class="fa fa-thumbs-down"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="comment-box">
-                                <div class="comment-image">
-                                    <img src="images/reviewer/2.jpg" alt="image">
-                                </div>
-                                <div class="comment-content rounded">
-                                    <h5 class="mb-1">Helena</h5>
-                                    <p class="comment-date">April 25, 2022 at 10:46 am</p>
-                                    <div class="comment-rate">
-                                        <div class="rating mar-right-15">
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                            <span class="fa fa-star checked"></span>
-                                        </div>
-                                        <span class="comment-title">Was too noisy and not suitable for business meetings"</span>
-                                    </div>
-
-                                    <p class="comment">Take in the iconic skyline and visit the neighbourhood hangouts that you've only ever seen on TV. Take in the iconic skyline and visit the neighbourhood.</p>
-                                    <div class="comment-like">
-                                        <div class="like-title">
-                                            <a href="#" class="nir-btn">Reply</a>
-                                        </div>
-                                        <div class="like-btn pull-right">
-                                            <a href="#" class="like"><i class="fa fa-thumbs-up"></i></a>
-                                            <a href="#" class="disike"><i class="fa fa-thumbs-down"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- blog review -->
-                        <div id="single-add-review" class="single-add-review">
-                            <h4>Write a Review</h4>
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-2">
-                                            <input type="text" placeholder="Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group mb-2">
-                                            <input type="email" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group mb-2">
-                                            <textarea>Comment</textarea>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-btn">
-                                            <a href="#" class="nir-btn">Submit Review</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="description mb-4">
+                            <h4>Sizi Neler Bekliyor?</h4>
+                            <p>@Model.WhatAwaits</p>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-lg-4 ps-lg-4">
-                    <div class="sidebar-sticky sticky1">
-                        <div class="tabs-navbar bg-lgrey mb-4 bordernone rounded overflow-hidden">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <ul id="tabs" class="nav nav-tabs bordernone mb-0">
-                                        <li class="active">
-                                            <a data-toggle="tab" href="#highlight" class="rounded box-shadow mb-2 border-all">Highlight</a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#iternary" class="rounded box-shadow mb-2 border-all">Iternary</a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#single-map" class="rounded box-shadow mb-2 border-all">Map</a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#single-review" class="rounded box-shadow mb-2 border-all">Reviews</a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#single-comments" class="rounded box-shadow mb-2 border-all">Comments</a>
-                                        </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#single-add-review" class="rounded box-shadow mb-2 border-all">Add Reviews</a>
-                                        </li>
-                                    </ul>
+                    <!-- GÜZERGAH -->
+                    <div id="iternary" class="accrodion-grp faq-accrodion mb-4" data-grp-name="faq-accrodion">
+                        @if (itinerary != null && itinerary.Any())
+                        {
+                        @foreach (var item in itinerary)
+                        {
+                        @foreach (var day in item.Days)
+                        {
+                        <div class="accrodion @(day.DayNumber == 1 ? "active" : "")">
+                            <div class="accrodion-title rounded">
+                                <h5 class="mb-0"><span>Gün @day.DayNumber</span> - @day.Title</h5>
+                            </div>
+                            <div class="accrodion-content" style="display: @(day.DayNumber == 1 ? "block" : "none");">
+                                <div class="inner">
+                                    <p>@day.Description</p>
                                 </div>
+                            </div>
+                        </div>
+                        }
+                        }
+                        }
+                        else
+                        {
+                        <div class="accrodion active">
+                            <div class="accrodion-title rounded">
+                                <h5 class="mb-0">Program bilgisi henüz eklenmemiş.</h5>
+                            </div>
+                        </div>
+                        }
+                    </div>
+
+                    <!-- HARİTA -->
+                    <div id="single-map" class="single-map mb-4">
+                        <h4>Harita</h4>
+                        <div class="map rounded overflow-hidden">
+                            <div style="width: 100%">
+                                <iframe class="rounded overflow-hidden" height="400"
+                                        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=+(mangal%20bazar)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DEĞERLENDİRMELER -->
+                    <div id="single-review" class="single-review mb-4">
+                        <h4>Değerlendirmeler</h4>
+                        <div class="row d-flex align-items-center">
+                            <div class="col-lg-4 col-md-4">
+                                <div class="review-box bg-title text-center py-4 p-2 rounded">
+                                    <h2 class="mb-1 white">
+                                        <span>@(avg?.Overall.ToString("0.0") ?? "0.0")</span>/5
+                                    </h2>
+                                    <h4 class="white mb-1">
+                                        @if (avg != null && avg.Overall >= 4) { <text>"Mükemmel"</text> }
+                                        else if (avg != null && avg.Overall >= 3) { <text>"Çok İyi"</text> }
+                                        else if (avg != null && avg.Overall >= 2) { <text>"İyi"</text> }
+                                        else { <text>"Henüz Yorum Yok"</text> }
+                                    </h4>
+                                    <p class="mb-0 white font-italic">@(avg?.TotalReviews ?? 0) Yorum</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8">
+                                <div class="review-progress">
+                                    <div class="progress-item mb-1">
+                                        <p class="mb-0">Temizlik</p>
+                                        <div class="progress rounded">
+                                            <div class="progress-bar bg-theme" role="progressbar"
+                                                 aria-valuenow="@cleanPct" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:@cleanPct%">
+                                                <span class="sr-only">@cleanPct% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-item mb-1">
+                                        <p class="mb-0">Olanaklar</p>
+                                        <div class="progress rounded">
+                                            <div class="progress-bar bg-theme" role="progressbar"
+                                                 aria-valuenow="@facilPct" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:@facilPct%">
+                                                <span class="sr-only">@facilPct% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-item mb-1">
+                                        <p class="mb-0">Para Değeri</p>
+                                        <div class="progress rounded">
+                                            <div class="progress-bar bg-theme" role="progressbar"
+                                                 aria-valuenow="@valuePct" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:@valuePct%">
+                                                <span class="sr-only">@valuePct% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-item mb-1">
+                                        <p class="mb-0">Hizmet</p>
+                                        <div class="progress rounded">
+                                            <div class="progress-bar bg-theme" role="progressbar"
+                                                 aria-valuenow="@servicePct" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:@servicePct%">
+                                                <span class="sr-only">@servicePct% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="progress-item">
+                                        <p class="mb-0">Konum</p>
+                                        <div class="progress rounded">
+                                            <div class="progress-bar bg-theme" role="progressbar"
+                                                 aria-valuenow="@locationPct" aria-valuemin="0" aria-valuemax="100"
+                                                 style="width:@locationPct%">
+                                                <span class="sr-only">@locationPct% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- YORUM LİSTESİ -->
+                    <div id="single-comments" class="single-comments single-box mb-4">
+                        <h5 class="border-b pb-2 mb-2">Yorumlar</h5>
+                        @await Component.InvokeAsync("_TourDetailCommentListComponentPartial", new { tourId = Model.TourId })
+                    </div>
+
+                    <!-- YORUM FORMU -->
+<div id="single-add-review" class="single-add-review">
+    <h4>Bir Yorum Yazın</h4>
+    <form id="commentForm" method="post" action="/Comment/CreateComment">
+         @Html.AntiForgeryToken()
+        <input type="hidden" name="TourId" value="@Model.TourId">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-2">
+                    <input type="text" name="Name" placeholder="İsim">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group mb-2">
+                    <input type="email" name="Email" placeholder="Email">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group mb-2">
+                    <input type="text" name="Headline" placeholder="Yorum Başlığı">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group mb-2">
+                    <textarea name="CommentDetail" placeholder="Yorumunuz"></textarea>
+                </div>
+            </div>
+
+            <!-- Ayrıntılı Yıldız Puanlama -->
+            <div class="col-md-12 mb-3">
+                <h6 class="mb-3">Puanlarınız</h6>
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <label class="d-block mb-1">Rehber</label>
+                        <div class="star-rating" data-field="Cleanliness">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" name="Cleanliness" value="1">
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label class="d-block mb-1">Ulaşım</label>
+                        <div class="star-rating" data-field="Facilities">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" name="Facilities" value="1">
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label class="d-block mb-1">Konaklama</label>
+                        <div class="star-rating" data-field="ValueForMoney">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" name="ValueForMoney" value="1">
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label class="d-block mb-1">Yemek</label>
+                        <div class="star-rating" data-field="Service">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" name="Service" value="1">
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label class="d-block mb-1">Fiyat/Performans</label>
+                        <div class="star-rating" data-field="Location">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <input type="hidden" name="Location" value="1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-btn">
+                    <button type="button" class="nir-btn" onclick="document.getElementById('commentForm').submit()">Gönder</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="col-lg-4 ps-lg-4">
+                <div class="sidebar-sticky sticky1">
+                    <div class="tabs-navbar bg-lgrey mb-4 bordernone rounded overflow-hidden">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul id="tabs" class="nav nav-tabs bordernone mb-0">
+                                    <li class="active">
+                                        <a href="#highlight" class="rounded box-shadow mb-2 border-all smooth-scroll">Öne Çıkanlar</a>
+                                    </li>
+                                    <li>
+                                        <a href="#iternary" class="rounded box-shadow mb-2 border-all smooth-scroll">Güzergah</a>
+                                    </li>
+                                    <li>
+                                        <a href="#single-map" class="rounded box-shadow mb-2 border-all smooth-scroll">Harita</a>
+                                    </li>
+                                    <li>
+                                        <a href="#single-review" class="rounded box-shadow mb-2 border-all smooth-scroll">Değerlendirmeler</a>
+                                    </li>
+                                    <li>
+                                        <a href="#single-comments" class="rounded box-shadow mb-2 border-all smooth-scroll">Yorumlar</a>
+                                    </li>
+                                    <li>
+                                        <a href="#single-add-review" class="rounded box-shadow mb-2 border-all smooth-scroll">Yorum Ekle</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    @await Component.InvokeAsync("_TourVideoComponentPartial")
-    
-    @await Component.InvokeAsync("_DefaultFooterComponentPartial")
-    
-    <div id="back-to-top">
-        <a href="#"></a>
-    </div>
-    
-    <div id="search1">
-        <button type="button" class="close">×</button>
-        <form>
-            <input type="search" value="" placeholder="type keyword(s) here" />
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-    </div>
 
+        </div>
+    </div>
+</section>
+
+<section class="discount-action pt-0" style="background-image:url(/03_travelin_main_file/travelin/images/section-bg1.png); background-position:center;">
+    <div class="container">
+        <div class="call-banner rounded pt-10 pb-14">
+            <div class="call-banner-inner w-75 mx-auto text-center px-5">
+                <div class="trend-content-main">
+                    <div class="trend-content mb-5 pb-2 px-5">
+                        <h5 class="mb-1 theme">Gittiğin Yeri Sev</h5>
+                        <h2><a href="#">Hayatını Keşfet, <span class="theme1">İstediğin Yere Seyahat Et!</span></a></h2>
+                        <p>Hayatını Keşfet, Hayalini Kurduğun Yerlere Yolculuk Yap!</p>
+                    </div>
+                    <div class="video-button text-center position-relative">
+                        <div class="call-button text-center">
+                            <button type="button" class="play-btn js-video-button"
+                                    data-video-id="@Model.VideoUrl"
+                                    data-channel="youtube">
+                                <i class="fa fa-play bg-blue"></i>
+                            </button>
+                        </div>
+                        <div class="video-figure"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="white-overlay"></div>
+    <div class="white-overlay"></div>
+    <div class="section-shape top-inherit" style="background-image: url(/03_travelin_main_file/travelin/images/shape6.png);bottom: -30px !important;"></div>
+</section>
+
+@await Component.InvokeAsync("_DefaultFooterComponentPartial")
+
+<div id="back-to-top">
+    <a href="#"></a>
+</div>
+
+<div id="search1">
+    <button type="button" class="close">×</button>
+    <form>
+        <input type="search" value="" placeholder="type keyword(s) here"/>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
 
 @await Component.InvokeAsync("_TourScriptComponentPartial")
 <script src="~/03_travelin_main_file/travelin/js/custom-accordian.js"></script>
 <script src="~/03_travelin_main_file/travelin/js/custom-nav.js"></script>
 <script src="~/03_travelin_main_file/travelin/js/custom-navscroll.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        // Her yıldız grubu için ayrı ayrı çalış
+        $('.star-rating').each(function () {
+            var container = $(this);
+            var field = container.data('field');
+            var stars = container.find('.star');
+
+            stars.on('mouseover', function () {
+                var val = $(this).data('value');
+                stars.each(function () {
+                    $(this).toggleClass('hover', $(this).data('value') <= val);
+                });
+            });
+
+            stars.on('mouseout', function () {
+                stars.removeClass('hover');
+            });
+
+            stars.on('click', function () {
+                var val = $(this).data('value');
+                stars.each(function () {
+                    $(this).toggleClass('active', $(this).data('value') <= val);
+                });
+                $('input[name="' + field + '"]').val(val);
+            });
+        });
+
+        // Smooth scroll
+        $('.smooth-scroll').on('click', function (e) {
+            e.preventDefault();
+            var target = $(this).attr('href');
+            $('html, body').animate({
+                scrollTop: $(target).offset().top - 80
+            }, 600);
+            $('#tabs li').removeClass('active');
+            $(this).parent().addClass('active');
+        });
+
+        $(window).on('scroll', function () {
+            var scrollPos = $(document).scrollTop();
+            $('#tabs a').each(function () {
+                var target = $($(this).attr('href'));
+                if (target.length) {
+                    if (target.offset().top - 100 <= scrollPos &&
+                        target.offset().top + target.height() > scrollPos) {
+                        $('#tabs li').removeClass('active');
+                        $(this).parent().addClass('active');
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
 </html>

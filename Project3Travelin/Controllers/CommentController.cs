@@ -13,22 +13,25 @@ public class CommentController : Controller
         _commentService = commentService;
     }
 
-    // GET
-    public IActionResult CreateComment()
-    {
-        return View();
-    }
-
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateComment(CreateCommentDto createCommentDto)
     {
+        createCommentDto.CommentDate = DateTime.Now;
+        createCommentDto.IsStatus = true;
         await _commentService.CreateCommantAsync(createCommentDto);
-        return RedirectToAction("CommentList");
+        
+        return RedirectToAction("TourDetail", "Tour", new { tourId = createCommentDto.TourId });
     }
 
     public async Task<IActionResult> CommentListByTourId(string tourId)
     {
-        var values = await _commentService.GetCommentByTourIdAsync(tourId);
-        return View(values);
+        var avg = await _commentService.GetAverageByTourIdAsync(tourId);
+        ViewBag.ReviewAverage = avg;
+
+        var comments = await _commentService.GetCommentByTourIdAsync(tourId);
+        ViewBag.Comments = comments;
+
+        return View(comments);
     }
 }

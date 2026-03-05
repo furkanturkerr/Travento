@@ -13,4 +13,5 @@ public class DatabaseSettings : IDatabaseSettings
     public string AboutCollectionName { get; set; }
     public string BannerCollectionName { get; set; }
     public string FaqCollectionName { get; set; }
+    public string InstagramCollectionName { get; set; }
 }

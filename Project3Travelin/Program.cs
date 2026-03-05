@@ -5,6 +5,7 @@ using Project3Travelin.Services.BannerService;
 using Project3Travelin.Services.CategoryServices;
 using Project3Travelin.Services.CommantServices;
 using Project3Travelin.Services.FaqServices;
+using Project3Travelin.Services.InstagramServices;
 using Project3Travelin.Services.PopulerService;
 using Project3Travelin.Services.SliderServices;
 using Project3Travelin.Services.TourServices;
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IPopulerService, PopulerService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
 builder.Services.AddScoped<IBannerService, BannerService>();
 builder.Services.AddScoped<IFaqService, FaqService>();
+builder.Services.AddScoped<IInstagramService, InstagramService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

@@ -4,6 +4,7 @@ using Project3Travelin.Dtos.BannerDtos;
 using Project3Travelin.Dtos.CategoryDtos;
 using Project3Travelin.Dtos.CommantDtos;
 using Project3Travelin.Dtos.FaqDtos;
+using Project3Travelin.Dtos.InstagramDtos;
 using Project3Travelin.Dtos.PopulerDtos;
 using Project3Travelin.Dtos.SliderDtos;
 using Project3Travelin.Dtos.TourDtos;
@@ -25,11 +26,14 @@ public class GeneralMapping : Profile
         CreateMap<Tour, ResultTourDto>().ReverseMap();
         CreateMap<Tour, CreateTourDto>().ReverseMap();
         CreateMap<Tour, UpdateTourDto>().ReverseMap();
+        CreateMap<UpdateTourDto, GetTourByIdDto>().ReverseMap();
+        CreateMap<Tour, GetTourDetailByIdDto>().ReverseMap();
         
         CreateMap<Comment, GetCommentByIdDto>().ReverseMap();
         CreateMap<Comment, ResultCommentDto>().ReverseMap();
         CreateMap<Comment, CreateCommentDto>().ReverseMap();
         CreateMap<Comment, UpdateCommentDto>().ReverseMap();
+        CreateMap<Comment, ResultCommentListByTourIdDto>().ReverseMap();
         CreateMap<Comment, ResultCommentListByTourIdDto>().ReverseMap();
         
         CreateMap<TourItinerary, ResultTineraryListByTourIdDto>().ReverseMap();
@@ -67,5 +71,11 @@ public class GeneralMapping : Profile
         CreateMap<Faq, CreateFaqDto>().ReverseMap();
         CreateMap<Faq, UpdateFaqDto>().ReverseMap();
         CreateMap<UpdateFaqDto, GetFaqByIdDto>().ReverseMap();
+
+        CreateMap<Instagram, ResultInstagramDto>().ReverseMap();
+        CreateMap<Instagram, GetInstagramByIdDto>().ReverseMap();
+        CreateMap<Instagram, CreateInstagramDto>().ReverseMap();
+        CreateMap<Instagram, UpdateInstagramDto>().ReverseMap();
+        CreateMap<UpdateInstagramDto, GetInstagramByIdDto>().ReverseMap();
     }
 }

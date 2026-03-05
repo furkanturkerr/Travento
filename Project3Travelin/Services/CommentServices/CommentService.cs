@@ -53,4 +53,25 @@ public class CommentService : ICommentService
         var value = await _commantsCollection.Find(x => x.TourId == id).ToListAsync();
         return _mapper.Map<List<ResultCommentListByTourIdDto>>(value);
     }
+    
+    public async Task<ReviewAverageDto> GetAverageByTourIdAsync(string tourId)
+    {
+        var reviews = await _commantsCollection
+            .Find(x => x.TourId == tourId && x.IsStatus == true)
+            .ToListAsync();
+
+        if (!reviews.Any()) return new ReviewAverageDto();
+
+        return new ReviewAverageDto
+        {
+            Cleanliness   = Math.Round(reviews.Average(x => x.Cleanliness), 1),
+            Facilities    = Math.Round(reviews.Average(x => x.Facilities), 1),
+            ValueForMoney = Math.Round(reviews.Average(x => x.ValueForMoney), 1),
+            Service       = Math.Round(reviews.Average(x => x.Service), 1),
+            Location      = Math.Round(reviews.Average(x => x.Location), 1),
+            Overall       = Math.Round(reviews.Average(x =>
+                (x.Cleanliness + x.Facilities + x.ValueForMoney + x.Service + x.Location) / 5.0), 1),
+            TotalReviews  = reviews.Count
+        };
+    }
 }
