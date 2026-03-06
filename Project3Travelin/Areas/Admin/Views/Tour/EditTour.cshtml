@@ -1,8 +1,8 @@
-@model Project3Travelin.Dtos.TourDtos.CreateTourDto
+@model Project3Travelin.Dtos.TourDtos.UpdateTourDto
 
 @{
     Layout = "~/Views/Admin/Index.cshtml";
-    ViewData["Title"] = "Tur Ekle";
+    ViewData["Title"] = "Tur Düzenle";
 }
 
 <style>
@@ -34,8 +34,8 @@
   .preview-img-wrap { position: relative; border-radius: 12px; overflow: hidden; height: 200px; background: #0a1628; margin-bottom: 14px; }
   .preview-img-wrap img { width: 100%; height: 100%; object-fit: cover; opacity: .82; display: block; }
   .preview-img-wrap .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.65), transparent 50%); display: flex; flex-direction: column; justify-content: flex-end; padding: 14px 16px; }
-  .preview-img-wrap .p-title { color: #fff; font-size: 15px; font-weight: 900; margin: 0 0 4px; text-shadow: 0 2px 6px rgba(0,0,0,.4); }
-  .preview-img-wrap .p-loc { color: rgba(255,255,255,.75); font-size: 11px; display: flex; align-items: center; gap: 4px; }
+  .p-title { color: #fff; font-size: 15px; font-weight: 900; margin: 0 0 4px; text-shadow: 0 2px 6px rgba(0,0,0,.4); }
+  .p-loc   { color: rgba(255,255,255,.75); font-size: 11px; }
   .p-price { position: absolute; top: 10px; right: 10px; background: var(--teal); color: #fff; font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
   .p-empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: rgba(255,255,255,.2); }
   .preview-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
@@ -50,15 +50,18 @@
   <ol class="breadcrumb mb-0">
     <li class="breadcrumb-item"><a href="/Admin/Dashboard">Ansayfa</a></li>
     <li class="breadcrumb-item"><a href="/Admin/Tour/TourList">Tur Listesi</a></li>
-    <li class="breadcrumb-item active">Tur Ekle</li>
+    <li class="breadcrumb-item active">Tur Düzenle</li>
   </ol>
   <a href="/Admin/Tour/TourList" class="btn-cancel" style="width:auto;display:inline-block;padding:9px 18px;margin:0;">← Geri Dön</a>
 </nav>
 
-<form asp-action="CreateTour" asp-controller="Tour" asp-area="Admin" method="post">
+<form asp-action="EditTour" asp-controller="Tour" asp-area="Admin" method="post">
   @Html.AntiForgeryToken()
+  <input type="hidden" asp-for="TourId" />
 
   <div class="create-grid">
+
+    <!-- SOL -->
     <div>
 
       <div class="form-card">
@@ -84,7 +87,7 @@
           </div>
           <div class="field-group">
             <label asp-for="WhatAwaits">Sizi Neler Bekliyor</label>
-            <textarea asp-for="WhatAwaits" class="form-control-custom" placeholder="Turda yapılacak aktiviteler..." style="min-height:70px;"></textarea>
+            <textarea asp-for="WhatAwaits" class="form-control-custom" style="min-height:70px;"></textarea>
             <span asp-validation-for="WhatAwaits" class="text-danger"></span>
           </div>
         </div>
@@ -132,12 +135,12 @@
           <div class="two-col">
             <div class="field-group">
               <label asp-for="Price">Fiyat (₺)</label>
-              <input asp-for="Price" class="form-control-custom" type="number" placeholder="0" oninput="updatePrice(this.value)" />
+              <input asp-for="Price" class="form-control-custom" type="number" oninput="updatePrice(this.value)" />
               <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="field-group">
               <label asp-for="Capacity">Kapasite (kişi)</label>
-              <input asp-for="Capacity" class="form-control-custom" type="number" placeholder="0" oninput="updateCapacity(this.value)" />
+              <input asp-for="Capacity" class="form-control-custom" type="number" oninput="updateCapacity(this.value)" />
               <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
           </div>
@@ -202,25 +205,40 @@
         </div>
         <div class="card-body">
           <div class="preview-img-wrap">
-            <img id="prevImg" src="" alt="" style="display:none;" />
-            <div class="overlay" id="prevOverlay" style="display:none;">
-              <p class="p-title" id="prevTitle">Tur Adı</p>
-              <p class="p-loc" id="prevLoc">Şehir, Ülke</p>
+            <img id="prevImg" src="@Model.ImageUrl" alt=""
+                 style="@(string.IsNullOrEmpty(Model.ImageUrl) ? "display:none;" : "")" />
+            <div class="overlay" id="prevOverlay"
+                 style="@(string.IsNullOrEmpty(Model.ImageUrl) ? "display:none;" : "display:flex;")">
+              <p class="p-title" id="prevTitle">@Model.Title</p>
+              <p class="p-loc"   id="prevLoc">@Model.City, @Model.Country</p>
             </div>
-            <span class="p-price" id="prevPrice" style="display:none;">0 ₺</span>
-            <div class="p-empty" id="prevEmpty">
-              <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-              <span style="font-size:11px;">Görsel bekleniyor</span>
-            </div>
+            <span class="p-price" id="prevPrice"
+                  style="@(string.IsNullOrEmpty(Model.ImageUrl) ? "display:none;" : "")">
+              @Model.Price.ToString("N0") ₺
+            </span>
+            @if (string.IsNullOrEmpty(Model.ImageUrl))
+            {
+              <div class="p-empty" id="prevEmpty">
+                <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5"/>
+                  <polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <span style="font-size:11px;">Görsel bekleniyor</span>
+              </div>
+            }
+            else
+            {
+              <div class="p-empty" id="prevEmpty" style="display:none;"></div>
+            }
           </div>
+
           <div class="preview-chips">
-            <span class="preview-chip" id="prevDayNight" style="display:none;">–</span>
-            <span class="preview-chip" id="prevCapacity" style="display:none;">– kişi</span>
-            <span class="preview-chip" id="prevDate" style="display:none;">–</span>
+            <span class="preview-chip" id="prevDayNight"
+                  style="@(string.IsNullOrEmpty(Model.DayNight) ? "display:none;" : "")">@Model.DayNight</span>
+            <span class="preview-chip" id="prevCapacity"
+                  style="@(Model.Capacity == 0 ? "display:none;" : "")">@Model.Capacity kişi</span>
+            <span class="preview-chip" id="prevDate">@Model.TourDate.ToString("dd MMM yyyy")</span>
           </div>
         </div>
       </div>
@@ -231,10 +249,11 @@
           <polyline points="17 21 17 13 7 13 7 21"/>
           <polyline points="7 3 7 8 15 8"/>
         </svg>
-        Turu Kaydet
+        Değişiklikleri Kaydet
       </button>
       <a href="/Admin/Tour/TourList" class="btn-cancel">İptal Et</a>
     </div>
+
   </div>
 </form>
 
@@ -256,7 +275,6 @@
   function updatePrice(val) {
     const el = document.getElementById('prevPrice');
     el.textContent = val ? Number(val).toLocaleString('tr-TR') + ' ₺' : '0 ₺';
-    el.style.display = val ? 'block' : 'none';
   }
   function updateLoc() {
     const c  = document.getElementById('City')?.value || '';

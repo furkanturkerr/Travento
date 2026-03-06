@@ -17,10 +17,20 @@ public class TourController : Controller
     }
 
     // GET
-    public async Task<IActionResult> TourList()
+    public async Task<IActionResult> TourList(int page = 1)
     {
         var value = await _tourService.GetAllTourAsync();
-        return View(value);
+        
+        int pageSize = 9;
+        int totalCount = value.Count;
+        int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+        var paged = value.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+        
+        ViewBag.CurrentPage = page;
+        ViewBag.TotalPages = totalPages;
+        ViewBag.TotalCount = totalCount;
+        
+        return View(paged);
     }
     
     public IActionResult CreateTour()
@@ -35,14 +45,14 @@ public class TourController : Controller
         return RedirectToAction("TourList");
     }
 
-    public async Task<IActionResult> Delete(string id)
+    public async Task<IActionResult> DeleteTour(string id)
     {
         await _tourService.DeleteTourAsync(id);
         return RedirectToAction("TourList");
     }
 
     [HttpGet]
-    public async Task<IActionResult> UpdateTour(string id)
+    public async Task<IActionResult> EditTour(string id)
     {
         var value = await _tourService.GetTourByIdAsync(id);
 
@@ -52,7 +62,7 @@ public class TourController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> UpdateTour(UpdateTourDto updateTourDto)
+    public async Task<IActionResult> EditTour(UpdateTourDto updateTourDto)
     {
         await _tourService.UpdateTourAsync(updateTourDto);
         return RedirectToAction("TourList");

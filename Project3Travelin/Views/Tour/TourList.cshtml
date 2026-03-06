@@ -45,7 +45,7 @@
                                     <div class="trend-content position-relative text-md-start text-center">
                                         <small>@tour.DayNight</small>
                                         <h3 class="mb-1">
-                                            <a href="/Tour/TourDetail/@tour.TourId">@tour.Title</a>
+                                            <a asp-controller="Tour" asp-action="TourDetail" asp-route-tourId="@tour.TourId" >@tour.Title</a>
                                         </h3>
                                         <h6 class="theme mb-0">
                                             <i class="icon-location-pin"></i> @tour.City, @tour.Country
@@ -60,7 +60,7 @@
                                     <div class="trend-content text-md-end text-center">
                                         <div class="trend-price my-2">
                                             <span class="mb-0"></span>
-                                            <h3 class="mb-0">₺@tour.Price</h3>
+                                            <h3 class="mb-0">@tour.Price.ToString("C0")</h3>
                                             <small>Başlayan Fiyatlarla</small>
                                         </div>
                                         <a asp-controller="Tour" asp-action="TourDetail" asp-route-tourId="@tour.TourId" class="nir-btn">Detay</a>

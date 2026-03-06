@@ -1,0 +1,310 @@
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "Güzergah Ekle";
+    var tours = ViewBag.Tours as List<Project3Travelin.Dtos.TourDtos.ResultTourDto>;
+}
+
+<style>
+  :root {
+    --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+    --danger: #e74c3c; --text: #1a2e35; --muted: #6b7f86;
+    --border: #dde8ea; --white: #fff;
+    --shadow: 0 2px 16px rgba(13,158,143,.10); --radius: 14px;
+  }
+  .page-breadcrumb { margin-bottom: 28px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; font-weight: 500; }
+  .breadcrumb-item.active { color: var(--muted); }
+
+  .create-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+  @@media (max-width: 960px) { .create-grid { grid-template-columns: 1fr; } }
+
+  .form-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+  .card-head { padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .card-head-icon { width: 34px; height: 34px; background: var(--teal-light); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; }
+  .card-head h5 { margin: 0; font-size: 14px; font-weight: 700; color: var(--text); }
+  .card-head p  { margin: 0; font-size: 12px; color: var(--muted); }
+  .card-body { padding: 22px; }
+
+  .field-group { margin-bottom: 16px; }
+  .field-group:last-child { margin-bottom: 0; }
+  .field-group label { display: block; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .form-control-custom { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 9px; font-size: 14px; color: var(--text); background: #fafdfd; transition: border-color .2s, box-shadow .2s; outline: none; box-sizing: border-box; }
+  .form-control-custom:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,158,143,.12); background: #fff; }
+  textarea.form-control-custom { resize: vertical; min-height: 80px; }
+
+  /* Day item */
+  .day-item {
+    background: #f7fbfb; border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 16px; margin-bottom: 12px;
+    position: relative;
+  }
+  .day-item:last-child { margin-bottom: 0; }
+  .day-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; background: var(--teal); color: #fff;
+    border-radius: 6px; font-size: 12px; font-weight: 900;
+    margin-bottom: 10px;
+  }
+  .btn-remove-day {
+    position: absolute; top: 12px; right: 12px;
+    width: 26px; height: 26px; border-radius: 6px;
+    background: #fdecea; color: var(--danger); border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s;
+  }
+  .btn-remove-day:hover { background: var(--danger); color: #fff; }
+
+  .btn-add-day {
+    width: 100%; padding: 11px; background: var(--teal-light); color: var(--teal);
+    border: 1.5px dashed var(--teal); border-radius: 10px;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    transition: background .15s; margin-top: 4px;
+  }
+  .btn-add-day:hover { background: #d0f0ec; }
+
+  /* Preview */
+  .preview-timeline { padding: 4px 0; }
+  .preview-empty { text-align: center; padding: 28px 16px; color: var(--muted); font-size: 12px; }
+  .preview-empty svg { opacity: .2; display: block; margin: 0 auto 8px; }
+
+  .timeline-item { display: flex; gap: 12px; margin-bottom: 14px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; }
+  .tl-dot { width: 26px; height: 26px; border-radius: 7px; background: var(--teal); color: #fff; font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tl-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 12px; }
+  .timeline-item:last-child .tl-line { display: none; }
+  .tl-content { flex: 1; padding-top: 3px; }
+  .tl-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .tl-desc  { font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .btn-submit { width: 100%; padding: 13px; background: var(--teal); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background .2s, transform .15s; box-shadow: 0 4px 14px rgba(13,158,143,.3); }
+  .btn-submit:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-cancel { width: 100%; padding: 11px; background: transparent; color: var(--muted); border: 1.5px solid var(--border); border-radius: 10px; font-size: 14px; font-weight: 600; text-align: center; text-decoration: none; display: block; margin-top: 10px; transition: border-color .2s, color .2s; }
+  .btn-cancel:hover { border-color: var(--danger); color: var(--danger); }
+</style>
+
+<nav class="page-breadcrumb d-flex align-items-center justify-content-between">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Ansayfa</a></li>
+    <li class="breadcrumb-item"><a href="/Admin/TourItinerary/Index">Güzergah Listesi</a></li>
+    <li class="breadcrumb-item active">Güzergah Ekle</li>
+  </ol>
+  <a href="/Admin/TourItinerary/Index" class="btn-cancel" style="width:auto;display:inline-block;padding:9px 18px;margin:0;">← Geri Dön</a>
+</nav>
+
+<form asp-action="CreateTourItinerary" asp-controller="TourItinerary" asp-area="Admin" method="post">
+  @Html.AntiForgeryToken()
+
+  <div class="create-grid">
+
+    <!-- SOL -->
+    <div>
+
+      <!-- Tur Seçimi -->
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <div><h5>Tur Seçimi</h5><p>Güzergahı hangi tura eklemek istiyorsunuz?</p></div>
+        </div>
+        <div class="card-body">
+          <div class="field-group">
+            <label for="TourId">Tur</label>
+            <select name="TourId" id="TourId" class="form-control-custom" required onchange="updatePreviewHeader(this)">
+              <option value="">-- Tur Seçin --</option>
+              @if (tours != null)
+              {
+                @foreach (var tour in tours)
+                {
+                  <option value="@tour.TourId">@tour.Title — @tour.City, @tour.Country</option>
+                }
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Günler -->
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <div><h5>Günler</h5><p>Her gün için başlık ve açıklama girin</p></div>
+        </div>
+        <div class="card-body">
+          <div id="days-container">
+            <!-- JS ile eklenecek -->
+          </div>
+          <button type="button" class="btn-add-day" onclick="addDay()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Gün Ekle
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SAĞ: ÖNİZLEME -->
+    <div>
+      <div class="form-card">
+        <div class="card-head">
+          <div class="card-head-icon">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <h5>Canlı Önizleme</h5>
+            <p id="previewTourName">Tur seçilmedi</p>
+          </div>
+        </div>
+        <div class="card-body" style="padding:16px;">
+          <div class="preview-timeline" id="previewTimeline">
+            <div class="preview-empty" id="previewEmpty">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              Henüz gün eklenmedi
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Güzergahı Kaydet
+      </button>
+      <a href="/Admin/TourItinerary/Index" class="btn-cancel">İptal Et</a>
+    </div>
+
+  </div>
+</form>
+
+<script>
+  var dayCount = 0;
+
+  function addDay() {
+    dayCount++;
+    var n = dayCount;
+    var container = document.getElementById('days-container');
+
+    var div = document.createElement('div');
+    div.className = 'day-item';
+    div.id = 'day-item-' + n;
+    div.innerHTML = `
+      <span class="day-badge">${n}</span>
+      <button type="button" class="btn-remove-day" onclick="removeDay(${n})" title="Kaldır">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="field-group">
+        <label>Başlık</label>
+        <input type="text" name="Days[${n-1}].Title" class="form-control-custom"
+               placeholder="Örn: Varış - Şehir Turu"
+               oninput="updatePreview()" />
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <label>Açıklama</label>
+        <textarea name="Days[${n-1}].Description" class="form-control-custom"
+                  placeholder="Bu günün detayları..."
+                  oninput="updatePreview()"></textarea>
+      </div>
+      <input type="hidden" name="Days[${n-1}].DayNumber" value="${n}" />
+    `;
+    container.appendChild(div);
+    updatePreview();
+  }
+
+  function removeDay(n) {
+    var el = document.getElementById('day-item-' + n);
+    if (el) el.remove();
+    renumberDays();
+    updatePreview();
+  }
+
+  function renumberDays() {
+    var items = document.querySelectorAll('#days-container .day-item');
+    dayCount = items.length;
+    items.forEach(function(item, i) {
+      var num = i + 1;
+      item.querySelector('.day-badge').textContent = num;
+      item.querySelectorAll('input, textarea').forEach(function(input) {
+        if (input.name.includes('DayNumber')) {
+          input.value = num;
+        } else {
+          input.name = input.name.replace(/Days\[\d+\]/, 'Days[' + i + ']');
+        }
+      });
+    });
+  }
+
+  function updatePreviewHeader(select) {
+    var text = select.options[select.selectedIndex]?.text || 'Tur seçilmedi';
+    document.getElementById('previewTourName').textContent =
+      select.value ? text.split('—')[0].trim() : 'Tur seçilmedi';
+  }
+
+  function updatePreview() {
+    var items = document.querySelectorAll('#days-container .day-item');
+    var container = document.getElementById('previewTimeline');
+    var empty = document.getElementById('previewEmpty');
+
+    if (items.length === 0) {
+      container.innerHTML = `
+        <div class="preview-empty" id="previewEmpty">
+          <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Henüz gün eklenmedi
+        </div>`;
+      return;
+    }
+
+    var html = '<div class="preview-timeline">';
+    items.forEach(function(item, i) {
+      var title = item.querySelector('input[type="text"]')?.value || 'Gün ' + (i+1);
+      var desc  = item.querySelector('textarea')?.value || '';
+      html += `
+        <div class="timeline-item">
+          <div class="tl-left">
+            <div class="tl-dot">${i+1}</div>
+            <div class="tl-line"></div>
+          </div>
+          <div class="tl-content">
+            <div class="tl-title">${title || 'Başlık girilmedi'}</div>
+            ${desc ? '<div class="tl-desc">' + desc + '</div>' : ''}
+          </div>
+        </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  // Sayfa açılınca 1 gün otomatik ekle
+  addDay();
+</script>

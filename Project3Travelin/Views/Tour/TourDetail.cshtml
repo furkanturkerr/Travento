@@ -211,9 +211,7 @@ double locationPct = avg != null ? Math.Round(avg.Location      / 5.0 * 100) : 0
                         <h4>Harita</h4>
                         <div class="map rounded overflow-hidden">
                             <div style="width: 100%">
-                                <iframe class="rounded overflow-hidden" height="400"
-                                        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=+(mangal%20bazar)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
-                                </iframe>
+                                <img src="@Model.ImageMap"/>
                             </div>
                         </div>
                     </div>
@@ -448,11 +446,25 @@ double locationPct = avg != null ? Math.Round(avg.Location      / 5.0 * 100) : 0
                     </div>
                     <div class="video-button text-center position-relative">
                         <div class="call-button text-center">
-                            <button type="button" class="play-btn js-video-button"
-                                    data-video-id="@Model.VideoUrl"
-                                    data-channel="youtube">
-                                <i class="fa fa-play bg-blue"></i>
-                            </button>
+                            <div class="video-button text-center position-relative">
+                                <div class="call-button text-center">
+                                    <button type="button" class="play-btn" id="openVideoBtn">
+                                        <i class="fa fa-play bg-blue"></i>
+                                    </button>
+                                </div>
+                                <div class="video-figure"></div>
+                            </div>
+
+                            <!-- Modal -->
+                            <div id="videoModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:999999; align-items:center; justify-content:center;">
+                                <div style="position:relative; width:90%; max-width:860px; aspect-ratio:16/9;">
+                                    <iframe id="videoFrame" src="" frameborder="0" allowfullscreen
+                                            allow="autoplay; encrypted-media"
+                                            style="width:100%; height:100%; border-radius:8px;"></iframe>
+                                    <button id="closeVideoBtn"
+                                            style="position:absolute; top:-40px; right:0; background:none; border:none; color:#fff; font-size:32px; cursor:pointer; line-height:1;">×</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="video-figure"></div>
                     </div>
@@ -536,6 +548,38 @@ double locationPct = avg != null ? Math.Round(avg.Location      / 5.0 * 100) : 0
                     }
                 }
             });
+        });
+    });
+
+    $(document).ready(function () {
+
+        function getEmbedUrl(url) {
+            if (!url) return '';
+            // youtu.be/ID
+            var shortMatch = url.match(/youtu\.be\/([^?&]+)/);
+            if (shortMatch) return 'https://www.youtube.com/embed/' + shortMatch[1] + '?autoplay=1';
+            // watch?v=ID
+            var longMatch = url.match(/[?&]v=([^&]+)/);
+            if (longMatch) return 'https://www.youtube.com/embed/' + longMatch[1] + '?autoplay=1';
+            // Zaten embed URL ise
+            if (url.includes('youtube.com/embed/')) return url + '?autoplay=1';
+            // Sadece ID girilmişse
+            return 'https://www.youtube.com/embed/' + url + '?autoplay=1';
+        }
+
+        var rawUrl = '@Model.VideoUrl';
+        var embedUrl = getEmbedUrl(rawUrl);
+
+        $('#openVideoBtn').on('click', function () {
+            $('#videoFrame').attr('src', embedUrl);
+            $('#videoModal').css('display', 'flex');
+        });
+
+        $('#closeVideoBtn, #videoModal').on('click', function (e) {
+            if (e.target === this) {
+                $('#videoModal').css('display', 'none');
+                $('#videoFrame').attr('src', '');
+            }
         });
     });
 </script>

@@ -42,6 +42,7 @@ public class GeneralMapping : Profile
         CreateMap<TourItinerary, GetTineraryByIdDto>().ReverseMap();
         CreateMap<TourItinerary, CreateTineraryDto>().ReverseMap();
         CreateMap<TourItinerary, UpdateTineraryDto>().ReverseMap();
+        CreateMap<UpdateTineraryDto, GetTineraryByIdDto>().ReverseMap();
         
         CreateMap<Slider, GetSliderByIdDto>().ReverseMap();
         CreateMap<Slider, ResultSliderDto>().ReverseMap();

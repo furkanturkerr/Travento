@@ -1,0 +1,50 @@
+@* Views/Shared/Components/_HomeSearchBarComponentPartial/Default.cshtml *@
+@model List<string>
+
+<form asp-controller="Tour" asp-action="Search" method="get">
+    <div class="form-content-in d-flex align-items-center justify-content-center gap-2 p-3">
+
+        <div class="form-group mb-0">
+            <div class="input-box">
+                <select name="city" class="niceSelect" style="background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.4); border-radius:8px; min-width:160px;">
+                    <option value="" style="color:#333;">Varış Noktası</option>
+                    @foreach (var city in Model)
+                    {
+                        <option value="@city" style="color:#333;">@city</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group mb-0">
+            <div class="input-box">
+                <input type="date" name="date"
+                       style="background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.4); border-radius:8px; padding:8px 12px; outline:none;" />
+            </div>
+        </div>
+
+        <div class="form-group mb-0">
+            <div class="input-box">
+                <input type="number" name="minPrice" placeholder="Min Fiyat"
+                       style="background:#fff; color:#333; border:1px solid rgba(255,255,255,0.4); border-radius:8px; padding:8px 12px; width:130px; outline:none;" />
+            </div>
+        </div>
+
+        <div class="form-group mb-0">
+            <div class="input-box">
+                <input type="number" name="maxPrice" placeholder="Max Fiyat"
+                       style="background:#fff; color:#333; border:1px solid rgba(255,255,255,0.4); border-radius:8px; padding:8px 12px; width:130px; outline:none;" />
+            </div>
+        </div>
+
+        <div class="form-group mb-0">
+            <a href="javascript:void(0)"
+               onclick="this.closest('form').submit()"
+               class="nir-btn d-flex align-items-center justify-content-center"
+               style="padding:10px 28px; font-size:15px; font-weight:600; border-radius:8px; white-space:nowrap;">
+                Ara
+            </a>
+        </div>
+
+    </div>
+</form>

@@ -14,5 +14,6 @@ public class GetTourByIdDto
     public string VideoUrl { get; set; }
     public string ImageUrl { get; set; }
     public string WhatAwaits { get; set; }
+    public string ImageMap { get; set; }
 
 }

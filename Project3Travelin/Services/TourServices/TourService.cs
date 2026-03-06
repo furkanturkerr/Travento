@@ -83,4 +83,15 @@ public class TourService : ITourService
         return _mapper.Map<List<ResultTourDto>>(tours);
     }
     
+    public async Task<List<string>> GetAllCitiesAsync()
+    {
+        var tours = await _tourCollection.Find(_ => true).ToListAsync();
+        return tours
+            .Select(x => x.City)
+            .Where(x => !string.IsNullOrEmpty(x))
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+    }
+    
 }
