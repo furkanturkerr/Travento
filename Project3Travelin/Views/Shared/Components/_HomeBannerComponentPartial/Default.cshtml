@@ -1,3 +1,5 @@
+@model Project3Travelin.Dtos.BannerDtos.ResultBannerDto
+
 <section
     class="discount-action dc__action mx-5 text-center rounded overflow-visible mb-2"
     style="background-image: url(https://cdn.getyourguide.com/img/tour/5d70eca7e5860.jpeg/148.jpg); background-position: center"
@@ -6,21 +8,21 @@
         <div class="call-banner">
             <div class="trend-content px-5 w-90 mx-auto">
                 <div class="w-75 mx-auto mb-4">
-                    <h5 class="mb-1 white">Maceran Burada Başlıyor</h5>
+                    <h5 class="mb-1 white">@Model.SubTitle</h5>
                     <h2>
-                        <a href="tour-single.html" class="white">Hayalini Kurduğun Yolculuk Seni Bekliyor</a>
+                        <a href="~/Tour/TourList" class="white">@Model.Title</a>
                     </h2>
                 </div>
                 <div class="video-button position-relative">
                     <div class="call-button my-5 py-2">
-                        <button type="button" class="play-btn js-video-button" data-video-id="152879427" data-channel="vimeo">
+                        <button type="button" class="play-btn js-video-button" data-video-id="@Model.VideoUrl" data-channel="youtube">
                             <i class="fa fa-play"></i>
                         </button>
                     </div>
                     <div class="video-figure"></div>
                 </div>
                 <p class="white mb-2">
-                    Keşfetmenin heyecanını yaşa, dünyayı görmeye bugün başla.
+                    @Model.Description
                 </p>
             </div>
         </div>

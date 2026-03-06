@@ -4,6 +4,7 @@ using Project3Travelin.Services.AboutService;
 using Project3Travelin.Services.BannerService;
 using Project3Travelin.Services.CategoryServices;
 using Project3Travelin.Services.CommantServices;
+using Project3Travelin.Services.ContactService;
 using Project3Travelin.Services.FaqServices;
 using Project3Travelin.Services.InstagramServices;
 using Project3Travelin.Services.PopulerService;
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IAboutService, AboutService>();
 builder.Services.AddScoped<IBannerService, BannerService>();
 builder.Services.AddScoped<IFaqService, FaqService>();
 builder.Services.AddScoped<IInstagramService, InstagramService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -59,8 +61,14 @@ app.MapControllerRoute(
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
+    name: "iletisim",
+    pattern: "iletisim",
+    defaults: new { controller = "Contact", action = "Iletisim" });
+
+app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Tour}/{action=TourList}/{id?}");
+    pattern: "{controller=Home}/{action=Anasayfa}/{id?}");
+
 
 
 app.Run();

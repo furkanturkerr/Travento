@@ -1,3 +1,5 @@
+@model List<Project3Travelin.Dtos.TourDtos.ResultTourDto>
+
 <section class="trending">
   <div class="container">
     <div class="section-title mb-6 w-75 mx-auto text-center">
@@ -8,156 +10,33 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="row item-slider2 slick_arrows">
-            <div class="col-lg-3 col-md-6">
-              <div class="trend-item rounded box-shadow border">
-                <div class="trend-image position-relative m-2 rounded">
-                  <img src="images/trending/trending1.jpg" alt="image" class=""/>
-                </div>
-                <div class="trend-content p-3 position-relative bg-white">
-                  <h6 class="theme mb-1"><i class="flaticon-location-pin"></i> Spain</h6>
-                  <h4 class="mb-1"><a href="grid-leftfilter.html">Explore vibrant Barcelona city </a></h4>
-                  <div class="d-flex align-items-center gap-4 mb-1">
-                    <div class="rating-main d-inline-flex align-items-center gap-1 fs-7">
-                      <div class="rating">
-                        <span class="fa fa-star checked theme1"></span>
-                      </div>
-                      <span>4.5</span>
-                    </div>
-                    <div class="px-3 py-1 rounded fs-7">
-                      <div class="entry-author">
-                        <i class="icon-calendar theme1"></i>
-                        <span class=""> 4 Days Tours</span>
-                      </div>
-                    </div>
+            @foreach (var item in Model.Take(5))
+            {
+              <div class="col-lg-3 col-md-6">
+                <div class="trend-item rounded box-shadow border">
+                  <div class="trend-image position-relative m-2 rounded">
+                    <img src="@item.ImageUrl" alt="image" class=""/>
                   </div>
-                  <div class="entry-meta">
-                    <div class="entry-author d-flex align-items-center fs-8">
-                      <p class="mb-0"><span class="theme fw-bold fs-6"> $220.00</span> / Per person</p>
+                  <div class="trend-content p-3 position-relative bg-white">
+                    <h6 class="theme mb-1"><i class="flaticon-location-pin"></i> @item.Country</h6>
+                    <h4 class="mb-1"><a href="~/Tour/TourDetail/@item.TourId">@item.Title </a></h4>
+                    <div class="d-flex align-items-center gap-4 mb-1">
+                      <div class="">
+                        <div class="entry-author">
+                          <i class="icon-calendar theme1"></i>
+                          <span class=""> @item.DayNight</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="entry-meta">
+                      <div class="entry-author d-flex align-items-center fs-8">
+                        <p class="mb-0"><span class="theme fw-bold fs-6"> ₺@item.Price</span></p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="trend-item rounded box-shadow border">
-                <div class="trend-image position-relative m-2 rounded">
-                  <img src="images/trending/trending4.jpg" alt="image" class=""/>
-                </div>
-                <div class="trend-content p-3 position-relative bg-white">
-                  <h6 class="theme mb-1"><i class="flaticon-location-pin"></i> Italy</h6>
-                  <h4 class="mb-1"><a href="grid-leftfilter.html">Caspian vally in 5 days tour </a></h4>
-                  <div class="d-flex align-items-center gap-4 mb-1">
-                    <div class="rating-main d-inline-flex align-items-center gap-1 fs-7">
-                      <div class="rating">
-                        <span class="fa fa-star checked theme1"></span>
-                      </div>
-                      <span>4.4</span>
-                    </div>
-                    <div class="px-3 py-1 rounded fs-7">
-                      <div class="entry-author">
-                        <i class="icon-calendar theme1"></i>
-                        <span class=""> 5 Days Tours</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="entry-meta">
-                    <div class="entry-author d-flex align-items-center fs-8">
-                      <p class="mb-0"><span class="theme fw-bold fs-6"> $350.00</span> / Per person</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="trend-item rounded box-shadow border">
-                <div class="trend-image position-relative m-2 rounded">
-                  <img src="/03_travelin_main_file/travelin/images/trending/trending7.jpg" alt="image" class=""/>
-                </div>
-                <div class="trend-content p-3 position-relative bg-white">
-                  <h6 class="theme mb-1"><i class="flaticon-location-pin"></i> USA</h6>
-                  <h4 class="mb-1"><a href="grid-leftfilter.html">Vast offroad tracks of florida </a></h4>
-                  <div class="d-flex align-items-center gap-4 mb-1">
-                    <div class="rating-main d-inline-flex align-items-center gap-1 fs-7">
-                      <div class="rating">
-                        <span class="fa fa-star checked theme1"></span>
-                      </div>
-                      <span>4.1</span>
-                    </div>
-                    <div class="px-3 py-1 rounded fs-7">
-                      <div class="entry-author">
-                        <i class="icon-calendar theme1"></i>
-                        <span class=""> 3 Days Tours</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="entry-meta">
-                    <div class="entry-author d-flex align-items-center fs-8">
-                      <p class="mb-0"><span class="theme fw-bold fs-6"> $180.00</span> / Per person</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="trend-item rounded box-shadow border">
-                <div class="trend-image position-relative m-2 rounded">
-                  <img src="/03_travelin_main_file/travelin/images/trending/trending5.jpg" alt="image" class=""/>
-                </div>
-                <div class="trend-content p-3 position-relative bg-white">
-                  <h6 class="theme mb-1"><i class="flaticon-location-pin"></i> Maldives</h6>
-                  <h4 class="mb-1"><a href="grid-leftfilter.html">Dip into the beaches of male </a></h4>
-                  <div class="d-flex align-items-center gap-4 mb-1">
-                    <div class="rating-main d-inline-flex align-items-center gap-1 fs-7">
-                      <div class="rating">
-                        <span class="fa fa-star checked theme1"></span>
-                      </div>
-                      <span>4.8</span>
-                    </div>
-                    <div class="px-3 py-1 rounded fs-7">
-                      <div class="entry-author">
-                        <i class="icon-calendar theme1"></i>
-                        <span class=""> 6 Days Tours</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="entry-meta">
-                    <div class="entry-author d-flex align-items-center fs-8">
-                      <p class="mb-0"><span class="theme fw-bold fs-6"> $400.00</span> / Per person</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-              <div class="trend-item rounded box-shadow border">
-                <div class="trend-image position-relative m-2 rounded">
-                  <img src="images/trending/trending2.jpg" alt="image" class=""/>
-                </div>
-                <div class="trend-content p-3 position-relative bg-white">
-                  <h6 class="theme mb-1"><i class="flaticon-location-pin"></i> Bali</h6>
-                  <h4 class="mb-1"><a href="grid-leftfilter.html">Explore different waterfalls and lakes </a></h4>
-                  <div class="d-flex align-items-center gap-4 mb-1">
-                    <div class="rating-main d-inline-flex align-items-center gap-1 fs-7">
-                      <div class="rating">
-                        <span class="fa fa-star checked theme1"></span>
-                      </div>
-                      <span>4.3</span>
-                    </div>
-                    <div class="px-3 py-1 rounded fs-7">
-                      <div class="entry-author">
-                        <i class="icon-calendar theme1"></i>
-                        <span class=""> 7 Days Tours</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="entry-meta">
-                    <div class="entry-author d-flex align-items-center fs-8">
-                      <p class="mb-0"><span class="theme fw-bold fs-6"> $400.00</span> / Per person</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            }
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ using Project3Travelin.Dtos.AboutDtos;
 using Project3Travelin.Dtos.BannerDtos;
 using Project3Travelin.Dtos.CategoryDtos;
 using Project3Travelin.Dtos.CommantDtos;
+using Project3Travelin.Dtos.ContactForm;
 using Project3Travelin.Dtos.FaqDtos;
 using Project3Travelin.Dtos.InstagramDtos;
 using Project3Travelin.Dtos.PopulerDtos;
@@ -77,5 +78,12 @@ public class GeneralMapping : Profile
         CreateMap<Instagram, CreateInstagramDto>().ReverseMap();
         CreateMap<Instagram, UpdateInstagramDto>().ReverseMap();
         CreateMap<UpdateInstagramDto, GetInstagramByIdDto>().ReverseMap();
+
+
+        CreateMap<Contact, CreateContactDto>().ReverseMap();
+        CreateMap<Contact, GetContactByIdDto>().ReverseMap();
+        CreateMap<Contact, UpdateContactDto>().ReverseMap();
+        CreateMap<Contact, ResultContactDto>().ReverseMap();
+        CreateMap<UpdateContactDto, GetContactByIdDto>().ReverseMap();
     }
 }

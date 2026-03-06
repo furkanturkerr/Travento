@@ -1,24 +1,25 @@
+@model Project3Travelin.Dtos.SliderDtos.ResultSliderDto
 <section class="banner overflow-hidden">
   <div class="slider">
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
           <div class="slide-inner">
-            <div class="slide-image" style="background-image: url(https://wallpapers.com/images/hd/beautiful-saint-basil-s-cathedral-in-kremlin-9pj9wo5s1l5ph2oe.jpg)"></div>
+            <div class="slide-image" style="background-image: url(@Model.Image1)"></div>
 
             <div class="soft-overlay"></div>
           </div>
         </div>
         <div class="swiper-slide">
           <div class="slide-inner">
-            <div class="slide-image" style="background-image: url(https://b2ccdn.coraltatil.com/content/yurtdisiturlari/bolgegorsel/amerika_turlari.webp)"></div>
+            <div class="slide-image" style="background-image: url(@Model.Image2)"></div>
 
             <div class="soft-overlay"></div>
           </div>
         </div>
         <div class="swiper-slide">
           <div class="slide-inner">
-            <div class="slide-image" style="background-image: url(https://blog-biletall.mncdn.com/wp-content/uploads/2016/12/nevsehir-kapadokya.jpg)"></div>
+            <div class="slide-image" style="background-image: url(@Model.Image3)"></div>
 
             <div class="soft-overlay"></div>
           </div>
@@ -32,7 +33,7 @@
   <div class="banner-content position-absolute">
     <div class="entry-meta mb-0">
     </div>
-    <h1 class="mb-0"><a href="tour-single.html" class="white">Hayalindeki Tatili Planla</a></h1>
+    <h1 class="mb-0"><a href="~/Tour/TourList" class="white">@Model.Title</a></h1>
     <div class="banner-booking mt-3">
       <div class="form-content-in d-flex align-items-center justify-content-center gap-3 p-3">
         <div class="form-group">

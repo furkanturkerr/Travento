@@ -300,103 +300,103 @@ double locationPct = avg != null ? Math.Round(avg.Location      / 5.0 * 100) : 0
                     </div>
 
                     <!-- YORUM FORMU -->
-<div id="single-add-review" class="single-add-review">
-    <h4>Bir Yorum Yazın</h4>
-    <form id="commentForm" method="post" action="/Comment/CreateComment">
-         @Html.AntiForgeryToken()
-        <input type="hidden" name="TourId" value="@Model.TourId">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group mb-2">
-                    <input type="text" name="Name" placeholder="İsim">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group mb-2">
-                    <input type="email" name="Email" placeholder="Email">
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group mb-2">
-                    <input type="text" name="Headline" placeholder="Yorum Başlığı">
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="form-group mb-2">
-                    <textarea name="CommentDetail" placeholder="Yorumunuz"></textarea>
-                </div>
-            </div>
+                    <div id="single-add-review" class="single-add-review">
+                        <h4>Bir Yorum Yazın</h4>
+                        <form id="commentForm" method="post" action="/Comment/CreateComment">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="TourId" value="@Model.TourId">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-2">
+                                        <input type="text" name="Name" placeholder="İsim">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-2">
+                                        <input type="email" name="Email" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mb-2">
+                                        <input type="text" name="Headline" placeholder="Yorum Başlığı">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group mb-2">
+                                        <textarea name="CommentDetail" placeholder="Yorumunuz"></textarea>
+                                    </div>
+                                </div>
 
-            <!-- Ayrıntılı Yıldız Puanlama -->
-            <div class="col-md-12 mb-3">
-                <h6 class="mb-3">Puanlarınız</h6>
-                <div class="row">
-                    <div class="col-md-4 mb-2">
-                        <label class="d-block mb-1">Rehber</label>
-                        <div class="star-rating" data-field="Cleanliness">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <input type="hidden" name="Cleanliness" value="1">
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label class="d-block mb-1">Ulaşım</label>
-                        <div class="star-rating" data-field="Facilities">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <input type="hidden" name="Facilities" value="1">
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label class="d-block mb-1">Konaklama</label>
-                        <div class="star-rating" data-field="ValueForMoney">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <input type="hidden" name="ValueForMoney" value="1">
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label class="d-block mb-1">Yemek</label>
-                        <div class="star-rating" data-field="Service">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <input type="hidden" name="Service" value="1">
-                    </div>
-                    <div class="col-md-4 mb-2">
-                        <label class="d-block mb-1">Fiyat/Performans</label>
-                        <div class="star-rating" data-field="Location">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <input type="hidden" name="Location" value="1">
-                    </div>
-                </div>
-            </div>
+                                <!-- Ayrıntılı Yıldız Puanlama -->
+                                <div class="col-md-12 mb-3">
+                                    <h6 class="mb-3">Puanlarınız</h6>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <label class="d-block mb-1">Rehber</label>
+                                            <div class="star-rating" data-field="Cleanliness">
+                                                <span class="star" data-value="1">★</span>
+                                                <span class="star" data-value="2">★</span>
+                                                <span class="star" data-value="3">★</span>
+                                                <span class="star" data-value="4">★</span>
+                                                <span class="star" data-value="5">★</span>
+                                            </div>
+                                            <input type="hidden" name="Cleanliness" value="1">
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="d-block mb-1">Ulaşım</label>
+                                            <div class="star-rating" data-field="Facilities">
+                                                <span class="star" data-value="1">★</span>
+                                                <span class="star" data-value="2">★</span>
+                                                <span class="star" data-value="3">★</span>
+                                                <span class="star" data-value="4">★</span>
+                                                <span class="star" data-value="5">★</span>
+                                            </div>
+                                            <input type="hidden" name="Facilities" value="1">
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="d-block mb-1">Konaklama</label>
+                                            <div class="star-rating" data-field="ValueForMoney">
+                                                <span class="star" data-value="1">★</span>
+                                                <span class="star" data-value="2">★</span>
+                                                <span class="star" data-value="3">★</span>
+                                                <span class="star" data-value="4">★</span>
+                                                <span class="star" data-value="5">★</span>
+                                            </div>
+                                            <input type="hidden" name="ValueForMoney" value="1">
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="d-block mb-1">Yemek</label>
+                                            <div class="star-rating" data-field="Service">
+                                                <span class="star" data-value="1">★</span>
+                                                <span class="star" data-value="2">★</span>
+                                                <span class="star" data-value="3">★</span>
+                                                <span class="star" data-value="4">★</span>
+                                                <span class="star" data-value="5">★</span>
+                                            </div>
+                                            <input type="hidden" name="Service" value="1">
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <label class="d-block mb-1">Fiyat/Performans</label>
+                                            <div class="star-rating" data-field="Location">
+                                                <span class="star" data-value="1">★</span>
+                                                <span class="star" data-value="2">★</span>
+                                                <span class="star" data-value="3">★</span>
+                                                <span class="star" data-value="4">★</span>
+                                                <span class="star" data-value="5">★</span>
+                                            </div>
+                                            <input type="hidden" name="Location" value="1">
+                                        </div>
+                                    </div>
+                                </div>
 
-            <div class="col-md-6">
-                <div class="form-btn">
-                    <button type="button" class="nir-btn" onclick="document.getElementById('commentForm').submit()">Gönder</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
+                                <div class="col-md-6">
+                                    <div class="form-btn">
+                                        <button type="button" class="nir-btn" onclick="document.getElementById('commentForm').submit()">Gönder</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 

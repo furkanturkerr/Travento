@@ -1,3 +1,5 @@
+@model Project3Travelin.Dtos.InstagramDtos.ResultInstagramDto
+
 <footer class="pt-20 pb-4" style="background-image: url(03_travelin_main_file/travelin/images/background_pattern.png);">
     <div class="section-shape top-0" style="background-image: url(03_travelin_main_file/travelin/images/shape8.png);"></div>
     <!-- Instagram starts -->
@@ -5,52 +7,49 @@
         <div class="container">
             <div class="insta-inner">
                 <div class="follow-button">
-                    <h5 class="m-0 rounded"><i class="fab fa-instagram"></i> Follow on Instagram</h5>
+                    <a href="@Model.Url" target="_blank">
+                    <h5 class="m-0 rounded"><i class="fab fa-instagram"></i> Instagram'dan Takip Et</h5>
+                    </a>
                 </div>
                 <div class="row attract-slider">
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-3.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image1" alt="insta"></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-4.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image2" alt="insta"></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-5.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image3" alt="insta"></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-1.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image4" alt="insta"></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-7.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image5" alt="insta"></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-8.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image6" alt="insta"></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-2.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image7" alt="insta"></a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6">
                         <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-6.jpg" alt="insta"></a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="insta-image rounded">
-                            <a href="gallery.html"><img src="~/03_travelin_main_file/travelin/images/insta/ins-9.jpg" alt="insta"></a>
+                            <a href="gallery.html"><img style="width: 150px; height: 150px" src="@Model.Image8" alt="insta"></a>
                         </div>
                     </div>
                 </div>
