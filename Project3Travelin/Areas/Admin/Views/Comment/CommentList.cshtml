@@ -1,0 +1,216 @@
+@model List<Project3Travelin.Dtos.CommantDtos.ResultCommentDto>
+
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "Yorumlar";
+}
+
+<style>
+  :root {
+    --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+    --danger: #e74c3c; --warning: #f39c12; --success: #27ae60;
+    --text: #1a2e35; --muted: #6b7f86;
+    --border: #dde8ea; --white: #fff;
+    --shadow: 0 2px 12px rgba(13,158,143,.08); --radius: 12px;
+  }
+
+  .page-breadcrumb { margin-bottom: 24px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; }
+  .breadcrumb-item.active { color: var(--muted); }
+
+  .stats-row { display: flex; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+  .stat-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px 20px; display: flex; align-items: center; gap: 12px; flex: 1; min-width: 140px; }
+  .stat-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--teal-light); display: flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; }
+  .stat-icon.warn { background: #fff8e6; color: var(--warning); }
+  .stat-icon.suc  { background: #eafaf1; color: var(--success); }
+  .stat-val { font-size: 22px; font-weight: 900; color: var(--text); line-height: 1; }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .filter-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .filter-tab { padding: 7px 16px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--white); color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s; text-decoration: none; }
+  .filter-tab:hover { border-color: var(--teal); color: var(--teal); }
+  .filter-tab.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+
+  .empty-card { background: var(--white); border-radius: var(--radius); border: 2px dashed var(--border); padding: 72px 32px; text-align: center; color: var(--muted); }
+  .empty-card svg { opacity: .2; margin-bottom: 16px; }
+  .empty-card h5 { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+
+  .comment-card {
+    background: var(--white); border-radius: var(--radius);
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    padding: 20px 22px; margin-bottom: 14px;
+    transition: box-shadow .2s;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 16px; align-items: start;
+  }
+  .comment-card:hover { box-shadow: 0 4px 20px rgba(13,158,143,.10); }
+  .comment-card.pending  { border-left: 3px solid var(--warning); }
+  .comment-card.approved { border-left: 3px solid var(--success); }
+
+  .cc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .cc-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+  .cc-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .cc-date { font-size: 11px; color: var(--muted); }
+
+  .status-chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+  .status-chip.approved { background: #eafaf1; color: var(--success); }
+  .status-chip.pending  { background: #fff8e6; color: var(--warning); }
+
+  .cc-detail { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  .cc-scores { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .score-badge { background: var(--teal-light); color: var(--teal); border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 700; }
+
+  .cc-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 8px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; text-decoration: none; white-space: nowrap; }
+  .action-btn svg { width: 13px; height: 13px; }
+  .btn-approve { background: #eafaf1; color: var(--success); }
+  .btn-approve:hover { background: var(--success); color: #fff; transform: translateY(-1px); }
+  .btn-reject  { background: #fff8e6; color: var(--warning); }
+  .btn-reject:hover  { background: var(--warning); color: #fff; transform: translateY(-1px); }
+  .btn-del     { background: #fdecea; color: var(--danger); }
+  .btn-del:hover     { background: var(--danger); color: #fff; transform: translateY(-1px); }
+</style>
+
+<nav class="page-breadcrumb d-flex align-items-center justify-content-between">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Anasayfa</a></li>
+    <li class="breadcrumb-item active">Yorumlar</li>
+  </ol>
+</nav>
+
+@if (Model != null && Model.Any())
+{
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="stat-val">@Model.Count</div>
+        <div class="stat-lbl">Toplam Yorum</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon suc">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div>
+        <div class="stat-val">@Model.Count(c => c.IsStatus)</div>
+        <div class="stat-lbl">Onaylı</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon warn">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
+      <div>
+        <div class="stat-val">@Model.Count(c => !c.IsStatus)</div>
+        <div class="stat-lbl">Bekleyen</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-tabs">
+    <a href="#" class="filter-tab active" onclick="filterComments('all', this)">Tümü (@Model.Count)</a>
+    <a href="#" class="filter-tab" onclick="filterComments('approved', this)">Onaylı (@Model.Count(c => c.IsStatus))</a>
+    <a href="#" class="filter-tab" onclick="filterComments('pending', this)">Bekleyen (@Model.Count(c => !c.IsStatus))</a>
+  </div>
+}
+
+@if (Model == null || !Model.Any())
+{
+  <div class="empty-card">
+    <svg width="52" height="52" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <h5>Henüz yorum yapılmadı</h5>
+  </div>
+}
+else
+{
+  <div id="comments-list">
+    @foreach (var comment in Model.OrderByDescending(c => c.CommentDate))
+    {
+      <div class="comment-card @(comment.IsStatus ? "approved" : "pending")"
+           data-status="@(comment.IsStatus ? "approved" : "pending")">
+
+        <div>
+          <div class="cc-top">
+            <div class="cc-avatar">@(comment.Headline?.FirstOrDefault() ?? '?')</div>            <div>
+              <div class="cc-name">@comment.Headline</div>
+              <div class="cc-date">@comment.CommentDate.ToString("dd MMM yyyy, HH:mm")</div>
+            </div>
+            <span class="status-chip @(comment.IsStatus ? "approved" : "pending")">
+              @(comment.IsStatus ? "✓ Onaylı" : "⏳ Bekliyor")
+            </span>
+          </div>
+
+          <div class="cc-detail">@comment.CommentDetail</div>
+          
+        </div>
+
+        <div class="cc-actions">
+          @if (!comment.IsStatus)
+          {
+            <a href="/Admin/Comment/ApproveComment/@comment.CommentId" class="action-btn btn-approve">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Onayla
+            </a>
+          }
+          else
+          {
+            <a href="/Admin/Comment/ApproveComment/@comment.CommentId" class="action-btn btn-reject">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              Geri Al
+            </a>
+          }
+          <button class="action-btn btn-del" onclick="confirmDelete('@comment.CommentId')">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14H6L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+              <path d="M9 6V4h6v2"/>
+            </svg>
+            Sil
+          </button>
+        </div>
+
+      </div>
+    }
+  </div>
+}
+
+<script>
+  function filterComments(type, el) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.comment-card').forEach(card => {
+      if (type === 'all') {
+        card.style.display = 'grid';
+      } else {
+        card.style.display = card.dataset.status === type ? 'grid' : 'none';
+      }
+    });
+    return false;
+  }
+
+  function confirmDelete(id) {
+    if (confirm('Bu yorum silinecek. Emin misiniz?')) {
+      window.location.href = `/Admin/Comment/DeleteComment/${id}`;
+    }
+  }
+</script>

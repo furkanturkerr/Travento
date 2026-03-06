@@ -42,6 +42,21 @@ public class CommentService : ICommentService
        await _commantsCollection.DeleteOneAsync(x => x.CommentId == id);
     }
 
+    public async Task ApproveCommentAsync(string id)
+    {
+        var values = await _commantsCollection.Find(x => x.CommentId == id).FirstOrDefaultAsync();
+        if (values.IsStatus == false)
+        {
+            await _commantsCollection.UpdateOneAsync(x => x.CommentId == id,
+                Builders<Comment>.Update.Set(x => x.IsStatus, true));
+        }
+        else
+        {
+            await _commantsCollection.UpdateOneAsync(x => x.CommentId == id,
+                Builders<Comment>.Update.Set(x => x.IsStatus, false));
+        }
+    }
+
     public async Task<GetCommentByIdDto> GetCommentByIdAsync(string id)
     {
         var vaalue = await _commantsCollection.Find(x => x.CommentId == id).FirstOrDefaultAsync();
@@ -50,7 +65,7 @@ public class CommentService : ICommentService
 
     public async Task<List<ResultCommentListByTourIdDto>> GetCommentByTourIdAsync(string id)
     {
-        var value = await _commantsCollection.Find(x => x.TourId == id).ToListAsync();
+        var value = await _commantsCollection.Find(x => x.TourId == id && x.IsStatus == true).ToListAsync();
         return _mapper.Map<List<ResultCommentListByTourIdDto>>(value);
     }
     

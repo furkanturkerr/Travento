@@ -8,6 +8,7 @@ public interface ICommentService
     Task UpdateCommantAsync(UpdateCommentDto updateCommentDto);
     Task CreateCommantAsync(CreateCommentDto createCommentDto);
     Task DeleteCommantAsync(string id);
+    Task ApproveCommentAsync(string id);
     Task<GetCommentByIdDto> GetCommentByIdAsync(string id);
     Task<ReviewAverageDto> GetAverageByTourIdAsync(string id);
     Task<List<ResultCommentListByTourIdDto>> GetCommentByTourIdAsync(string id);
