@@ -1,0 +1,37 @@
+@model Project3Travelin.Dtos.BookingDtos.UpdateBookingDto
+
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<form class="form-control" method="post">
+    <input type="hidden" asp-for="BookingId" />
+    <input type="hidden" asp-for="TourId"/>
+    <input type="hidden" asp-for="CreatedAt"/>
+    <input type="hidden" asp-for="IsConfirmed"/>
+    
+    <label>İsim</label>
+    <input type="text" asp-for="FirstName" class="form-control"/>
+    <br/>
+    <label>Soyisim</label>
+    <input type="text" asp-for="LastName" class="form-control"/>
+    <br/>
+    <label>Email</label>
+    <input type="text" asp-for="Email" class="form-control"/>
+    <br/>
+    <label>Telefon</label>
+    <input type="text" asp-for="Phone" class="form-control"/>
+    <br/>
+    <label>Tc</label>
+    <input type="text" asp-for="TcNo" class="form-control"/>
+    <br/>
+    <label>Kişi Sayısı</label>
+    <input type="text" asp-for="PersonCount" class="form-control"/>
+    <br/>
+    <label>Tur Tarihi</label>
+    <input type="text" asp-for="BookingDate" class="form-control"/>
+    <br/>
+    <label>Not</label>
+    <input type="text" asp-for="Note" class="form-control"/>
+    <br/>
+</form>

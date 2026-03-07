@@ -1,0 +1,345 @@
+@model List<Project3Travelin.Dtos.BookingDtos.ResultBookingDto>
+
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "Rezervasyonlar";
+}
+
+<style>
+  :root {
+    --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+    --danger: #e74c3c; --warning: #f39c12; --success: #27ae60;
+    --text: #1a2e35; --muted: #6b7f86;
+    --border: #dde8ea; --white: #fff;
+    --shadow: 0 2px 12px rgba(13,158,143,.08); --radius: 12px;
+  }
+  .page-breadcrumb { margin-bottom: 24px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; }
+  .breadcrumb-item.active { color: var(--muted); }
+  .stats-row { display: flex; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+  .stat-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px 20px; display: flex; align-items: center; gap: 12px; flex: 1; min-width: 130px; }
+  .stat-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--teal-light); display: flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; }
+  .stat-icon.warn { background: #fff8e6; color: var(--warning); }
+  .stat-icon.suc  { background: #eafaf1; color: var(--success); }
+  .stat-val { font-size: 20px; font-weight: 900; color: var(--text); line-height: 1; }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .table-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; }
+  .table-toolbar { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .search-box { display: flex; align-items: center; gap: 8px; background: #f4f8f8; border: 1.5px solid var(--border); border-radius: 8px; padding: 7px 12px; flex: 1; min-width: 200px; }
+  .search-box input { border: none; background: transparent; outline: none; font-size: 13px; color: var(--text); width: 100%; }
+  .search-box svg { color: var(--muted); flex-shrink: 0; }
+  .filter-select { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text); background: #f4f8f8; outline: none; cursor: pointer; }
+  .filter-select:focus { border-color: var(--teal); }
+  .row-count { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table thead tr { background: #f4f8f8; }
+  .data-table th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none; }
+  .data-table th:hover { color: var(--teal); }
+  .data-table th.sort-asc::after  { content: ' ↑'; color: var(--teal); }
+  .data-table th.sort-desc::after { content: ' ↓'; color: var(--teal); }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table tbody tr:hover { background: #f9fdfd; }
+  .data-table td { padding: 12px 16px; font-size: 13px; color: var(--text); vertical-align: middle; }
+  .td-name { font-weight: 700; white-space: nowrap; }
+  .td-tour { max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+  .td-contact { font-size: 12px; color: var(--muted); }
+  .status-chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .status-chip.confirmed { background: #eafaf1; color: var(--success); }
+  .status-chip.pending   { background: #fff8e6; color: var(--warning); }
+  .person-badge { display: inline-flex; align-items: center; gap: 4px; background: var(--teal-light); color: var(--teal); border-radius: 6px; padding: 3px 8px; font-size: 12px; font-weight: 700; }
+  .action-btns { display: flex; gap: 5px; }
+  .action-btn { width: 28px; height: 28px; border-radius: 6px; border: none; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background .12s, transform .12s; text-decoration: none; }
+  .action-btn svg { width: 13px; height: 13px; }
+  .btn-confirm { background: #eafaf1; color: var(--success); }
+  .btn-confirm:hover { background: var(--success); color: #fff; transform: scale(1.1); }
+  .btn-cancel  { background: #fff8e6; color: var(--warning); }
+  .btn-cancel:hover  { background: var(--warning); color: #fff; transform: scale(1.1); }
+  .btn-del     { background: #fdecea; color: var(--danger); }
+  .btn-del:hover     { background: var(--danger); color: #fff; transform: scale(1.1); }
+  .btn-detail  { background: var(--teal-light); color: var(--teal); }
+  .btn-detail:hover  { background: var(--teal); color: #fff; transform: scale(1.1); }
+  .table-footer { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .page-info { font-size: 12px; color: var(--muted); }
+  .page-btns { display: flex; gap: 4px; }
+  .page-btn { min-width: 30px; height: 30px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--text); background: #f4f8f8; border: 1.5px solid var(--border); padding: 0 6px; transition: all .12s; }
+  .page-btn:hover { background: var(--teal-light); border-color: var(--teal); color: var(--teal); }
+  .page-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .page-btn.disabled { opacity: .35; cursor: not-allowed; pointer-events: none; }
+  .empty-row td { text-align: center; padding: 48px; color: var(--muted); font-size: 13px; }
+  /* Modal */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:9999; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:#fff; border-radius:16px; max-width:480px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,.2); overflow:hidden; }
+  .modal-head { background:linear-gradient(135deg,#0d9e8f,#0a7d71); padding:18px 22px; color:#fff; display:flex; align-items:center; justify-content:space-between; }
+  .modal-head h5 { margin:0; font-size:16px; font-weight:800; }
+  .modal-close { background:rgba(255,255,255,.2); border:none; color:#fff; width:28px; height:28px; border-radius:50%; cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; }
+  .modal-body { padding:22px; }
+  .detail-row { display:flex; padding:9px 0; border-bottom:1px solid #f0f0f0; font-size:13px; }
+  .detail-row:last-child { border:none; }
+  .detail-row .lbl { color:var(--muted); font-weight:600; width:40%; flex-shrink:0; }
+  .detail-row .val { color:var(--text); font-weight:700; }
+</style>
+
+<nav class="page-breadcrumb d-flex align-items-center justify-content-between">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Anasayfa</a></li>
+    <li class="breadcrumb-item active">Rezervasyonlar</li>
+  </ol>
+</nav>
+
+@if (Model != null && Model.Any())
+{
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div><div class="stat-val">@Model.Count</div><div class="stat-lbl">Toplam</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon suc">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div><div class="stat-val">@Model.Count(b => b.IsConfirmed)</div><div class="stat-lbl">Onaylı</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon warn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div><div class="stat-val">@Model.Count(b => !b.IsConfirmed)</div><div class="stat-lbl">Bekleyen</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div><div class="stat-val">@Model.Sum(b => b.PersonCount)</div><div class="stat-lbl">Toplam Kişi</div></div>
+    </div>
+  </div>
+}
+
+<div class="table-card">
+  <div class="table-toolbar">
+    <div class="search-box">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Ad, e-posta veya tur ara..." oninput="applyFilters()" />
+    </div>
+    <select class="filter-select" id="statusFilter" onchange="applyFilters()">
+      <option value="all">Tüm Durumlar</option>
+      <option value="confirmed">Onaylı</option>
+      <option value="pending">Bekleyen</option>
+    </select>
+    <span class="row-count" id="rowCount"></span>
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th onclick="sortTable('name')">Ad Soyad</th>
+          <th onclick="sortTable('tour')">Tur</th>
+          <th onclick="sortTable('date')">Tur Tarihi</th>
+          <th onclick="sortTable('person')">Kişi</th>
+          <th>İletişim</th>
+          <th onclick="sortTable('created')">Kayıt Tarihi</th>
+          <th onclick="sortTable('status')">Durum</th>
+          <th>İşlem</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        @if (Model == null || !Model.Any())
+        {
+          <tr class="empty-row"><td colspan="8">Henüz rezervasyon bulunmuyor.</td></tr>
+        }
+        else
+        {
+          @foreach (var b in Model.OrderByDescending(x => x.CreatedAt))
+          {
+            <tr data-status="@(b.IsConfirmed ? "confirmed" : "pending")"
+                data-name="@((b.FirstName + " " + b.LastName).ToLower())"
+                data-tour="@b.TourTitle?.ToLower()"
+                data-date="@b.BookingDate.ToString("yyyy-MM-dd")"
+                data-created="@b.CreatedAt.ToString("yyyy-MM-dd")"
+                data-person="@b.PersonCount"
+                data-detail-name="@b.FirstName @b.LastName"
+                data-detail-email="@b.Email"
+                data-detail-phone="@b.Phone"
+                data-detail-tc="@b.TcNo"
+                data-detail-tour="@b.TourTitle"
+                data-detail-date="@b.BookingDate.ToString("dd.MM.yyyy")"
+                data-detail-person="@b.PersonCount"
+                data-detail-note="@b.Note"
+                data-detail-created="@b.CreatedAt.ToString("dd.MM.yyyy HH:mm")"
+                data-detail-id="@b.BookingId">
+              <td class="td-name">@b.FirstName @b.LastName</td>
+              <td class="td-tour" title="@b.TourTitle">@b.TourTitle</td>
+              <td style="white-space:nowrap;color:var(--muted);">@b.BookingDate.ToString("dd.MM.yyyy")</td>
+              <td>
+                <span class="person-badge">
+                  <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  @b.PersonCount
+                </span>
+              </td>
+              <td>
+                <div class="td-contact">@b.Email</div>
+                <div class="td-contact">@b.Phone</div>
+              </td>
+              <td style="white-space:nowrap;color:var(--muted);font-size:12px;">@b.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+              <td>
+                <span class="status-chip @(b.IsConfirmed ? "confirmed" : "pending")">
+                  @(b.IsConfirmed ? "✓ Onaylı" : "⏳ Bekliyor")
+                </span>
+              </td>
+              <td>
+                <div class="action-btns">
+                  <button class="action-btn btn-detail" title="Detay" onclick="showDetail(this.closest('tr'))">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                  </button>
+                  @if (!b.IsConfirmed)
+                  {
+                    <a href="/Admin/Booking/Approve/@b.BookingId" class="action-btn btn-confirm" title="Onayla">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    </a>
+                  }
+                  else
+                  {
+                    <a href="/Admin/Booking/CancelBooking/@b.BookingId" class="action-btn btn-cancel" title="İptal Et">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </a>
+                  }
+                  <button class="action-btn btn-del" title="Sil" onclick="confirmDelete('@b.BookingId')">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-footer">
+    <span class="page-info" id="pageInfo"></span>
+    <div class="page-btns" id="pageBtns"></div>
+  </div>
+</div>
+
+<!-- Detay Modal -->
+<div class="modal-overlay" id="detailModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h5>Rezervasyon Detayı</h5>
+      <button class="modal-close" onclick="document.getElementById('detailModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  var PAGE_SIZE = 20;
+  var currentPage = 1;
+  var sortCol = 'created';
+  var sortDir = 'desc';
+  var filteredRows = [];
+
+  function getAllRows() {
+    return Array.from(document.querySelectorAll('#tableBody tr[data-status]'));
+  }
+
+  function applyFilters() {
+    var search = document.getElementById('searchInput').value.toLowerCase().trim();
+    var status = document.getElementById('statusFilter').value;
+    filteredRows = getAllRows().filter(function(row) {
+      var matchSearch = !search ||
+        (row.dataset.name || '').includes(search) ||
+        (row.dataset.tour || '').includes(search) ||
+        (row.dataset.detailEmail || '').includes(search);
+      var matchStatus = status === 'all' || row.dataset.status === status;
+      return matchSearch && matchStatus;
+    });
+    currentPage = 1;
+    renderTable();
+  }
+
+  function sortTable(col) {
+    if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    else { sortCol = col; sortDir = 'asc'; }
+    document.querySelectorAll('.data-table th').forEach(function(th) { th.classList.remove('sort-asc','sort-desc'); });
+    var thMap = { name:0, tour:1, date:2, person:3, created:5, status:6 };
+    var th = document.querySelectorAll('.data-table th')[thMap[col]];
+    if (th) th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    filteredRows.sort(function(a, b) {
+      var av, bv;
+      if      (col === 'person')  { av = parseInt(a.dataset.person);  bv = parseInt(b.dataset.person); }
+      else if (col === 'date')    { av = a.dataset.date    || ''; bv = b.dataset.date    || ''; }
+      else if (col === 'created') { av = a.dataset.created || ''; bv = b.dataset.created || ''; }
+      else if (col === 'status')  { av = a.dataset.status  || ''; bv = b.dataset.status  || ''; }
+      else if (col === 'name')    { av = a.dataset.name    || ''; bv = b.dataset.name    || ''; }
+      else                        { av = a.dataset.tour    || ''; bv = b.dataset.tour    || ''; }
+      if (av < bv) return sortDir === 'asc' ? -1 : 1;
+      if (av > bv) return sortDir === 'asc' ?  1 : -1;
+      return 0;
+    });
+    renderTable();
+  }
+
+  function renderTable() {
+    var total = filteredRows.length;
+    var totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    var start = (currentPage - 1) * PAGE_SIZE;
+    var end   = Math.min(start + PAGE_SIZE, total);
+    getAllRows().forEach(function(r) { r.style.display = 'none'; });
+    filteredRows.forEach(function(r, i) { r.style.display = (i >= start && i < end) ? '' : 'none'; });
+    document.getElementById('rowCount').textContent = total + ' rezervasyon' + (total !== getAllRows().length ? ' (filtrelenmiş)' : '');
+    document.getElementById('pageInfo').textContent = total === 0 ? 'Sonuç yok' : (start+1) + '–' + end + ' arası, toplam ' + total;
+    var btns = '';
+    btns += '<span class="page-btn ' + (currentPage===1?'disabled':'') + '" onclick="goPage('+(currentPage-1)+')">' +
+      '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></span>';
+    for (var p = 1; p <= totalPages; p++) {
+      if (p===1 || p===totalPages || (p>=currentPage-1 && p<=currentPage+1))
+        btns += '<span class="page-btn '+(p===currentPage?'active':'')+'" onclick="goPage('+p+')">'+p+'</span>';
+      else if (p===currentPage-2 || p===currentPage+2)
+        btns += '<span class="page-btn" style="pointer-events:none;border:none;background:none;">…</span>';
+    }
+    btns += '<span class="page-btn ' + (currentPage===totalPages?'disabled':'') + '" onclick="goPage('+(currentPage+1)+')">' +
+      '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>';
+    document.getElementById('pageBtns').innerHTML = btns;
+  }
+
+  function goPage(p) { currentPage = p; renderTable(); }
+
+  function showDetail(row) {
+    var d = row.dataset;
+    var statusHtml = d.status === 'confirmed'
+      ? '<span class="status-chip confirmed">✓ Onaylı</span>'
+      : '<span class="status-chip pending">⏳ Bekliyor</span>';
+    document.getElementById('modalBody').innerHTML =
+      '<div class="detail-row"><span class="lbl">Rezervasyon No</span><span class="val" style="font-size:11px;color:var(--muted)">#'+(d.detailId||'').substring(0,8).toUpperCase()+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">Ad Soyad</span><span class="val">'+d.detailName+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">E-posta</span><span class="val">'+d.detailEmail+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">Telefon</span><span class="val">'+d.detailPhone+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">TC No</span><span class="val">'+d.detailTc+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">Tur</span><span class="val">'+d.detailTour+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">Tur Tarihi</span><span class="val">'+d.detailDate+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">Kişi Sayısı</span><span class="val">'+d.detailPerson+' kişi</span></div>'+
+      '<div class="detail-row"><span class="lbl">Kayıt Tarihi</span><span class="val">'+d.detailCreated+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">Durum</span><span class="val">'+statusHtml+'</span></div>'+
+      '<div class="detail-row"><span class="lbl">Notlar</span><span class="val">'+(d.detailNote||'<span style="color:#ccc">—</span>')+'</span></div>';
+    document.getElementById('detailModal').classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === document.getElementById('detailModal'))
+      document.getElementById('detailModal').classList.remove('open');
+  }
+
+  function confirmDelete(id) {
+    if (confirm('Bu rezervasyon silinecek. Emin misiniz?'))
+      window.location.href = '/Admin/Booking/DeleteBooking/' + id;
+  }
+
+  filteredRows = getAllRows();
+  renderTable();
+</script>

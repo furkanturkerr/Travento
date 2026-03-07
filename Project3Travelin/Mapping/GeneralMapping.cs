@@ -1,6 +1,7 @@
 using AutoMapper;
 using Project3Travelin.Dtos.AboutDtos;
 using Project3Travelin.Dtos.BannerDtos;
+using Project3Travelin.Dtos.BookingDtos;
 using Project3Travelin.Dtos.CategoryDtos;
 using Project3Travelin.Dtos.CommantDtos;
 using Project3Travelin.Dtos.ContactForm;
@@ -86,5 +87,11 @@ public class GeneralMapping : Profile
         CreateMap<Contact, UpdateContactDto>().ReverseMap();
         CreateMap<Contact, ResultContactDto>().ReverseMap();
         CreateMap<UpdateContactDto, GetContactByIdDto>().ReverseMap();
+        
+        CreateMap<Booking, GetBookingByIdDto>().ReverseMap();
+        CreateMap<Booking, ResultBookingDto>().ReverseMap();
+        CreateMap<Booking, CreateBookingDto>().ReverseMap();
+        CreateMap<Booking, UpdateBookingDto>().ReverseMap();
+        CreateMap<UpdateBookingDto, GetBookingByIdDto>().ReverseMap();
     }
 }

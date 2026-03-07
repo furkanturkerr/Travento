@@ -1,0 +1,27 @@
+@model List<Project3Travelin.Dtos.ContactForm.ResultContactDto>
+
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Ad Soyad</th>
+        <th>Eposta</th>
+        <th>Telefon</th>
+        <th>Sil</th>
+        <th>Detay</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ContactId</td>
+            <td>@item.first_name @item.last_name</td>
+            <td>@item.email</td>
+            <td>@item.phone</td>
+            <td><a href="/Admin/Contact/Delete/@item.ContactId">Sil</a></td>
+            <td><a href="/Admin/Contact/Details/@item.ContactId">Detay</a></td>
+        </tr>
+    }
+</table>

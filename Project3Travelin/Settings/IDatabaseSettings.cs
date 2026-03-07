@@ -15,4 +15,5 @@ public interface IDatabaseSettings
     public string FaqCollectionName { get; set; }
     public string InstagramCollectionName { get; set; }
     public string ContactCollectionName { get; set; }
+    public string BookingCollectionName { get; set; }
 }

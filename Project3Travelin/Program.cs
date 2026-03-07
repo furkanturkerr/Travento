@@ -2,6 +2,7 @@ using System.Reflection;
 using Microsoft.Extensions.Options;
 using Project3Travelin.Services.AboutService;
 using Project3Travelin.Services.BannerService;
+using Project3Travelin.Services.BookingServices;
 using Project3Travelin.Services.CategoryServices;
 using Project3Travelin.Services.CommantServices;
 using Project3Travelin.Services.ContactService;
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IBannerService, BannerService>();
 builder.Services.AddScoped<IFaqService, FaqService>();
 builder.Services.AddScoped<IInstagramService, InstagramService>();
 builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -64,6 +66,11 @@ app.MapControllerRoute(
     name: "iletisim",
     pattern: "iletisim",
     defaults: new { controller = "Contact", action = "Iletisim" });
+
+app.MapControllerRoute(
+    name: "rezervasyon",
+    pattern: "rezervasyon",
+    defaults: new { controller = "Booking", action = "Rezervasyon" });
 
 app.MapControllerRoute(
     name: "default",

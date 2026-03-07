@@ -1,0 +1,483 @@
+@model Project3Travelin.Dtos.BookingDtos.CreateBookingDto
+
+@{
+    Layout = null;
+    var tours = ViewBag.Tours as List<Project3Travelin.Dtos.TourDtos.ResultTourDto>;
+}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr">
+
+@await Component.InvokeAsync("_HomeHeadComponentPartial")
+@await Component.InvokeAsync("_DefaultHeaderComponentPartial")
+
+<style>
+  /* ── Step indicator ── */
+  .step-bar { display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:36px; }
+  .step { display:flex; flex-direction:column; align-items:center; gap:6px; position:relative; }
+  .step-circle {
+    width:42px; height:42px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:15px;
+    background:#e9ecef; color:#888; border:2px solid #dee2e6;
+    transition:all .3s; position:relative; z-index:1;
+  }
+  .step.active   .step-circle { background:#0d9e8f; color:#fff; border-color:#0d9e8f; }
+  .step.done     .step-circle { background:#0d9e8f; color:#fff; border-color:#0d9e8f; }
+  .step-label { font-size:12px; font-weight:600; color:#aaa; white-space:nowrap; }
+  .step.active .step-label, .step.done .step-label { color:#0d9e8f; }
+  .step-line { width:80px; height:2px; background:#dee2e6; margin-bottom:18px; transition:background .3s; }
+  .step-line.done { background:#0d9e8f; }
+
+  /* ── Tour card grid ── */
+  .tour-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:18px; margin-bottom:10px; }
+  .tour-pick-card {
+    border-radius:14px; overflow:hidden; cursor:pointer;
+    border:2.5px solid transparent; transition:all .2s;
+    box-shadow:0 2px 12px rgba(0,0,0,.07); background:#fff;
+    position:relative;
+  }
+  .tour-pick-card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(13,158,143,.15); border-color:#0d9e8f44; }
+  .tour-pick-card.selected { border-color:#0d9e8f; box-shadow:0 6px 24px rgba(13,158,143,.25); }
+  .tour-pick-card .pick-check {
+    position:absolute; top:10px; right:10px; width:26px; height:26px;
+    border-radius:50%; background:#0d9e8f; color:#fff;
+    display:none; align-items:center; justify-content:center;
+    font-size:13px; z-index:2; box-shadow:0 2px 6px rgba(0,0,0,.2);
+  }
+  .tour-pick-card.selected .pick-check { display:flex; }
+  .pick-img { width:100%; height:160px; object-fit:cover; display:block; }
+  .pick-img-placeholder { width:100%; height:160px; background:linear-gradient(135deg,#0d9e8f22,#0d9e8f44); display:flex; align-items:center; justify-content:center; color:#0d9e8f; }
+  .pick-body { padding:14px; }
+  .pick-title { font-size:14px; font-weight:700; color:#1a2e35; margin-bottom:6px; line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .pick-meta { display:flex; align-items:center; justify-content:space-between; }
+  .pick-loc { font-size:12px; color:#6b7f86; }
+  .pick-loc i { color:#0d9e8f; }
+  .pick-price { font-size:14px; font-weight:800; color:#0d9e8f; }
+  .pick-badge { display:inline-block; background:#e6f7f5; color:#0d9e8f; border-radius:6px; padding:2px 8px; font-size:11px; font-weight:700; margin-top:6px; }
+
+  /* ── Form section ── */
+  #formSection { display:none; }
+  #formSection.show { display:block; }
+  .selected-tour-banner {
+    background:linear-gradient(135deg,#0d9e8f,#0a7d71);
+    border-radius:12px; padding:16px 20px; margin-bottom:24px;
+    display:flex; align-items:center; gap:14px; color:#fff;
+  }
+  .selected-tour-banner img { width:56px; height:56px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+  .stb-title { font-size:15px; font-weight:700; }
+  .stb-sub { font-size:12px; opacity:.85; }
+  .stb-change { margin-left:auto; background:rgba(255,255,255,.2); border:none; color:#fff; border-radius:8px; padding:6px 14px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; transition:background .15s; }
+  .stb-change:hover { background:rgba(255,255,255,.35); }
+
+  /* ── Counter ── */
+  .counter-btn {
+    width:32px; height:32px; border-radius:6px;
+    border:1.5px solid #dde; background:#f4f8f8;
+    font-size:18px; font-weight:700; line-height:1;
+    cursor:pointer; transition:background .15s;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .counter-btn:hover { background:#0d9e8f; color:#fff; border-color:#0d9e8f; }
+  #submitBtn:disabled { opacity:.45; cursor:not-allowed; }
+
+  /* ── Sidebar summary ── */
+  .summary-row { display:flex; justify-content:space-between; padding:6px 0; font-size:13px; border-bottom:1px solid #f0f0f0; }
+  .summary-row:last-child { border:none; }
+  .summary-total { display:flex; justify-content:space-between; padding:10px 0 0; font-size:15px; font-weight:800; color:#0d9e8f; }
+</style>
+
+<section class="breadcrumb-main pb-20 pt-14" style="background-image: url(https://image.hurimg.com/i/hurriyet/90/0x0/5a699a73c03c0e21249b0902.jpg);">
+    <div class="section-shape section-shape1 top-inherit bottom-0" style="background-image: url(/03_travelin_main_file/travelin/images/shape8.png);"></div>
+    <div class="breadcrumb-outer">
+        <div class="container">
+            <div class="breadcrumb-content text-center">
+                <h1 class="mb-3">Rezervasyon Yap</h1>
+                <nav aria-label="breadcrumb" class="d-block">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Anasayfa</a></li>
+                        <li class="breadcrumb-item active">Rezervasyon</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="dot-overlay"></div>
+</section>
+
+<section class="trending pt-6 pb-6 bg-lgrey">
+    <div class="container">
+
+        <!-- Step Bar -->
+        <div class="step-bar">
+            <div class="step active" id="step1Ind">
+                <div class="step-circle">1</div>
+                <div class="step-label">Tur Seç</div>
+            </div>
+            <div class="step-line" id="stepLine"></div>
+            <div class="step" id="step2Ind">
+                <div class="step-circle">2</div>
+                <div class="step-label">Bilgileri Doldur</div>
+            </div>
+        </div>
+        
+        <div id="step1Section">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h4 class="mb-0">Bir Tur Seçin</h4>
+                <small class="text-muted">@(tours?.Count ?? 0) tur mevcut</small>
+            </div>
+
+            @if (tours != null && tours.Any())
+            {
+                <div class="tour-grid">
+                    @foreach (var tour in tours)
+                    {
+                        <div class="tour-pick-card"
+                             data-id="@tour.TourId"
+                             data-title="@tour.Title"
+                             data-city="@tour.City"
+                             data-country="@tour.Country"
+                             data-price="@tour.Price"
+                             data-capacity="@tour.Capacity"
+                             data-daynight="@tour.DayNight"
+                             data-img="@tour.ImageUrl"
+                             onclick="selectTour(this)">
+
+                            <div class="pick-check">✓</div>
+
+                            @if (!string.IsNullOrEmpty(tour.ImageUrl))
+                            {
+                                <img class="pick-img" src="@tour.ImageUrl" alt="@tour.Title" />
+                            }
+                            else
+                            {
+                                <div class="pick-img-placeholder">
+                                    <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                    </svg>
+                                </div>
+                            }
+
+                            <div class="pick-body">
+                                <div class="pick-title">@tour.Title</div>
+                                <div class="pick-meta">
+                                    <span class="pick-loc"><i class="icon-location-pin"></i> @tour.City, @tour.Country</span>
+                                    <span class="pick-price">@tour.Price.ToString("N0")₺</span>
+                                </div>
+                                <span class="pick-badge">@tour.DayNight</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="button" class="nir-btn px-5" id="goToFormBtn" onclick="goToForm()" disabled
+                            style="opacity:.4;cursor:not-allowed;">
+                        Devam Et &nbsp;→
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5 text-muted">
+                    <i class="fa fa-map-marked-alt fa-3x mb-3 d-block" style="color:#ccc;"></i>
+                    Henüz tur bulunmuyor.
+                </div>
+            }
+        </div>
+        
+        <div id="formSection">
+            <div class="row">
+                <div class="col-lg-8 mb-4">
+                    <div class="payment-book">
+                        <div class="booking-box">
+                            <div class="selected-tour-banner" id="selectedBanner">
+                                <img id="bannerImg" src="" alt="" />
+                                <div>
+                                    <div class="stb-title" id="bannerTitle"></div>
+                                    <div class="stb-sub" id="bannerSub"></div>
+                                </div>
+                                <button class="stb-change" onclick="goBack()">← Turu Değiştir</button>
+                            </div>
+
+                            <form asp-controller="Booking" asp-action="CreateBooking" asp-area="" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" asp-for="TourId" id="hiddenTourId" />
+                                
+                                <div class="customer-information mb-4">
+                                    <h3 class="border-b pb-2 mb-3">
+                                        <i class="fa fa-user me-2 theme"></i> Kişisel Bilgiler
+                                    </h3>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="FirstName">Ad <span class="text-danger">*</span></label>
+                                                <input asp-for="FirstName" type="text" placeholder="Adınız" class="form-control" />
+                                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="LastName">Soyad <span class="text-danger">*</span></label>
+                                                <input asp-for="LastName" type="text" placeholder="Soyadınız" class="form-control" />
+                                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="Email">E-posta <span class="text-danger">*</span></label>
+                                                <input asp-for="Email" type="email" placeholder="ornek@mail.com" class="form-control" />
+                                                <span asp-validation-for="Email" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="Phone">Telefon <span class="text-danger">*</span></label>
+                                                <input asp-for="Phone" type="text" placeholder="05XX XXX XX XX" class="form-control" />
+                                                <span asp-validation-for="Phone" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="TcNo">TC Kimlik No <span class="text-danger">*</span></label>
+                                                <input asp-for="TcNo" type="text" placeholder="11 haneli TC no" maxlength="11" class="form-control" id="tcInput" oninput="tcOnly(this)" />
+                                                <span asp-validation-for="TcNo" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="customer-information mb-4">
+                                    <h3 class="border-b pb-2 mb-3">
+                                        <i class="fa fa-calendar-alt me-2 theme"></i> Rezervasyon Bilgileri
+                                    </h3>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="BookingDate">Tur Tarihi <span class="text-danger">*</span></label>
+                                                <input asp-for="BookingDate" type="date" class="form-control"
+                                                       min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                                                <span asp-validation-for="BookingDate" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="PersonCount">Kişi Sayısı <span class="text-danger">*</span></label>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <button type="button" class="counter-btn" onclick="changeCount(-1)">−</button>
+                                                    <input asp-for="PersonCount" type="number" min="1" id="personCount"
+                                                           class="form-control text-center" style="width:80px;" value="1" readonly />
+                                                    <button type="button" class="counter-btn" onclick="changeCount(1)">+</button>
+                                                    <small class="text-muted ms-1" id="capLabel"></small>
+                                                </div>
+                                                <span asp-validation-for="PersonCount" class="text-danger small"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group mb-3">
+                                                <label asp-for="Note">Notlar / Özel İstekler</label>
+                                                <textarea asp-for="Note" rows="3" placeholder="Varsa özel isteklerinizi belirtiniz..."
+                                                          class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="customer-information mb-4 d-flex align-items-center bg-grey rounded p-4">
+                                    <i class="fa fa-info-circle rounded fs-1 bg-theme white p-3 px-4"></i>
+                                    <div class="customer-info ps-4">
+                                        <h6 class="mb-1">Bilgilendirme:</h6>
+                                        <small>Rezervasyonunuz onaylandıktan sonra e-posta ile bilgilendirileceksiniz. Ödeme tur günü alınmaktadır.</small>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="booking-terms border-t pt-3 mt-3">
+                                    <div class="d-lg-flex align-items-center gap-3">
+                                        <div class="form-group mb-2 flex-grow-1">
+                                            <label class="d-flex align-items-center gap-2" style="cursor:pointer;">
+                                                <input type="checkbox" id="termsCheck" onchange="toggleSubmit(this)" />
+                                                <span>
+                                                    <a href="#" class="theme text-decoration-underline">Şartlar ve Koşulları</a>
+                                                    okudum, kabul ediyorum.
+                                                </span>
+                                            </label>
+                                        </div>
+                                        <button type="button" class="nir-btn float-lg-end px-5" id="submitBtn" onclick="trySubmit()" style="opacity:.45;cursor:not-allowed;">
+                                            <i class="fa fa-check me-2"></i> Rezervasyonu Tamamla
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="sidebar-sticky">
+                        <div class="sidebar-item bg-white rounded box-shadow overflow-hidden p-3 mb-4">
+                            <h4 class="border-b pb-2 mb-3">Fiyat Özeti</h4>
+                            <div class="summary-row">
+                                <span>Kişi Başı Ücret</span>
+                                <span id="sumUnitPrice" class="fw-bold theme2">—</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Kişi Sayısı</span>
+                                <span id="sumCount">1</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Kapasite</span>
+                                <span id="sumCapacity" class="text-muted">—</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>Toplam</span>
+                                <span id="sumTotal">—</span>
+                            </div>
+                            <small class="text-muted d-block mt-2">* Ödeme tur günü yapılır.</small>
+                        </div>
+
+                        <div class="sidebar-item bg-white rounded box-shadow overflow-hidden p-3">
+                            <h4 class="border-b pb-2 mb-3">Yardım mı Lazım?</h4>
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-2"><i class="fa fa-phone theme me-2"></i><a href="tel:+90XXXXXXXXXX" class="text-dark pt-2">+90 0967 567 5566</a></li>
+                                <li class="mb-2"><i class="fa fa-envelope theme me-2"></i><a href="mailto:info@travelin.com" class="text-dark">info@travelin.com</a></li>
+                                <li><i class="fa fa-clock theme me-2"></i><small class="text-muted">Pzt–Cum: 09:00 – 18:00</small></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<div id="back-to-top"><a href="#"></a></div>
+
+<script src="~/03_travelin_main_file/travelin/js/jquery-3.5.1.min.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/bootstrap.min.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/fontawesome.min.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/plugin.js"></script>
+<script src="~/03_travelin_main_file/travelin/js/main.js"></script>
+
+<script>
+  var selectedTour = null;
+
+  function selectTour(el) {
+    // Önceki seçimi kaldır
+    document.querySelectorAll('.tour-pick-card').forEach(function(c) {
+      c.classList.remove('selected');
+    });
+    el.classList.add('selected');
+
+    selectedTour = {
+      id:       el.dataset.id,
+      title:    el.dataset.title,
+      city:     el.dataset.city,
+      country:  el.dataset.country,
+      price:    parseFloat(el.dataset.price),
+      capacity: parseInt(el.dataset.capacity),
+      daynight: el.dataset.daynight,
+      img:      el.dataset.img
+    };
+
+    // Devam et butonunu aktif et
+    var btn = document.getElementById('goToFormBtn');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor  = 'pointer';
+  }
+
+  function goToForm() {
+    if (!selectedTour) return;
+
+    // Step görseli güncelle
+    document.getElementById('step1Ind').classList.remove('active');
+    document.getElementById('step1Ind').classList.add('done');
+    document.getElementById('stepLine').classList.add('done');
+    document.getElementById('step2Ind').classList.add('active');
+
+    // Banner doldur
+    document.getElementById('bannerImg').src   = selectedTour.img || '';
+    document.getElementById('bannerImg').style.display = selectedTour.img ? '' : 'none';
+    document.getElementById('bannerTitle').textContent = selectedTour.title;
+    document.getElementById('bannerSub').textContent   =
+      selectedTour.city + ', ' + selectedTour.country + '  •  ' + selectedTour.daynight;
+
+    // Hidden input
+    document.getElementById('hiddenTourId').value = selectedTour.id;
+
+    // Kapasite
+    document.getElementById('personCount').max = selectedTour.capacity;
+    document.getElementById('capLabel').textContent = 'Maks. ' + selectedTour.capacity + ' kişi';
+
+    // Sidebar özet
+    document.getElementById('sumUnitPrice').textContent =
+      selectedTour.price.toLocaleString('tr-TR') + ' ₺';
+    document.getElementById('sumCapacity').textContent = selectedTour.capacity + ' kişi';
+    updateSummary();
+
+    // Geçiş
+    document.getElementById('step1Section').style.display = 'none';
+    document.getElementById('formSection').style.display  = 'block';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    document.getElementById('step1Section').style.display = 'block';
+    document.getElementById('formSection').style.display  = 'none';
+
+    document.getElementById('step1Ind').classList.add('active');
+    document.getElementById('step1Ind').classList.remove('done');
+    document.getElementById('stepLine').classList.remove('done');
+    document.getElementById('step2Ind').classList.remove('active');
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function changeCount(delta) {
+    var inp = document.getElementById('personCount');
+    var val = parseInt(inp.value) + delta;
+    var max = selectedTour ? selectedTour.capacity : 20;
+    if (val < 1) val = 1;
+    if (val > max) val = max;
+    inp.value = val;
+    updateSummary();
+  }
+
+  function updateSummary() {
+    if (!selectedTour) return;
+    var count = parseInt(document.getElementById('personCount').value) || 1;
+    var total = selectedTour.price * count;
+    document.getElementById('sumCount').textContent = count;
+    document.getElementById('sumTotal').textContent = total.toLocaleString('tr-TR') + ' ₺';
+  }
+
+  // Şartlar checkbox - inline onclick ile zorlama
+  function toggleSubmit(cb) {
+    var btn = document.getElementById('submitBtn');
+    btn.style.opacity = cb.checked ? '1' : '0.45';
+    btn.style.cursor  = cb.checked ? 'pointer' : 'not-allowed';
+    btn.dataset.ready = cb.checked ? '1' : '0';
+  }
+
+  function trySubmit() {
+    var btn = document.getElementById('submitBtn');
+    if (btn.dataset.ready !== '1') {
+      alert('Lütfen şartlar ve koşulları kabul edin.');
+      return;
+    }
+    btn.closest('form').submit();
+  }
+
+  // TC sadece rakam
+  function tcOnly(el) {
+    el.value = el.value.replace(/\D/g, '').slice(0, 11);
+  }
+</script>
+
+</html>
