@@ -4,6 +4,8 @@ public class GetBookingByIdDto
 {
     public string BookingId { get; set; }
     public string TourId { get; set; }
+    public string TourTitle { get; set; }
+
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }

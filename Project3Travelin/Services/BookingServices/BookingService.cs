@@ -76,7 +76,21 @@ public class BookingService : IBookingService
 
     public async Task<GetBookingByIdDto> GetBookingByIdAsync(string id)
     {
-        var value = await _bookingCollection.Find(x => x.BookingId == id).FirstOrDefaultAsync();
-        return _mapper.Map<GetBookingByIdDto>(value);
+        var value = await _bookingCollection
+            .Find(x => x.BookingId == id)
+            .FirstOrDefaultAsync();
+
+        if (value == null)
+            return null;
+
+        var dto = _mapper.Map<GetBookingByIdDto>(value);
+
+        var tour = await _tourCollection
+            .Find(x => x.TourId == value.TourId)
+            .FirstOrDefaultAsync();
+
+        dto.TourTitle = tour?.Title ?? "Tur bulunamadı";
+
+        return dto;
     }
 }
