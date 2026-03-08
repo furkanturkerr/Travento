@@ -1,0 +1,211 @@
+@{
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "Dashboard";
+
+    int totalTour      = ViewBag.TotalTour      ?? 0;
+    int totalBooking   = ViewBag.TotalBooking    ?? 0;
+    int pendingBooking = ViewBag.PendingBooking  ?? 0;
+
+    var recentBookings = ViewBag.RecentBookings as List<Project3Travelin.Dtos.BookingDtos.ResultBookingDto>  ?? new();
+    var recentComments = ViewBag.RecentComments as List<Project3Travelin.Dtos.CommantDtos.ResultCommentDto> ?? new();
+    var monthlyData    = ViewBag.MonthlyBookings as List<int> ?? Enumerable.Repeat(0, 12).ToList();
+}
+
+<style>
+:root {
+  --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+  --warning: #f39c12; --success: #27ae60;
+  --text: #1a2e35; --muted: #6b7f86;
+  --border: #dde8ea; --white: #fff;
+  --shadow: 0 2px 12px rgba(13,158,143,.08); --radius: 12px;
+}
+.greet      { font-size: 22px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
+.greet span { color: var(--teal); }
+.greet-sub  { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 28px; }
+@@media(max-width:600px) { .stats-grid { grid-template-columns: 1fr; } }
+.stat-card  { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 20px 22px; display: flex; align-items: center; gap: 16px; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(13,158,143,.13); }
+.stat-icon  { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.stat-icon svg { width: 22px; height: 22px; }
+.stat-icon.teal  { background: var(--teal-light); color: var(--teal); }
+.stat-icon.green { background: #eafaf1; color: var(--success); }
+.stat-val   { font-size: 28px; font-weight: 900; color: var(--text); line-height: 1; }
+.stat-lbl   { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.stat-badge { font-size: 10px; font-weight: 700; border-radius: 20px; padding: 2px 8px; margin-top: 5px; display: inline-block; background: #fff8e6; color: var(--warning); }
+
+.dash-grid  { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+@@media(max-width:1000px) { .dash-grid { grid-template-columns: 1fr; } }
+
+.panel      { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; }
+.panel-head { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.panel-head h5 { margin: 0; font-size: 14px; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
+.panel-head h5 svg { width: 15px; height: 15px; color: var(--teal); }
+.panel-link { font-size: 12px; color: var(--teal); text-decoration: none; font-weight: 700; }
+.panel-link:hover { text-decoration: underline; }
+
+.chart-wrap { padding: 20px 18px 8px; }
+.chart-bars { display: flex; align-items: flex-end; gap: 7px; height: 130px; }
+.bar-wrap   { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.bar        { width: 100%; background: var(--teal-light); border-radius: 5px 5px 0 0; transition: background .15s; cursor: default; position: relative; min-height: 4px; }
+.bar:hover  { background: var(--teal); }
+.bar:hover .bar-tip { display: block; }
+.bar-tip    { display: none; position: absolute; top: -24px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; white-space: nowrap; z-index: 10; }
+.bar-lbl    { font-size: 9px; color: var(--muted); font-weight: 600; }
+.chart-total { font-size: 12px; color: var(--muted); padding: 8px 18px 14px; }
+.chart-total strong { color: var(--text); }
+
+.mini-table    { width: 100%; border-collapse: collapse; }
+.mini-table td { padding: 11px 16px; font-size: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.mini-table tr:last-child td { border: none; }
+.mini-table tr:hover td { background: #f9fdfd; }
+.mt-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--teal); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+.mt-name   { font-weight: 700; font-size: 12px; color: var(--text); }
+.mt-sub    { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.chip      { display: inline-flex; border-radius: 20px; padding: 2px 8px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.chip-green  { background: #eafaf1; color: var(--success); }
+.chip-orange { background: #fff8e6; color: var(--warning); }
+.empty-mini  { padding: 32px; text-align: center; color: var(--muted); font-size: 12px; }
+.th-row td   { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; background: #f4f8f8; padding: 9px 16px; letter-spacing: .04em; }
+</style>
+
+<div class="greet">Hoş geldin, <span>Admin</span> 👋</div>
+<div class="greet-sub">@DateTime.Now.ToString("dd MMMM yyyy, dddd", new System.Globalization.CultureInfo("tr-TR"))</div>
+
+<!-- Stat Kartları -->
+<div class="stats-grid">
+  <a href="/Admin/Tour/TourList" class="stat-card">
+    <div class="stat-icon teal">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+    </div>
+    <div>
+      <div class="stat-val">@totalTour</div>
+      <div class="stat-lbl">Toplam Tur</div>
+    </div>
+  </a>
+  <a href="/Admin/Booking" class="stat-card">
+    <div class="stat-icon green">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </div>
+    <div>
+      <div class="stat-val">@totalBooking</div>
+      <div class="stat-lbl">Toplam Rezervasyon</div>
+      @if (pendingBooking > 0) { <span class="stat-badge">@pendingBooking bekliyor</span> }
+    </div>
+  </a>
+</div>
+
+<!-- Grafik + Son Yorumlar -->
+<div class="dash-grid">
+
+  <div class="panel">
+    <div class="panel-head">
+      <h5>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Aylık Rezervasyonlar — @DateTime.Now.Year
+      </h5>
+    </div>
+    @{
+      var months = new[] { "Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara" };
+      int maxVal = monthlyData.Max() == 0 ? 1 : monthlyData.Max();
+      int yearTotal = monthlyData.Sum();
+    }
+    <div class="chart-wrap">
+      <div class="chart-bars">
+        @for (int m = 0; m < 12; m++)
+        {
+          int barH = (int)((double)monthlyData[m] / maxVal * 120);
+          bool isCurrent = (m + 1) == DateTime.Now.Month;
+          <div class="bar-wrap">
+            <div class="bar" style="height:@(Math.Max(barH,4))px;@(isCurrent ? "background:var(--teal);" : "")">
+              <div class="bar-tip">@monthlyData[m]</div>
+            </div>
+          </div>
+        }
+      </div>
+      <div class="chart-bars" style="height:auto;margin-top:5px;">
+        @foreach (var m in months)
+        {
+          <div class="bar-wrap"><span class="bar-lbl">@m</span></div>
+        }
+      </div>
+    </div>
+    <div class="chart-total">Bu yıl toplam <strong>@yearTotal</strong> rezervasyon.</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">
+      <h5>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Son Yorumlar
+      </h5>
+      <a href="/Admin/Comment/CommentList" class="panel-link">Tümü →</a>
+    </div>
+    @if (!recentComments.Any())
+    {
+      <div class="empty-mini">Yorum bulunamadı.</div>
+    }
+    else
+    {
+      <table class="mini-table">
+        @foreach (var cm in recentComments.Take(7))
+        {
+          <tr>
+            <td style="width:36px;"><div class="mt-avatar">@cm.Headline?.FirstOrDefault()</div></td>
+            <td>
+              <div class="mt-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px;">@cm.Headline</div>
+              <div class="mt-sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px;">@cm.CommentDetail</div>
+            </td>
+            <td style="width:72px;">
+              <span class="chip @(cm.IsStatus ? "chip-green" : "chip-orange")">@(cm.IsStatus ? "Onaylı" : "Bekliyor")</span>
+            </td>
+          </tr>
+        }
+      </table>
+    }
+  </div>
+
+</div>
+
+<!-- Son Rezervasyonlar -->
+<div class="panel">
+  <div class="panel-head">
+    <h5>
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Son Rezervasyonlar
+    </h5>
+    <a href="/Admin/Booking" class="panel-link">Tümü →</a>
+  </div>
+  @if (!recentBookings.Any())
+  {
+    <div class="empty-mini">Rezervasyon bulunamadı.</div>
+  }
+  else
+  {
+    <table class="mini-table">
+      <tr class="th-row">
+        <td>Kişi</td>
+        <td>E-posta</td>
+        <td>Tur Tarihi</td>
+        <td style="text-align:center;">Kişi Sayısı</td>
+        <td>Durum</td>
+      </tr>
+      @foreach (var b in recentBookings.Take(8))
+      {
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="mt-avatar">@b.FirstName?.FirstOrDefault()</div>
+              <div class="mt-name">@b.FirstName @b.LastName</div>
+            </div>
+          </td>
+          <td style="color:var(--muted);">@b.Email</td>
+          <td style="white-space:nowrap;">@b.BookingDate.ToString("dd.MM.yyyy")</td>
+          <td style="font-weight:700;color:var(--teal);text-align:center;">@b.PersonCount</td>
+          <td><span class="chip @(b.IsConfirmed ? "chip-green" : "chip-orange")">@(b.IsConfirmed ? "Onaylı" : "Bekliyor")</span></td>
+        </tr>
+      }
+    </table>
+  }
+</div>
