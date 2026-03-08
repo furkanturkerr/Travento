@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4VtDm7BZpLE=",
+  "dgSpecHash": "pQPTffqnzII=",
   "success": true,
   "projectFilePath": "/Users/furkanturker/RiderProjects/Project3Travelin/Project3Travelin/Project3Travelin.csproj",
   "expectedPackageFiles": [
@@ -118,6 +118,7 @@
     "/Users/furkanturker/.nuget/packages/nuget.projectmodel/6.11.0/nuget.projectmodel.6.11.0.nupkg.sha512",
     "/Users/furkanturker/.nuget/packages/nuget.protocol/6.11.0/nuget.protocol.6.11.0.nupkg.sha512",
     "/Users/furkanturker/.nuget/packages/nuget.versioning/6.11.0/nuget.versioning.6.11.0.nupkg.sha512",
+    "/Users/furkanturker/.nuget/packages/questpdf/2026.2.3/questpdf.2026.2.3.nupkg.sha512",
     "/Users/furkanturker/.nuget/packages/sharpcompress/0.30.1/sharpcompress.0.30.1.nupkg.sha512",
     "/Users/furkanturker/.nuget/packages/snappier/1.0.0/snappier.1.0.0.nupkg.sha512",
     "/Users/furkanturker/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",

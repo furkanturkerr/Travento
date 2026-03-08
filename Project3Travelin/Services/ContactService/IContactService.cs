@@ -8,5 +8,6 @@ public interface IContactService
     Task UpdateContactAsync(UpdateContactDto updateContactDto);
     Task CreateContactAsync(CreateContactDto createContactDto);
     Task DeleteContactAsync(string id);
+    Task IsStatus(string id);
     Task<GetContactByIdDto> GetContactByIdAsync(string id);
 }

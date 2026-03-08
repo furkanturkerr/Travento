@@ -15,8 +15,10 @@ using Project3Travelin.Services.SliderServices;
 using Project3Travelin.Services.TourServices;
 using Project3Travelin.Services.TourTineraryService;
 using Project3Travelin.Settings;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

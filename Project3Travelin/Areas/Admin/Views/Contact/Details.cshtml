@@ -1,18 +1,203 @@
 @model Project3Travelin.Dtos.ContactForm.UpdateContactDto
 
 @{
-    Layout = null;
+    Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "Mesaj Detayı";
 }
 
-<!DOCTYPE html>
+<style>
+  :root {
+    --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+    --danger: #e74c3c; --warning: #f39c12; --success: #27ae60;
+    --text: #1a2e35; --muted: #6b7f86;
+    --border: #dde8ea; --white: #fff;
+    --shadow: 0 2px 12px rgba(13,158,143,.08); --radius: 12px;
+  }
+  .page-breadcrumb { margin-bottom: 24px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; }
+  .breadcrumb-item.active { color: var(--muted); }
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+  .detail-grid { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+  @@media(max-width:900px) { .detail-grid { grid-template-columns: 1fr; } }
+
+  .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; margin-bottom: 16px; }
+  .card-head { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .card-head h5 { margin: 0; font-size: 14px; font-weight: 800; color: var(--text); }
+  .card-body { padding: 20px; }
+
+  /* Gönderen */
+  .sender-block { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+  .sender-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg,#0d9e8f,#0a7d71); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; flex-shrink: 0; }
+  .sender-name { font-size: 16px; font-weight: 800; color: var(--text); }
+  .sender-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* Mesaj kutusu */
+  .msg-box { background: #f9fdfd; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; font-size: 14px; color: var(--text); line-height: 1.85; min-height: 100px; }
+
+  /* AI kutusu */
+  .ai-box { background: linear-gradient(135deg,#f0faf9,#e6f7f5); border: 1.5px solid #b2e0db; border-radius: 10px; padding: 16px 18px; font-size: 14px; color: var(--text); line-height: 1.85; min-height: 80px; position: relative; }
+  .ai-badge { display: inline-flex; align-items: center; gap: 5px; background: var(--teal); color: #fff; border-radius: 6px; padding: 3px 10px; font-size: 11px; font-weight: 700; margin-bottom: 10px; }
+
+  /* Sidebar info */
+  .info-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .info-row:last-child { border: none; }
+  .ir-icon { width: 28px; height: 28px; border-radius: 7px; background: var(--teal-light); display: flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; }
+  .ir-icon svg { width: 13px; height: 13px; }
+  .ir-lbl { font-size: 11px; color: var(--muted); font-weight: 600; }
+  .ir-val { font-size: 13px; color: var(--text); font-weight: 700; word-break: break-word; }
+
+  .status-chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+  .status-chip.read   { background: #eafaf1; color: var(--success); }
+  .status-chip.unread { background: var(--teal-light); color: var(--teal); }
+
+  /* Butonlar */
+  .btn-action { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; text-decoration: none; transition: all .15s; width: 100%; margin-bottom: 8px; }
+  .btn-back   { background: var(--teal-light); color: var(--teal); }
+  .btn-back:hover { background: var(--teal); color: #fff; }
+  .btn-toggle-read  { background: #eafaf1; color: var(--success); }
+  .btn-toggle-read:hover  { background: var(--success); color: #fff; }
+  .btn-toggle-unread { background: #fff8e6; color: var(--warning); }
+  .btn-toggle-unread:hover { background: var(--warning); color: #fff; }
+  .btn-delete { background: #fdecea; color: var(--danger); }
+  .btn-delete:hover { background: var(--danger); color: #fff; }
+</style>
+
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Anasayfa</a></li>
+    <li class="breadcrumb-item"><a href="/Admin/Contact/ContactList">İletişim Mesajları</a></li>
+    <li class="breadcrumb-item active">Mesaj Detayı</li>
+  </ol>
+</nav>
+
+<div class="detail-grid">
+
+  <!-- Sol -->
+  <div>
+
+    <!-- Gönderen + Mesaj -->
+    <div class="card">
+      <div class="card-head">
+        <svg width="16" height="16" fill="none" stroke="#0d9e8f" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <h5>Gelen Mesaj</h5>
+        @if (!Model.IsStatus)
+        {
+          <span class="status-chip unread ms-auto">● Yeni</span>
+        }
+        else
+        {
+          <span class="status-chip read ms-auto">✓ Okundu</span>
+        }
+      </div>
+      <div class="card-body">
+        <div class="sender-block">
+          <div class="sender-avatar">@Model.first_name?.FirstOrDefault()</div>
+          <div>
+            <div class="sender-name">@Model.first_name @Model.last_name</div>
+            <div class="sender-meta">@Model.email &nbsp;•&nbsp; @Model.phone</div>
+          </div>
+        </div>
+        <div class="msg-box">@Model.comments</div>
+      </div>
+    </div>
+
+    <!-- AI Yanıtı -->
+    @if (ViewBag.ancwerAI != null)
+    {
+      <div class="card">
+        <div class="card-head">
+          <svg width="16" height="16" fill="none" stroke="#0d9e8f" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <h5>Yapay Zeka Yanıtı</h5>
+        </div>
+        <div class="card-body">
+          <div class="ai-badge">
+            <svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.93V17a1 1 0 0 1-2 0v-.07A8 8 0 0 1 4.07 9H5a1 1 0 0 1 0 2 6 6 0 0 0 5 5.92zm0-9.86A6 6 0 0 0 7.08 13H7a1 1 0 0 1 0-2 8 8 0 0 1 7.93-7H15a1 1 0 0 1 0 2z"/></svg>
+            AI Tarafından Oluşturuldu
+          </div>
+          <div class="ai-box">@ViewBag.ancwerAI</div>
+        </div>
+      </div>
+    }
+
+  </div>
+
+  <!-- Sağ: Bilgi + İşlem -->
+  <div>
+
+    <div class="card">
+      <div class="card-head">
+        <svg width="16" height="16" fill="none" stroke="#0d9e8f" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <h5>Gönderen Bilgisi</h5>
+      </div>
+      <div class="card-body" style="padding:14px 18px;">
+        <div class="info-row">
+          <div class="ir-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div><div class="ir-lbl">Ad Soyad</div><div class="ir-val">@Model.first_name @Model.last_name</div></div>
+        </div>
+        <div class="info-row">
+          <div class="ir-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div class="ir-lbl">E-posta</div><div class="ir-val">@Model.email</div></div>
+        </div>
+        <div class="info-row">
+          <div class="ir-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg></div>
+          <div><div class="ir-lbl">Telefon</div><div class="ir-val">@Model.phone</div></div>
+        </div>
+        <div class="info-row">
+          <div class="ir-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><div class="ir-lbl">Tarih</div><div class="ir-val">@Model.CreateDate.ToString("dd.MM.yyyy")</div></div>
+        </div>
+        <div class="info-row">
+          <div class="ir-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div>
+            <div class="ir-lbl">Durum</div>
+            <div class="ir-val">
+              <span class="status-chip @(Model.IsStatus ? "read" : "unread")">
+                @(Model.IsStatus ? "✓ Okundu" : "● Yeni")
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- İşlemler -->
+    <div class="card">
+      <div class="card-head">
+        <svg width="16" height="16" fill="none" stroke="#0d9e8f" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <h5>İşlemler</h5>
+      </div>
+      <div class="card-body" style="padding:14px 18px;">
+        <a href="/Admin/Contact/" class="btn-action btn-back">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Listeye Dön
+        </a>
+        @if (!Model.IsStatus)
+        {
+          <a href="/Admin/Contact/IsStatus/@Model.ContactId" class="btn-action btn-toggle-read">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Okundu İşaretle
+          </a>
+        }
+        else
+        {
+          <a href="/Admin/Contact/IsStatus/@Model.ContactId" class="btn-action btn-toggle-unread">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Okunmadı İşaretle
+          </a>
+        }
+        <button class="btn-action btn-delete" onclick="confirmDelete('@Model.ContactId')">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Mesajı Sil
+        </button>
+      </div>
+    </div>
+
+  </div>
 </div>
-</body>
-</html>
+
+<script>
+  function confirmDelete(id) {
+    if (confirm('Bu mesaj silinecek. Emin misiniz?'))
+      window.location.href = '/Admin/Contact/Delete/' + id;
+  }
+</script>

@@ -42,6 +42,21 @@ public class ContactService : IContactService
         await _ContactsCollection.DeleteOneAsync(x => x.ContactId == id);
     }
 
+    public async Task IsStatus(string id)
+    {
+       var values =  await _ContactsCollection.Find(x => x.ContactId == id).FirstOrDefaultAsync();
+       if (values.IsStatus == false)
+       {
+           await _ContactsCollection.UpdateOneAsync(x => x.ContactId == id,
+               Builders<Contact>.Update.Set(x => x.IsStatus, true));
+       }
+       else
+       {
+           await _ContactsCollection.UpdateOneAsync(x => x.ContactId == id,
+               Builders<Contact>.Update.Set(x => x.IsStatus, false));
+       }
+    }
+
     public async Task<GetContactByIdDto> GetContactByIdAsync(string id)
     {
         var vaalue = await _ContactsCollection.Find(x => x.ContactId == id).FirstOrDefaultAsync();

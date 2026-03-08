@@ -8,4 +8,7 @@ public class ResultContactDto
     public string email { get; set; }
     public string phone { get; set; }
     public string comments { get; set; }
+    public DateTime CreateDate { get; set; }
+
+    public bool IsStatus { get; set; }
 }

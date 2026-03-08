@@ -24,6 +24,8 @@ public class ContactController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ContactForm(CreateContactDto createContact)
     {
+        createContact.CreateDate = DateTime.Now;
+        createContact.IsStatus = false;
         await _contactService.CreateContactAsync(createContact);
         return RedirectToAction("Iletisim", "Contact");
     }

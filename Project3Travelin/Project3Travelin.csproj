@@ -13,6 +13,7 @@
       <PackageReference Include="MongoDB.Bson" Version="3.6.0" />
       <PackageReference Include="MongoDB.Driver" Version="3.6.0" />
       <PackageReference Include="MongoDB.Driver.Core" Version="2.30.0" />
+      <PackageReference Include="QuestPDF" Version="2026.2.3" />
     </ItemGroup>
 
     <ItemGroup>

@@ -2,26 +2,265 @@
 
 @{
     Layout = "~/Views/Admin/Index.cshtml";
+    ViewData["Title"] = "İletişim Mesajları";
 }
 
-<table class="table table-bordered">
-    <tr>
-        <th>#</th>
-        <th>Ad Soyad</th>
-        <th>Eposta</th>
-        <th>Telefon</th>
-        <th>Sil</th>
-        <th>Detay</th>
-    </tr>
-    @foreach (var item in Model)
-    {
+<style>
+  :root {
+    --teal: #0d9e8f; --teal-light: #e6f7f5; --teal-dark: #0a7d71;
+    --danger: #e74c3c; --warning: #f39c12; --success: #27ae60;
+    --text: #1a2e35; --muted: #6b7f86;
+    --border: #dde8ea; --white: #fff;
+    --shadow: 0 2px 12px rgba(13,158,143,.08); --radius: 12px;
+  }
+  .page-breadcrumb { margin-bottom: 24px; }
+  .breadcrumb-item a { color: var(--teal); text-decoration: none; }
+  .breadcrumb-item.active { color: var(--muted); }
+  .stats-row { display: flex; gap: 14px; margin-bottom: 22px; flex-wrap: wrap; }
+  .stat-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 14px 20px; display: flex; align-items: center; gap: 12px; flex: 1; min-width: 130px; }
+  .stat-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--teal-light); display: flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; }
+  .stat-icon.warn { background: #fff8e6; color: var(--warning); }
+  .stat-icon.suc  { background: #eafaf1; color: var(--success); }
+  .stat-val { font-size: 20px; font-weight: 900; color: var(--text); line-height: 1; }
+  .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .table-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; }
+  .table-toolbar { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .search-box { display: flex; align-items: center; gap: 8px; background: #f4f8f8; border: 1.5px solid var(--border); border-radius: 8px; padding: 7px 12px; flex: 1; min-width: 200px; }
+  .search-box input { border: none; background: transparent; outline: none; font-size: 13px; color: var(--text); width: 100%; }
+  .search-box svg { color: var(--muted); flex-shrink: 0; }
+  .filter-select { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text); background: #f4f8f8; outline: none; cursor: pointer; }
+  .filter-select:focus { border-color: var(--teal); }
+  .row-count { font-size: 12px; color: var(--muted); margin-left: auto; white-space: nowrap; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table thead tr { background: #f4f8f8; }
+  .data-table th { padding: 11px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer; user-select: none; }
+  .data-table th:hover { color: var(--teal); }
+  .data-table th.sort-asc::after  { content: ' ↑'; color: var(--teal); }
+  .data-table th.sort-desc::after { content: ' ↓'; color: var(--teal); }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); transition: background .12s; }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table tbody tr:hover { background: #f9fdfd; }
+  .data-table tbody tr.unread { background: #f0faf9; }
+  .data-table tbody tr.unread:hover { background: #e6f7f5; }
+  .data-table td { padding: 12px 16px; font-size: 13px; color: var(--text); vertical-align: middle; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--teal); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
+  .avatar.read { background: #b0c4c8; }
+  .td-name-wrap { display: flex; align-items: center; gap: 10px; }
+  .td-name { font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+  .unread-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); display: inline-block; flex-shrink: 0; }
+  .td-comment { max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); font-size: 12px; }
+  .td-comment.fw { font-weight: 700; color: var(--text); }
+  .status-chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .status-chip.read   { background: #eafaf1; color: var(--success); }
+  .status-chip.unread { background: var(--teal-light); color: var(--teal); }
+  .action-btns { display: flex; gap: 5px; }
+  .action-btn { width: 28px; height: 28px; border-radius: 6px; border: none; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background .12s, transform .12s; text-decoration: none; }
+  .action-btn svg { width: 13px; height: 13px; }
+  .btn-detail { background: var(--teal-light); color: var(--teal); }
+  .btn-detail:hover { background: var(--teal); color: #fff; transform: scale(1.1); }
+  .btn-del { background: #fdecea; color: var(--danger); }
+  .btn-del:hover { background: var(--danger); color: #fff; transform: scale(1.1); }
+  .table-footer { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .page-info { font-size: 12px; color: var(--muted); }
+  .page-btns { display: flex; gap: 4px; }
+  .page-btn { min-width: 30px; height: 30px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--text); background: #f4f8f8; border: 1.5px solid var(--border); padding: 0 6px; transition: all .12s; }
+  .page-btn:hover { background: var(--teal-light); border-color: var(--teal); color: var(--teal); }
+  .page-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .page-btn.disabled { opacity: .35; cursor: not-allowed; pointer-events: none; }
+  .empty-row td { text-align: center; padding: 48px; color: var(--muted); font-size: 13px; }
+</style>
+
+<nav class="page-breadcrumb d-flex align-items-center justify-content-between">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/Admin/Dashboard">Anasayfa</a></li>
+    <li class="breadcrumb-item active">İletişim Mesajları</li>
+  </ol>
+</nav>
+
+@if (Model != null && Model.Any())
+{
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div><div class="stat-val">@Model.Count</div><div class="stat-lbl">Toplam</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon warn">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div><div class="stat-val">@Model.Count(c => !c.IsStatus)</div><div class="stat-lbl">Okunmamış</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon suc">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div><div class="stat-val">@Model.Count(c => c.IsStatus)</div><div class="stat-lbl">Okundu</div></div>
+    </div>
+  </div>
+}
+
+<div class="table-card">
+  <div class="table-toolbar">
+    <div class="search-box">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Ad, e-posta veya telefon ara..." oninput="applyFilters()" />
+    </div>
+    <select class="filter-select" id="statusFilter" onchange="applyFilters()">
+      <option value="all">Tümü</option>
+      <option value="unread">Okunmamış</option>
+      <option value="read">Okundu</option>
+    </select>
+    <span class="row-count" id="rowCount"></span>
+  </div>
+
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
         <tr>
-            <td>@item.ContactId</td>
-            <td>@item.first_name @item.last_name</td>
-            <td>@item.email</td>
-            <td>@item.phone</td>
-            <td><a href="/Admin/Contact/Delete/@item.ContactId">Sil</a></td>
-            <td><a href="/Admin/Contact/Details/@item.ContactId">Detay</a></td>
+          <th onclick="sortTable('name')">Ad Soyad</th>
+          <th onclick="sortTable('email')">E-posta</th>
+          <th onclick="sortTable('phone')">Telefon</th>
+          <th onclick="sortTable('comment')">Mesaj</th>
+          <th onclick="sortTable('date')">Tarih</th>
+          <th onclick="sortTable('status')">Durum</th>
+          <th>İşlem</th>
         </tr>
+      </thead>
+      <tbody id="tableBody">
+        @if (Model == null || !Model.Any())
+        {
+          <tr class="empty-row"><td colspan="7">Henüz mesaj bulunmuyor.</td></tr>
+        }
+        else
+        {
+          @foreach (var item in Model.OrderByDescending(x => x.CreateDate))
+          {
+            <tr class="@(!item.IsStatus ? "unread" : "")"
+                data-status="@(item.IsStatus ? "read" : "unread")"
+                data-name="@((item.first_name + " " + item.last_name).ToLower())"
+                data-email="@item.email?.ToLower()"
+                data-phone="@item.phone"
+                data-comment="@item.comments?.ToLower()"
+                data-date="@item.CreateDate.ToString("yyyy-MM-dd")">
+
+              <td>
+                <div class="td-name-wrap">
+                  <div class="avatar @(item.IsStatus ? "read" : "")">@item.first_name?.FirstOrDefault()</div>
+                  <span class="td-name">
+                    @if (!item.IsStatus) { <span class="unread-dot"></span> }
+                    @item.first_name @item.last_name
+                  </span>
+                </div>
+              </td>
+              <td style="color:var(--muted);font-size:12px;">@item.email</td>
+              <td style="color:var(--muted);font-size:12px;white-space:nowrap;">@item.phone</td>
+              <td class="td-comment @(!item.IsStatus ? "fw" : "")" title="@item.comments">@item.comments</td>
+              <td style="white-space:nowrap;color:var(--muted);font-size:12px;">@item.CreateDate.ToString("dd.MM.yyyy")</td>
+              <td>
+                <span class="status-chip @(item.IsStatus ? "read" : "unread")">
+                  @(item.IsStatus ? "✓ Okundu" : "● Yeni")
+                </span>
+              </td>
+              <td>
+                <div class="action-btns">
+                  <a href="/Admin/Contact/Details/@item.ContactId" class="action-btn btn-detail" title="Detayı Gör">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </a>
+                  <button class="action-btn btn-del" title="Sil" onclick="confirmDelete('@item.ContactId')">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-footer">
+    <span class="page-info" id="pageInfo"></span>
+    <div class="page-btns" id="pageBtns"></div>
+  </div>
+</div>
+
+<script>
+  var PAGE_SIZE = 20;
+  var currentPage = 1;
+  var sortCol = 'date';
+  var sortDir = 'desc';
+  var filteredRows = [];
+
+  function getAllRows() {
+    return Array.from(document.querySelectorAll('#tableBody tr[data-status]'));
+  }
+
+  function applyFilters() {
+    var search = document.getElementById('searchInput').value.toLowerCase().trim();
+    var status = document.getElementById('statusFilter').value;
+    filteredRows = getAllRows().filter(function(row) {
+      var matchSearch = !search ||
+        (row.dataset.name    || '').includes(search) ||
+        (row.dataset.email   || '').includes(search) ||
+        (row.dataset.phone   || '').includes(search) ||
+        (row.dataset.comment || '').includes(search);
+      var matchStatus = status === 'all' || row.dataset.status === status;
+      return matchSearch && matchStatus;
+    });
+    currentPage = 1;
+    renderTable();
+  }
+
+  function sortTable(col) {
+    if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    else { sortCol = col; sortDir = 'asc'; }
+    document.querySelectorAll('.data-table th').forEach(function(th) { th.classList.remove('sort-asc','sort-desc'); });
+    var thMap = { name:0, email:1, phone:2, comment:3, date:4, status:5 };
+    var th = document.querySelectorAll('.data-table th')[thMap[col]];
+    if (th) th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    filteredRows.sort(function(a, b) {
+      var av = a.dataset[col] || '';
+      var bv = b.dataset[col] || '';
+      if (av < bv) return sortDir === 'asc' ? -1 : 1;
+      if (av > bv) return sortDir === 'asc' ?  1 : -1;
+      return 0;
+    });
+    renderTable();
+  }
+
+  function renderTable() {
+    var total = filteredRows.length;
+    var totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    var start = (currentPage - 1) * PAGE_SIZE;
+    var end   = Math.min(start + PAGE_SIZE, total);
+    getAllRows().forEach(function(r) { r.style.display = 'none'; });
+    filteredRows.forEach(function(r, i) { r.style.display = (i >= start && i < end) ? '' : 'none'; });
+    document.getElementById('rowCount').textContent = total + ' mesaj' + (total !== getAllRows().length ? ' (filtrelenmiş)' : '');
+    document.getElementById('pageInfo').textContent = total === 0 ? 'Sonuç yok' : (start+1) + '–' + end + ' arası, toplam ' + total;
+    var btns = '';
+    btns += '<span class="page-btn '+(currentPage===1?'disabled':'')+'" onclick="goPage('+(currentPage-1)+')">' +
+      '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></span>';
+    for (var p = 1; p <= totalPages; p++) {
+      if (p===1 || p===totalPages || (p>=currentPage-1 && p<=currentPage+1))
+        btns += '<span class="page-btn '+(p===currentPage?'active':'')+'" onclick="goPage('+p+')">'+p+'</span>';
+      else if (p===currentPage-2 || p===currentPage+2)
+        btns += '<span class="page-btn" style="pointer-events:none;border:none;background:none;">…</span>';
     }
-</table>
+    btns += '<span class="page-btn '+(currentPage===totalPages?'disabled':'')+'" onclick="goPage('+(currentPage+1)+')">' +
+      '<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>';
+    document.getElementById('pageBtns').innerHTML = btns;
+  }
+
+  function goPage(p) { currentPage = p; renderTable(); }
+
+  function confirmDelete(id) {
+    if (confirm('Bu mesaj silinecek. Emin misiniz?'))
+      window.location.href = '/Admin/Contact/Delete/' + id;
+  }
+
+  filteredRows = getAllRows();
+  renderTable();
+</script>
