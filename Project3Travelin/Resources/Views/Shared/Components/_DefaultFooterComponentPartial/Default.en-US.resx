@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Instagram'dan Takip Et" xml:space="preserve">
+        <value>Follow on Instagram</value>
+    </data>
+    <data name="Hayalinizdeki seyahati gerçeğe dönüştürmek için yola çıktık. Kültür turlarından doğa kaçamaklarına, yurt içi ve yurt dışı rotalarda unutulmaz deneyimler sunuyoruz. Alanında uzman rehberlerimiz, güvenli ulaşım ve özenle planlanmış programlarımızla her detayı sizin için düşünüyoruz." xml:space="preserve">
+        <value>We set out to turn your dream trip into reality. From cultural tours to nature getaways, we offer unforgettable experiences on domestic and international routes. With our expert guides, safe transportation, and carefully planned programs, we think of every detail for you.</value>
+    </data>
+    <data name="Hızlı Linkler" xml:space="preserve">
+        <value>Quick Links</value>
+    </data>
+    <data name="Hakkımızda" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="Tur Listesi" xml:space="preserve">
+        <value>Tour List</value>
+    </data>
+    <data name="İletişim" xml:space="preserve">
+        <value>Contact</value>
+    </data>
+    <data name="Rezervasyon Yap" xml:space="preserve">
+        <value>Book Now</value>
+    </data>
+    <data name="Bültenimize Abone Olun" xml:space="preserve">
+        <value>Subscribe to our newsletter</value>
+    </data>
+    <data name="Kampanyalar, yeni tur rotaları ve özel indirimlerden ilk siz haberdar olun." xml:space="preserve">
+        <value>Be the first to know about campaigns, new tour routes, and special discounts.</value>
+    </data>
+    <data name="Abone Ol" xml:space="preserve">
+        <value>Subscribe</value>
+    </data>
+    <data name="E-posta Adresiniz" xml:space="preserve">
+        <value>Your Email Address</value>
+    </data>
+</root>

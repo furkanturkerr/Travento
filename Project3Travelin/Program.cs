@@ -1,4 +1,6 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Project3Travelin.Services.AboutService;
 using Project3Travelin.Services.BannerService;
@@ -36,6 +38,10 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
 
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+builder.Services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+
 builder.Services.AddScoped<IDatabaseSettings>(sp =>
 {
     return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
@@ -57,6 +63,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+var supportedCultures = new[] { "tr-TR", "en-US", "de-DE", "fr-FR", "ru-RU" };
+var localizationOptions = new RequestLocalizationOptions().
+    SetDefaultCulture(supportedCultures[0]).
+    AddSupportedCultures(supportedCultures).
+    AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
 
 app.MapControllerRoute(
     name: "areas",

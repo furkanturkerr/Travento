@@ -1,0 +1,29 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Gittiğin Yeri Sev" xml:space="preserve">
+    <value>Liebe den Ort, den du besuchst.</value>
+</data>
+
+    <data name="Hayatını Keşfet" xml:space="preserve">
+    <value>Entdecke dein Leben</value>
+</data>
+
+    <data name="İstediğin Yere Seyahat Et!" xml:space="preserve">
+    <value>Reise wohin du willst!</value>
+</data>
+
+    <data name="Hayatını Keşfet, Hayalini Kurduğun Yerlere Yolculuk Yap!" xml:space="preserve">
+    <value>Entdecke dein Leben und reise zu den Orten, von denen du immer geträumt hast!</value>
+</data>
+</root>

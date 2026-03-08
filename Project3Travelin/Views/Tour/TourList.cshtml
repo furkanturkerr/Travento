@@ -1,5 +1,6 @@
 @using Microsoft.AspNetCore.Mvc.RazorPages
 @model System.Collections.Generic.List<Project3Travelin.Dtos.TourDtos.ResultTourDto>
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
     Layout = null;
@@ -23,8 +24,8 @@
                 <div class="list-results d-flex align-items-center justify-content-between">
                     <div class="list-results-sort">
                         <p class="m-0">
-                            Toplam @ViewBag.TotalCount tur,
-                            Sayfa @ViewBag.CurrentPage / @ViewBag.TotalPages
+                            @Localizer["Toplam"] @ViewBag.TotalCount @Localizer["tur"],
+                            @Localizer["Sayfa"] @ViewBag.CurrentPage / @ViewBag.TotalPages
                         </p>
                     </div>
                 </div>
@@ -51,7 +52,7 @@
                                             <i class="icon-location-pin"></i> @tour.City, @tour.Country
                                         </h6>
                                         <p class="mt-4 mb-0">
-                                            Kapasite: @tour.Capacity kişi <br>
+                                            @Localizer["Kapasite"]: @tour.Capacity @Localizer["kişi"] <br>
                                             <span class="theme">@tour.TourDate.ToString("dd MMM yyyy")</span>
                                         </p>
                                     </div>
@@ -61,9 +62,9 @@
                                         <div class="trend-price my-2">
                                             <span class="mb-0"></span>
                                             <h3 class="mb-0">@tour.Price.ToString("C0")</h3>
-                                            <small>Başlayan Fiyatlarla</small>
+                                            <small>@Localizer["Başlayan Fiyatlarla"]</small>
                                         </div>
-                                        <a asp-controller="Tour" asp-action="TourDetail" asp-route-tourId="@tour.TourId" class="nir-btn">Detay</a>
+                                        <a asp-controller="Tour" asp-action="TourDetail" asp-route-tourId="@tour.TourId" class="nir-btn">@Localizer["Detay"]</a>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +95,7 @@
                         @if (ViewBag.CurrentPage > 1)
                         {
                             <a href="/Tour/TourList?city=@ViewBag.City&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&page=@(ViewBag.CurrentPage - 1)"
-                               class="nir-btn">« Önceki</a>
+                               class="nir-btn">« @Localizer["Önceki"]</a>
                         }
 
                         @for (int i = 1; i <= ViewBag.TotalPages; i++)
@@ -114,7 +115,7 @@
                         @if (ViewBag.CurrentPage < ViewBag.TotalPages)
                         {
                             <a href="/Tour/TourList?city=@ViewBag.City&minPrice=@ViewBag.MinPrice&maxPrice=@ViewBag.MaxPrice&page=@(ViewBag.CurrentPage + 1)"
-                               class="nir-btn">Sonraki »</a>
+                               class="nir-btn">@Localizer["Sonraki"] »</a>
                         }
 
                     </div>
@@ -124,7 +125,7 @@
                 <div class="sidebar-sticky">
                     <div class="list-sidebar">
                         <div class="sidebar-item mb-4">
-                            <h3>Filtrele</h3>
+                            <h3>@Localizer["Filtrele"]</h3>
                             <form method="get" asp-controller="Tour" asp-action="TourList" id="filterForm">
 
                                 <input type="hidden" name="city" id="hiddenCity" value="@ViewBag.City">
@@ -132,9 +133,9 @@
                                 <input type="hidden" name="maxPrice" id="hiddenMaxPrice" value="@ViewBag.MaxPrice">
 
                                 <div class="mb-3">
-                                    <label class="mb-1"><strong>Şehir</strong></label>
+                                    <label class="mb-1"><strong>@Localizer["Şehir"]</strong></label>
                                     <select id="cityDropdown" class="form-control">
-                                        <option value="">-- Tüm Şehirler --</option>
+                                        <option value="">-- @Localizer["Tüm Şehirler"] --</option>
                                         @foreach (var c in ViewBag.Cities as List<string> ?? new List<string>())
                                         {
                                             if (ViewBag.City == c)
@@ -150,20 +151,20 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="mb-1"><strong>Min Fiyat ($)</strong></label>
+                                    <label class="mb-1"><strong>@Localizer["Min Fiyat"] ($)</strong></label>
                                     <input type="number" id="minPriceInput" class="form-control"
                                            placeholder="0" value="@ViewBag.MinPrice">
                                 </div>
                                 <div class="mb-3">
-                                    <label class="mb-1"><strong>Max Fiyat ($)</strong></label>
+                                    <label class="mb-1"><strong>@Localizer["Max Fiyat"] ($)</strong></label>
                                     <input type="number" id="maxPriceInput" class="form-control"
                                            placeholder="9999" value="@ViewBag.MaxPrice">
                                 </div>
 
                                 <button type="button" onclick="submitFilter()" class="nir-btn w-100 mb-2">
-                                    Filtrele
+                                    @Localizer["Filtrele"]
                                 </button>
-                                <a href="/Tour/TourList" class="btn btn-outline-secondary w-100">Temizle</a>
+                                <a href="/Tour/TourList" class="btn btn-outline-secondary w-100">@Localizer["Temizle"]</a>
 
                             </form>
                         </div>

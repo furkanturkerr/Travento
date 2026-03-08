@@ -34,4 +34,73 @@
       <_ContentIncludedByDefault Remove="Views\Shared\_TourScriptComponentPartial\Default.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Views\TourList\TourList.en.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>TourList.en.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Tour\TourList.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>TourList.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Tour\TourList.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>TourList.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Shared\Components\_DefaultHeaderComponentPartial\Default.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Default.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Shared\Components\_TourBreadcrumbComponentPartial\Default.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Default.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Shared\Components\_TourVideoComponentPartial\Default.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Default.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Views\Shared\Components\_DefaultFooterComponentPartial\Default.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Default.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Views\TourList\TourList.en.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TourList.en.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Tour\TourList.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TourList.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Tour\TourList.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TourList.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Shared\Components\_DefaultHeaderComponentPartial\Default.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Default.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Shared\Components\_TourBreadcrumbComponentPartial\Default.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Default.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Shared\Components\_TourVideoComponentPartial\Default.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Default.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Views\Shared\Components\_DefaultFooterComponentPartial\Default.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Default.en-US.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

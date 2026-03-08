@@ -1,0 +1,57 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Instagram'dan Takip Et" xml:space="preserve">
+    <value>Suivez-nous sur Instagram</value>
+</data>
+
+    <data name="Hayalinizdeki seyahati gerçeğe dönüştürmek için yola çıktık. Kültür turlarından doğa kaçamaklarına, yurt içi ve yurt dışı rotalarda unutulmaz deneyimler sunuyoruz. Alanında uzman rehberlerimiz, güvenli ulaşım ve özenle planlanmış programlarımızla her detayı sizin için düşünüyoruz." xml:space="preserve">
+    <value>Nous avons entrepris de transformer votre voyage de rêve en réalité. Des circuits culturels aux escapades nature, nous proposons des expériences inoubliables sur des destinations nationales et internationales. Avec nos guides experts, un transport sécurisé et des programmes soigneusement planifiés, nous pensons à chaque détail pour vous.</value>
+</data>
+
+    <data name="Hızlı Linkler" xml:space="preserve">
+    <value>Liens rapides</value>
+</data>
+
+    <data name="Hakkımızda" xml:space="preserve">
+    <value>À propos</value>
+</data>
+
+    <data name="Tur Listesi" xml:space="preserve">
+    <value>Circuits</value>
+</data>
+
+    <data name="İletişim" xml:space="preserve">
+    <value>Contact</value>
+</data>
+
+    <data name="Rezervasyon Yap" xml:space="preserve">
+    <value>Réserver</value>
+</data>
+
+    <data name="Bültenimize Abone Olun" xml:space="preserve">
+    <value>Abonnez-vous à notre newsletter</value>
+</data>
+
+    <data name="Kampanyalar, yeni tur rotaları ve özel indirimlerden ilk siz haberdar olun." xml:space="preserve">
+    <value>Soyez le premier informé des campagnes, des nouvelles destinations et des offres spéciales.</value>
+</data>
+
+    <data name="Abone Ol" xml:space="preserve">
+    <value>S'abonner</value>
+</data>
+
+    <data name="E-posta Adresiniz" xml:space="preserve">
+    <value>Votre adresse e-mail</value>
+</data>
+</root>

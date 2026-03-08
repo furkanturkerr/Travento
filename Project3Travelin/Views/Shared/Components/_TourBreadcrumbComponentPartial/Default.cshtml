@@ -1,13 +1,15 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
 <section class="breadcrumb-main pb-20 pt-14" style="background-image: url(https://image.hurimg.com/i/hurriyet/90/0x0/5a699a73c03c0e21249b0902.jpg);">
     <div class="section-shape section-shape1 top-inherit bottom-0" style="background-image: url(/03_travelin_main_file/travelin/images/shape8.png);"></div>
     <div class="breadcrumb-outer">
         <div class="container">
             <div class="breadcrumb-content text-center">
-                <h1 class="mb-3">Tur Listesi</h1>
+                <h1 class="mb-3">@Localizer["Tur Listesi"]</h1>
                 <nav aria-label="breadcrumb" class="d-block">
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Anasayfa">Anasayfa</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Tur Listesi</li>
+                        <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Anasayfa">@Localizer["Anasayfa"] </a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@Localizer["Tur Listesi"]</li>
                     </ul>
                 </nav>
             </div>

@@ -1,41 +1,93 @@
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
 <header class="main_header_area">
     <div class="header-content py-1 bg-theme">
         <div class="container d-flex align-items-center justify-content-between">
             <div class="links">
                 <ul>
                     <li><a href="#" class="white"><i class="icon-calendar white"></i> @DateTime.Now.Year</a></li>
-                    <li><a href="#" class="white"><i class="icon-location-pin white"></i>  İstanbul, Türkiye</a></li>
-                    <li><a href="#" class="white"><i class="icon-clock white"></i> Pzrt-Cts: 08.30-18.00</a></li>
+                    <li><a href="#" class="white"><i class="icon-location-pin white"></i> @Localizer["İstanbul, Türkiye"]</a></li>
+                    <li><a href="#" class="white"><i class="icon-clock white"></i> @Localizer["Pzrt-Cts:"] 08.30-18.00</a></li>
                 </ul>
             </div>
-            <div class="links float-right">
+            <div class="links float-right d-flex align-items-center gap-3">
                 <ul>
                     <li><a href="#" class="white"><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
                     <li><a href="#" class="white"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
                     <li><a href="#" class="white"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
-                    <li><a href="#" class="white"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+                    <li><a href="#" class="white"><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
                 </ul>
+
+                <div class="lang-switcher" id="langSwitcher">
+                    <button class="lang-btn" id="langToggle">
+                        <i class="fas fa-globe"></i>
+                        <span>@System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToUpper()</span>
+                        <i class="fas fa-chevron-down lang-arrow"></i>
+                    </button>
+                    <ul class="lang-dropdown" id="langDropdown">
+                        <li>
+                            <a href="@(Context.Request.Path)?culture=tr-TR"
+                               class="@(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "tr" ? "lang-active" : "")">
+                                <span class="lang-flag">🇹🇷</span> Türkçe
+                                @if (System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "tr")
+                                { <i class="fas fa-check"></i> }
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@(Context.Request.Path)?culture=en-US"
+                               class="@(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en" ? "lang-active" : "")">
+                                <span class="lang-flag">🇬🇧</span> English
+                                @if (System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "en")
+                                { <i class="fas fa-check"></i> }
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@(Context.Request.Path)?culture=de-DE"
+                               class="@(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "de" ? "lang-active" : "")">
+                                <span class="lang-flag">🇩🇪</span> Deutsch
+                                @if (System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "de")
+                                { <i class="fas fa-check"></i> }
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@(Context.Request.Path)?culture=fr-FR"
+                               class="@(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fr" ? "lang-active" : "")">
+                                <span class="lang-flag">🇫🇷</span> Français
+                                @if (System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "fr")
+                                { <i class="fas fa-check"></i> }
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@(Context.Request.Path)?culture=ru-RU"
+                               class="@(System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ru" ? "lang-active" : "")">
+                                <span class="lang-flag">🇷🇺</span> Русский
+                                @if (System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ru")
+                                { <i class="fas fa-check"></i> }
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
+
     <div class="header_menu" id="header_menu">
         <nav class="navbar navbar-default">
             <div class="container">
                 <div class="navbar-flex d-flex align-items-center justify-content-between w-100 pb-3 pt-3">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="index.html">
+                        <a class="navbar-brand" asp-controller="Home" asp-action="Anasayfa">
                             <img src="/03_travelin_main_file/travelin/images/logo.png" class="w-75" alt="image"/>
                         </a>
                     </div>
                     <div class="navbar-collapse1 d-flex align-items-center" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav" id="responsive-menu">
-
-                            <li><a asp-controller="Home" asp-action="Anasayfa">Anasayfa</a></li>
-                            <li><a href="#about">Hakkımızda</a></li>
-                            <li><a asp-controller="Tour" asp-action="TourList">Tur Listesi</a></li>
-                            <li><a asp-controller="Contact" asp-action="Iletisim">İletişim</a></li>
+                            <li><a asp-controller="Home" asp-action="Anasayfa">@Localizer["Anasayfa"]</a></li>
+                            <li><a href="#about">@Localizer["Hakkımızda"]</a></li>
+                            <li><a asp-controller="Tour" asp-action="TourList">@Localizer["Tur Listesi"]</a></li>
+                            <li><a asp-controller="Contact" asp-action="Iletisim">@Localizer["İletişim"]</a></li>
                         </ul>
-                        <a asp-controller="Booking" asp-action="Rezervasyon" class="nir-btn px-3 py-1 ms-3">Rezervasyon Yap</a>
+                        <a asp-controller="Booking" asp-action="Rezervasyon" class="nir-btn px-3 py-1 ms-3">@Localizer["Rezervasyon Yap"]</a>
                     </div>
                     <div id="slicknav-mobile"></div>
                 </div>
@@ -43,3 +95,149 @@
         </nav>
     </div>
 </header>
+
+<style>
+    .header-content {
+        overflow: visible !important;
+        position: relative;
+        z-index: 10000;
+    }
+
+    .header-content .container,
+    .header-content .links,
+    .header-content .links.float-right {
+        overflow: visible !important;
+    }
+
+    .lang-switcher {
+        position: relative;
+        z-index: 10001;
+    }
+
+    .lang-btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 0.2s;
+        white-space: nowrap;
+    }
+
+    .lang-btn:hover {
+        background: rgba(255, 255, 255, 0.28);
+    }
+
+    .lang-arrow {
+        font-size: 10px;
+        transition: transform 0.25s;
+    }
+
+    .lang-switcher.open .lang-arrow {
+        transform: rotate(180deg);
+    }
+
+    .lang-dropdown {
+        display: none;
+        position: absolute;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+        min-width: 155px;
+        padding: 6px 0;
+        list-style: none;
+        margin: 0;
+        z-index: 99999;
+    }
+
+    .lang-switcher.open .lang-dropdown {
+        display: block;
+    }
+
+    .lang-dropdown li a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        color: #333 !important;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none !important;
+        transition: background 0.15s;
+    }
+
+    .lang-dropdown li a:hover {
+        background: #f0fafa;
+        color: #1a9e96 !important;
+    }
+
+    .lang-dropdown li a.lang-active {
+        color: #1a9e96 !important;
+        font-weight: 700;
+        background: #f0fafa;
+    }
+
+    .lang-flag {
+        font-size: 16px;
+    }
+
+    .lang-dropdown li a .fa-check {
+        margin-left: auto;
+        color: #1a9e96;
+        font-size: 11px;
+    }
+
+    @@keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    (function () {
+        const toggle = document.getElementById('langToggle');
+        const switcher = document.getElementById('langSwitcher');
+        const dropdown = document.getElementById('langDropdown');
+
+        document.body.appendChild(dropdown);
+
+        function positionDropdown() {
+            const rect = toggle.getBoundingClientRect();
+            dropdown.style.position = 'fixed';
+            dropdown.style.top = (rect.bottom + 8) + 'px';
+            dropdown.style.left = (rect.right - dropdown.offsetWidth) + 'px';
+            dropdown.style.zIndex = '99999';
+        }
+
+        toggle?.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const isOpen = switcher.classList.toggle('open');
+            if (isOpen) {
+                dropdown.style.display = 'block';
+                positionDropdown();
+            } else {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (dropdown.contains(e.target)) return;
+            switcher?.classList.remove('open');
+            dropdown.style.display = 'none';
+        });
+
+        window.addEventListener('resize', function () {
+            if (switcher.classList.contains('open')) positionDropdown();
+        });
+
+        window.addEventListener('scroll', function () {
+            if (switcher.classList.contains('open')) positionDropdown();
+        });
+    })();
+</script>

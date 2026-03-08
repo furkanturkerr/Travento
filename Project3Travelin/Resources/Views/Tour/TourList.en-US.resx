@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Başlayan Fiyatlarla" xml:space="preserve">
+        <value>Starting Prices</value>
+    </data>
+    <data name="Detay" xml:space="preserve">
+        <value>Detail</value>
+    </data>
+    <data name="Kapasite" xml:space="preserve">
+        <value>Capacity</value>
+    </data>
+    <data name="kişi" xml:space="preserve">
+        <value>person</value>
+    </data>
+    <data name="Önceki" xml:space="preserve">
+        <value>Previous</value>
+    </data>
+    <data name="Sonraki" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="Filtrele" xml:space="preserve">
+        <value>Filter</value>
+    </data>
+    <data name="Şehir" xml:space="preserve">
+        <value>City</value>
+    </data>
+    <data name="Tüm Şehirler" xml:space="preserve">
+        <value>All Cities</value>
+    </data>
+    <data name="Min Fiyat" xml:space="preserve">
+        <value>Min Price</value>
+    </data>
+    <data name="Max Fiyat" xml:space="preserve">
+        <value>Max Price</value>
+    </data>
+    <data name="Toplam" xml:space="preserve">
+        <value>Total</value>
+    </data>
+    <data name="Sayfa" xml:space="preserve">
+        <value>Page</value>
+    </data>
+    <data name="tur" xml:space="preserve">
+        <value>tour</value>
+    </data>
+    <data name="İstanbul, Türkiye" xml:space="preserve">
+        <value>Istanbul, Türkiye</value>
+    </data>
+    <data name="Pzrt-Cts:" xml:space="preserve">
+        <value>Mon-Sat:</value>
+    </data>
+    <data name="Anasayfa" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="Tur Listesi" xml:space="preserve">
+        <value>Tour List</value>
+    </data>
+    <data name="İletişim" xml:space="preserve">
+        <value>Contact</value>
+    </data>
+    <data name="Rezervasyon Yap" xml:space="preserve">
+        <value>Book Now</value>
+    </data>
+    <data name="Hakkımızda" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="Temizle" xml:space="preserve">
+        <value>Clear</value>
+    </data>
+</root>

@@ -1,0 +1,100 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Başlayan Fiyatlarla" xml:space="preserve">
+    <value>От</value>
+</data>
+
+    <data name="Detay" xml:space="preserve">
+    <value>Подробнее</value>
+</data>
+
+    <data name="Kapasite" xml:space="preserve">
+    <value>Вместимость</value>
+</data>
+
+    <data name="kişi" xml:space="preserve">
+    <value>человек</value>
+</data>
+
+    <data name="Önceki" xml:space="preserve">
+    <value>Назад</value>
+</data>
+
+    <data name="Sonraki" xml:space="preserve">
+    <value>Далее</value>
+</data>
+
+    <data name="Filtrele" xml:space="preserve">
+    <value>Фильтр</value>
+</data>
+
+    <data name="Şehir" xml:space="preserve">
+    <value>Город</value>
+</data>
+
+    <data name="Tüm Şehirler" xml:space="preserve">
+    <value>Все города</value>
+</data>
+
+    <data name="Min Fiyat" xml:space="preserve">
+    <value>Мин. цена</value>
+</data>
+
+    <data name="Max Fiyat" xml:space="preserve">
+    <value>Макс. цена</value>
+</data>
+
+    <data name="Toplam" xml:space="preserve">
+    <value>Всего</value>
+</data>
+
+    <data name="Sayfa" xml:space="preserve">
+    <value>Страница</value>
+</data>
+
+    <data name="tur" xml:space="preserve">
+    <value>тур</value>
+</data>
+
+    <data name="İstanbul, Türkiye" xml:space="preserve">
+    <value>Стамбул, Турция</value>
+</data>
+
+    <data name="Pzrt-Cts:" xml:space="preserve">
+    <value>Пн-Сб:</value>
+</data>
+
+    <data name="Anasayfa" xml:space="preserve">
+    <value>Главная</value>
+</data>
+
+    <data name="Tur Listesi" xml:space="preserve">
+    <value>Список туров</value>
+</data>
+
+    <data name="İletişim" xml:space="preserve">
+    <value>Контакты</value>
+</data>
+
+    <data name="Rezervasyon Yap" xml:space="preserve">
+    <value>Забронировать</value>
+</data>
+
+    <data name="Hakkımızda" xml:space="preserve">
+    <value>О нас</value>
+</data>
+    <data name="Temizle" xml:space="preserve">
+        <value>прозрачный</value>
+    </data>
+</root>
