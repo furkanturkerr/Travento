@@ -46,6 +46,10 @@ ASP.NET Core 8 ile geliştirilen, yapay zeka entegrasyonlu modern tur ve seyahat
 
 ---
 
+https://github.com/user-attachments/assets/3fdc72f0-5bff-482a-95dd-d7c11f68df6e
+
+---
+
 # 📸 Proje Görselleri
 
 ![anasayfa](https://github.com/user-attachments/assets/089ae911-7aa8-403b-bb65-23eb121822be)
@@ -61,7 +65,6 @@ ASP.NET Core 8 ile geliştirilen, yapay zeka entegrasyonlu modern tur ve seyahat
 
 <img width="2940" height="2360" alt="dashboard" src="https://github.com/user-attachments/assets/7ab6e1de-f372-4a85-8461-2a48e3397e2e" />
 <img width="2940" height="2264" alt="rezervasyon" src="https://github.com/user-attachments/assets/014c79cf-faa0-4161-abd7-fb6197c5875c" />
-<img width="1468" height="797" alt="rezervasyon_detay" src="https://github.com/user-attachments/assets/d232b90c-3f33-40ae-9fb5-a0c7b2ad76f6" />
 <img width="1151" height="231" alt="rezervasyon_onay" src="https://github.com/user-attachments/assets/c2f2fb39-962d-4062-86e8-88e4dc9fcd3d" />
 <img width="1469" height="799" alt="rapor" src="https://github.com/user-attachments/assets/ee205048-aea4-45e6-98b8-90db35dac8b3" />
 <img width="2940" height="3122" alt="tour" src="https://github.com/user-attachments/assets/9b81f56a-944e-41a7-acfb-1124962f4b6d" />
