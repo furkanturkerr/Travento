@@ -67,8 +67,8 @@ ASP.NET Core 8 ile geliştirilen, yapay zeka entegrasyonlu modern tur ve seyahat
 <img width="2940" height="3122" alt="tour" src="https://github.com/user-attachments/assets/9b81f56a-944e-41a7-acfb-1124962f4b6d" />
 <img width="2940" height="3176" alt="tur_detay" src="https://github.com/user-attachments/assets/6cad4874-8065-4e7a-9943-a494c42d7d5c" />
 <img width="2940" height="1604" alt="yorumlar" src="https://github.com/user-attachments/assets/119ca2a5-e8dc-4c48-a061-9ffa08a8fa76" />
-<img width="1469" height="800" alt="iletişimmesaj" src="https://github.com/user-attachments/assets/a5ae672f-d21d-4e5d-81a9-031db8b13551" />
-<img width="2940" height="1646" alt="iletisim_detay" src="https://github.com/user-attachments/assets/35473810-82c3-48b5-8e50-4325a6291478" />
+<img width="2940" height="1604" alt="contact" src="https://github.com/user-attachments/assets/fdd9db54-b6ee-4272-9928-7cde040720e4" />
+<img width="2940" height="1646" alt="contact_2" src="https://github.com/user-attachments/assets/4f5e0769-b8dc-4e49-867c-076b19f41078" />
 <img width="2940" height="1736" alt="slider" src="https://github.com/user-attachments/assets/d523d0e6-c3af-4958-a05e-da39f0c67e22" />
 <img width="2940" height="1604" alt="populertour" src="https://github.com/user-attachments/assets/01e29147-8b06-4eba-bbf7-c0f36603acb7" />
 <img width="2940" height="1698" alt="hakkimizda" src="https://github.com/user-attachments/assets/5e33862a-dc1a-44a5-be53-b3c2842d50ac" />
