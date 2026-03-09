@@ -23,7 +23,7 @@ ASP.NET Core 8 ile geliştirilen, yapay zeka entegrasyonlu modern tur ve seyahat
 - 📧 **Rezervasyon sonrası otomatik e-posta** — MailKit ile rezervasyon onay maili
 - 📄 **Tur bazlı PDF raporlama** — QuestPDF ile her tura ait rezervasyon raporu
 - 🤖 **AI destekli iletişim formu yanıtı** — Gelen mesajlara OpenAI ile otomatik yanıt önerisi
-- 🔍 **Akıllı tur filtreleme** — Bütçe, ülke/şehir, süre, tarih ve kişi sayısına göre kendine uygun tur bulma
+- 🔍 **Kapsamlı tur yönetimi** - Güzergah adımları, kapasite, fiyat ve tarih yönetimi
 
 ---
 
