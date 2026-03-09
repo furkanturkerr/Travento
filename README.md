@@ -49,13 +49,13 @@ ASP.NET Core 8 ile geliştirilen, yapay zeka entegrasyonlu modern tur ve seyahat
 # 📸 Proje Görselleri
 
 ![anasayfa](https://github.com/user-attachments/assets/089ae911-7aa8-403b-bb65-23eb121822be)
-<img width="2940" height="8718" alt="tur1" src="https://github.com/user-attachments/assets/e5e83342-5ed9-4761-b31b-f3a163ecf82d" />
+![tur1](https://github.com/user-attachments/assets/5a3dcaa9-c592-4210-b4db-14cb61d3eade)
 ![turdetay](https://github.com/user-attachments/assets/6eee33db-2633-4ad8-b491-886f3706bb3e)
-<img width="2940" height="8700" alt="dil_destegi" src="https://github.com/user-attachments/assets/38876019-0f31-4119-86d0-567dddbbc176" />
-<img width="2940" height="5174" alt="filtreleme" src="https://github.com/user-attachments/assets/57cc1430-796c-43f7-8300-15e1cc58a517" />
-<img width="2940" height="4522" alt="iletisim" src="https://github.com/user-attachments/assets/24c40924-0eb7-4cf7-9dc7-ecfab463526c" />
-<img width="2940" height="3316" alt="rezervasyon_yapma" src="https://github.com/user-attachments/assets/3c9c26f3-307d-4f30-8783-7884bb6d7b44" />
-<img width="2940" height="3766" alt="rezervasyon_yapma2" src="https://github.com/user-attachments/assets/69b3a8c0-d6c6-499d-8779-cf4b559086f7" />
+![dil_destegi](https://github.com/user-attachments/assets/c7fc13e0-ba01-4e1f-b909-4693e93c2df7)
+![filtreleme](https://github.com/user-attachments/assets/f9eb456c-92f6-40ad-8253-0b31059fdae8)
+![iletisim](https://github.com/user-attachments/assets/50261fc8-9247-4681-b994-15df174fc38b)
+![rezervasyon_yapma](https://github.com/user-attachments/assets/e8ac918c-62a1-413a-8a1e-97ae907905ae)
+![rezervasyon_yapma2](https://github.com/user-attachments/assets/34ec8e7e-2d26-49e2-ba1a-b0546a08d784)
 
 ---
 
