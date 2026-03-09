@@ -5,7 +5,6 @@ using Project3Travelin.Services.TourServices;
 
 namespace Project3Travelin.Controllers;
 
-// Controllers/HomeController.cs
 public class HomeController : Controller
 {
     private readonly ITourService _tourService;

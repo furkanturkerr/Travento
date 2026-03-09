@@ -56,20 +56,16 @@ public class TourController : Controller
         decimal? maxPrice,
         int page = 1)
     {
-        // Filtrelenmiş turları getir
         var values = await _tourService.GetFilteredToursAsync(city, minPrice, maxPrice);
 
-        // Pagination
         int pageSize = 8;
         int totalCount = values.Count;
         int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
         var pagedValues = values.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-        // Dropdown için şehirler
         var cities = await _tourService.GetAllCitiesAsync();
         ViewBag.Cities = cities;
 
-        // Seçili değerleri geri gönder (form dolu kalsın)
         ViewBag.SelectedCity = city;
         ViewBag.SelectedDate = date?.ToString("yyyy-MM-dd");
         ViewBag.MinPrice = minPrice;
@@ -78,6 +74,6 @@ public class TourController : Controller
         ViewBag.TotalPages = totalPages;
         ViewBag.TotalCount = totalCount;
 
-        return View("TourList", pagedValues); // Aynı TourList view'ını kullanır
+        return View("TourList", pagedValues);
     }
 }
